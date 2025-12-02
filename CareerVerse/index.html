@@ -120,7 +120,13 @@
         margin-bottom: 40px;
         box-shadow: 0 8px 30px rgba(16, 185, 129, 0.25);
         animation: slideDown 1s ease-out, float-badge 3s ease-in-out 1s infinite;
+        margin: 0 auto 40px auto;
     }
+    .badge-container {
+    display: flex;
+    justify-content: center; /* centers horizontally */
+    align-items: center;     /* centers vertically if container has height */
+}
 
     @keyframes slideDown {
         from {
@@ -432,9 +438,11 @@
         </div>
         
         <!-- Badge -->
+        <div class="badge-container">
         <div class="badge">
             <span class="sparkle-icon">✨</span>
             <span>AI-Powered Career Discovery</span>
+        </div>
         </div>
         
         <!-- Title with word animation -->
