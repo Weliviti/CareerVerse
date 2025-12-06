@@ -10,4 +10,4 @@ User-friendly web dashboard to track performance and progression
 
 Built using Unity (WebGL), Python/FastAPI, React, and cloud technologies
 
-Flexible for both individual practice and institutional deployment
+Flexible for both individual practice and institutional deployment.
