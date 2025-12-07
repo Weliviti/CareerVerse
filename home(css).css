@@ -219,4 +219,180 @@
       transform: translateY(-1px);
     }
 
+    /* “WHY CHOOSE” SECTION */
+
+    .section {
+      padding: 2rem 0 3.5rem;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .section-title span {
+      color: var(--primary-dark);
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.2rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 1.7rem 1.6rem 1.6rem;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 22px;
+      background: radial-gradient(circle at 10% 10%, #e6fffa, var(--primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .feature-text {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+    }
+
+    /* CAREER PATHS / SIMULATIONS */
+
+    .paths-section {
+      background: var(--section-bg);
+      padding: 3.4rem 0 3.2rem;
+    }
+
+    .paths-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.75rem;
+      margin-top: 2rem;
+      margin-bottom: 2.1rem;
+    }
+
+    .path-card {
+      border-radius: 24px;
+      padding: 1.8rem 1.7rem 1.7rem;
+      box-shadow: 0 18px 40px rgba(8, 47, 73, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .path-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-dark);
+      font-size: 1.5rem;
+      margin-bottom: 0.2rem;
+      box-shadow: 0 10px 24px rgba(15, 52, 96, 0.18);
+    }
+
+    .path-role {
+      font-size: 1.02rem;
+      font-weight: 600;
+    }
+
+    .path-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .path-educator {
+      background: var(--sim-educator);
+    }
+
+    .path-diagnostician {
+      background: var(--sim-diagnostician);
+    }
+
+    .path-advocate {
+      background: var(--sim-advocate);
+    }
+
+    .paths-cta {
+      text-align: center;
+    }
+
+    .btn-large {
+      padding: 0.9rem 2.6rem;
+      font-size: 1rem;
+    }
+
+    .btn-arrow::after {
+      content: "➜";
+      font-size: 0.9rem;
+      margin-left: 0.4rem;
+    }
+
+    /* MAIN CTA STRIP */
+
+    .cta-strip {
+      background: linear-gradient(135deg, #009c9e, #00b4d8);
+      color: #ffffff;
+      padding: 3.3rem 0 3.8rem;
+      text-align: center;
+      margin-top: 0.8rem;
+    }
+
+    .cta-title {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-text {
+      max-width: 620px;
+      margin: 0 auto 2.2rem;
+      font-size: 0.98rem;
+    }
+
+    .btn-white {
+      background: #ffffff;
+      color: var(--primary-dark);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn-white:hover {
+      background: #f0fffd;
+      transform: translateY(-1px);
+    }
+
     
