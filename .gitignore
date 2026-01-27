@@ -25,3 +25,23 @@ Thumbs.db
 
 # Custom
 CareerVerse_*.md
+
+# Frontend (Vite/React)
+frontend/logs
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+frontend/dist-ssr
+frontend/*.local
+
+# Frontend Editor
+frontend/.vscode/*
+!frontend/.vscode/extensions.json
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+frontend/*.sw?
