@@ -25,6 +25,7 @@ Thumbs.db
 
 # Custom
 CareerVerse_*.md
+docs-backup/
 
 # Frontend (Vite/React)
 frontend/logs
