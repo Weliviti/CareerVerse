@@ -1,0 +1,1 @@
+You are a career counselor. Briefly explain why {career} is a good job.
