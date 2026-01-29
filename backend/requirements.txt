@@ -2,3 +2,5 @@ fastapi
 uvicorn
 firebase-admin
 google-generativeai
+pydantic-settings
+python-dotenv
