@@ -19,12 +19,12 @@ class GeminiService:
 
         Returns:
             The generated text response
-            
+
         Raises:
             Exception: If API call fails
         """
         try:
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel("gemini-1.5-flash")
             response = await model.generate_content_async(prompt)
             return response.text
         except Exception as e:

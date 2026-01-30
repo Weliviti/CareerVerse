@@ -9,6 +9,8 @@ backend/.env
 .venv
 env/
 ENV/
+.pytest_cache/
+*.pyc
 
 # Node.js
 node_modules/
