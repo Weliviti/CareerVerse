@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from utils.responses import success_response, error_response, setup_exception_handlers
 
 app = FastAPI()
+
+# Setup global exception handlers
+setup_exception_handlers(app)
 
 # Configure CORS
 app.add_middleware(
@@ -15,9 +19,17 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"message": "CareerVerse API Running"}
+    """Root endpoint demonstrating success_response usage."""
+    return success_response(
+        data={"message": "CareerVerse API Running"},
+        message="Welcome to CareerVerse API"
+    )
 
 
 @app.get("/health")
 def health_check():
-    return {"status": "healthy"}
+    """Health check endpoint demonstrating success_response usage."""
+    return success_response(
+        data={"status": "healthy"},
+        message="Service is healthy"
+    )
