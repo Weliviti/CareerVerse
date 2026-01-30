@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional, Dict
 from datetime import datetime
 
+
 class User(BaseModel):
     uid: str
     email: EmailStr
