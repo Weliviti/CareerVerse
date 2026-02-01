@@ -31,7 +31,8 @@ def test_gemini():
         print("-" * 20)
 
         # Initialize model
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        # Updated to use gemini-2.5-flash which is available for this API key
+        model = genai.GenerativeModel('gemini-2.5-flash')
 
         # Generate response
         response = model.generate_content(prompt)
