@@ -22,14 +22,11 @@ def read_root():
     """Root endpoint demonstrating success_response usage."""
     return success_response(
         data={"message": "CareerVerse API Running"},
-        message="Welcome to CareerVerse API"
+        message="Welcome to CareerVerse API",
     )
 
 
 @app.get("/health")
 def health_check():
     """Health check endpoint demonstrating success_response usage."""
-    return success_response(
-        data={"status": "healthy"},
-        message="Service is healthy"
-    )
+    return success_response(data={"status": "healthy"}, message="Service is healthy")

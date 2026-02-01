@@ -32,7 +32,7 @@ def test_gemini():
 
         # Initialize model
         # Updated to use gemini-2.5-flash which is available for this API key
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        model = genai.GenerativeModel("gemini-2.5-flash")
 
         # Generate response
         response = model.generate_content(prompt)
