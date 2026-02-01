@@ -33,6 +33,11 @@ docs-backup/
 service-account.json
 backend/test_firebase.py
 
+# Docker
+*.log
+docker-compose.override.yml
+.dockerignore
+
 # Frontend (Vite/React)
 frontend/logs
 frontend/*.log
