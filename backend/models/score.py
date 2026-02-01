@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict
 from typing import Dict
 from datetime import datetime
 
+
 class Score(BaseModel):
     score_id: str
     user_id: str
