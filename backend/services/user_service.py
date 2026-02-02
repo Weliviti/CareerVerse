@@ -23,5 +23,5 @@ def create_user_profile(uid: str, email: str, name: str):
 
     # Write to users collection using the UID as the document ID
     db.collection("users").document(uid).set(user_data)
-    
+
     return user_data
