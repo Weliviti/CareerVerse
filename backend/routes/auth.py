@@ -17,6 +17,10 @@ class LoginRequest(BaseModel):
     token: str
 
 
+class VerifyTokenRequest(BaseModel):
+    token: str
+
+
 @router.post("/register")
 async def register(user: UserRegisterRequest):
     return user
@@ -78,4 +82,50 @@ async def login(request: LoginRequest):
             message="Login failed",
             code=500,
             error_details=f"An error occurred during login: {str(e)}",
+        )
+
+
+@router.post("/verify-token")
+async def verify_token(request: VerifyTokenRequest):
+    """
+    Verify Firebase ID token endpoint.
+
+    Args:
+        request: VerifyTokenRequest containing Firebase ID token
+
+    Returns:
+        Success response with valid=true, uid, email
+        or 401 Unauthorized if token is invalid/expired
+    """
+    try:
+        # Verify Firebase ID token
+        decoded_token = auth.verify_id_token(request.token)
+
+        # Extract basic user info from token
+        uid = decoded_token.get("uid")
+        email = decoded_token.get("email")
+
+        # Return verification success with basic info
+        return success_response(
+            data={"valid": True, "uid": uid, "email": email},
+            message="Token verified successfully",
+        )
+
+    except auth.InvalidIdTokenError:
+        return error_response(
+            message="Invalid token",
+            code=401,
+            error_details="Token verification failed",
+        )
+    except auth.ExpiredIdTokenError:
+        return error_response(
+            message="Token expired",
+            code=401,
+            error_details="Token has expired, please login again",
+        )
+    except Exception as e:
+        return error_response(
+            message="Token verification failed",
+            code=401,
+            error_details=f"An error occurred: {str(e)}",
         )
