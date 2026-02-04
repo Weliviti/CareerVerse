@@ -1,15 +1,15 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from firebase_admin import auth
-from services.user_service import get_user_by_uid
+from services.user_service import get_user_by_uid, create_user_profile
 from utils.responses import success_response, error_response
 
 router = APIRouter()
 
 
 class UserRegisterRequest(BaseModel):
+    uid: str
     email: str
-    password: str
     name: str
 
 
@@ -23,7 +23,22 @@ class VerifyTokenRequest(BaseModel):
 
 @router.post("/register")
 async def register(user: UserRegisterRequest):
-    return user
+    """
+    Register endpoint that creates a user profile in Firestore.
+    This should be called after a user is successfully created in Firebase Auth on the frontend.
+    """
+    try:
+        user_profile = create_user_profile(user.uid, user.email, user.name)
+        return success_response(
+            data=user_profile,
+            message="User profile created successfully",
+        )
+    except Exception as e:
+        return error_response(
+            message="User registration failed",
+            code=500,
+            error_details=str(e),
+        )
 
 
 @router.post("/login")

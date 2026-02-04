@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../services/firebase';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -26,12 +28,12 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
 
-    // Basic validation (to be enhanced later)
+    // Basic validation
     const newErrors = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
@@ -46,12 +48,52 @@ const Signup = () => {
       return;
     }
 
-    // Simulate signup (to be implemented later)
-    console.log('Signup Attempt:', formData);
-    setTimeout(() => {
+    try {
+      // Step 1: Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const user = userCredential.user;
+
+      // Step 2: Call backend API to save user profile
+      const response = await fetch('http://localhost:8000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          name: formData.fullName,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        // If backend fails, we should ideally handle it (e.g., delete the Firebase user or show error)
+        throw new Error(result.error_details || 'Failed to save user profile');
+      }
+
+      // Step 3: Redirect to dashboard on success
+      window.location.href = '/dashboard';
+    } catch (error) {
+      console.error('Signup Error:', error);
+      // Map Firebase errors to user-friendly messages
+      let errorMessage = 'An error occurred during signup. Please try again.';
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'This email is already in use.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'The password is too weak.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      setErrors({ submit: errorMessage });
       setLoading(false);
-      alert('Signup simulated! (Backend integration pending)');
-    }, 1000);
+    }
   };
 
   return (
@@ -64,7 +106,12 @@ const Signup = () => {
           <p className="text-gray-600 mt-2">Join CareerVerse today</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSignup} className="space-y-4">
+          {errors.submit && (
+            <div className="p-3 bg-red-50 text-red-700 text-sm rounded-md border border-red-200">
+              {errors.submit}
+            </div>
+          )}
           <Input
             label="Full Name"
             name="fullName"
