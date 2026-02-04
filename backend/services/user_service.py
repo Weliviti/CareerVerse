@@ -25,3 +25,25 @@ def create_user_profile(uid: str, email: str, name: str):
     db.collection("users").document(uid).set(user_data)
 
     return user_data
+
+
+def get_user_by_uid(uid: str):
+    """
+    Fetches a user profile from Firestore by UID.
+
+    Args:
+        uid (str): The user's UID from Firebase Auth.
+
+    Returns:
+        dict: User data (uid, email, name, role) or None if not found.
+    """
+    db = get_db_client()
+
+    # Fetch user document from Firestore
+    user_ref = db.collection("users").document(uid)
+    user_doc = user_ref.get()
+
+    if user_doc.exists:
+        return user_doc.to_dict()
+    else:
+        return None
