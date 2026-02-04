@@ -12,10 +12,46 @@ import Button from '../components/ui/Button';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({});
+
+    // Email and password validation function
+    const validateForm = () => {
+        const newErrors = {};
+
+        // Email validation - regex format check
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+            newErrors.email = "Email is required";
+        } else if (!emailRegex.test(email)) {
+            newErrors.email = "Invalid email format";
+        }
+
+        // Password validation - length must be > 6
+        if (!password) {
+            newErrors.password = "Password is required";
+        } else if (password.length <= 6) {
+            newErrors.password = "Password must be more than 6 characters";
+        }
+
+        return newErrors;
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Form submission logic will be added in Day 7
+
+        // Validate form before submission
+        const validationErrors = validateForm();
+
+        // If there are errors, set them and prevent submission
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        // Clear errors on successful validation
+        setErrors({});
+
+        // Form submission logic will be added in later days
         console.log('Login attempted with:', { email, password });
     };
 
@@ -71,26 +107,38 @@ const Login = () => {
                     <Card.Body>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             {/* Email Input */}
-                            <Input
-                                label="Email"
-                                type="email"
-                                placeholder="Enter your email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                icon={<EmailIcon />}
-                                required
-                            />
+                            <div>
+                                <Input
+                                    label="Email"
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    icon={<EmailIcon />}
+                                />
+                                {errors.email && (
+                                    <p className="text-red-600 text-sm mt-1">
+                                        {errors.email}
+                                    </p>
+                                )}
+                            </div>
 
                             {/* Password Input */}
-                            <Input
-                                label="Password"
-                                type="password"
-                                placeholder="Enter your password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                icon={<LockIcon />}
-                                required
-                            />
+                            <div>
+                                <Input
+                                    label="Password"
+                                    type="password"
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    icon={<LockIcon />}
+                                />
+                                {errors.password && (
+                                    <p className="text-red-600 text-sm mt-1">
+                                        {errors.password}
+                                    </p>
+                                )}
+                            </div>
 
                             {/* Login Button */}
                             <Button
