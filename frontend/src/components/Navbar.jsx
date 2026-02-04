@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import Button from './ui/Button';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currentUser } = useAuth();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -35,12 +37,27 @@ const Navbar = () => {
 
           {/* Desktop Right Side Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              Login
-            </Button>
-            <Button variant="primary" size="sm">
-              Signup
-            </Button>
+            {!currentUser ? (
+              // Show Login/Signup when user is not logged in
+              <>
+                <Button variant="outline" size="sm">
+                  Login
+                </Button>
+                <Button variant="primary" size="sm">
+                  Signup
+                </Button>
+              </>
+            ) : (
+              // Show user email and Logout when logged in
+              <>
+                <span className="text-sm text-gray-700">
+                  {currentUser.email}
+                </span>
+                <Button variant="outline" size="sm">
+                  Logout
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -112,22 +129,39 @@ const Navbar = () => {
             </a>
           </div>
           <div className="pt-4 pb-4 border-t border-gray-200 px-4">
-            <div className="flex flex-col space-y-3">
-              <Button
-                variant="outline"
-                size="md"
-                className="w-full justify-center"
-              >
-                Login
-              </Button>
-              <Button
-                variant="primary"
-                size="md"
-                className="w-full justify-center"
-              >
-                Signup
-              </Button>
-            </div>
+            {!currentUser ? (
+              // Show Login/Signup when user is not logged in
+              <div className="flex flex-col space-y-3">
+                <Button
+                  variant="outline"
+                  size="md"
+                  className="w-full justify-center"
+                >
+                  Login
+                </Button>
+                <Button
+                  variant="primary"
+                  size="md"
+                  className="w-full justify-center"
+                >
+                  Signup
+                </Button>
+              </div>
+            ) : (
+              // Show user email and Logout when logged in
+              <div className="flex flex-col space-y-3">
+                <div className="text-sm text-gray-700 text-center">
+                  {currentUser.email}
+                </div>
+                <Button
+                  variant="outline"
+                  size="md"
+                  className="w-full justify-center"
+                >
+                  Logout
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}
