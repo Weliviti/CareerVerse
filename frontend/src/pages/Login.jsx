@@ -13,6 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   // Email and password validation function
   const validateForm = () => {
@@ -51,8 +52,23 @@ const Login = () => {
     // Clear errors on successful validation
     setErrors({});
 
-    // Form submission logic will be added in later days
-    console.log('Login attempted with:', { email, password });
+    // Set loading state to true
+    setLoading(true);
+
+    // Simulate async login process (actual API call will be added in later days)
+    setTimeout(() => {
+      try {
+        console.log('Login attempted with:', { email, password });
+        // API call will go here in future days
+        // For now, assume success
+      } catch (error) {
+        console.error('Login error:', error);
+        // Optionally set an error state for the user
+      } finally {
+        // Reset loading state regardless of success or failure
+        setLoading(false);
+      }
+    }, 1500); // Simulate a 1.5-second network request
   };
 
   // Email icon
@@ -142,6 +158,7 @@ const Login = () => {
                 variant="primary"
                 size="lg"
                 className="w-full mt-6"
+                isLoading={loading}
               >
                 Sign In
               </Button>
