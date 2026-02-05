@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../services/firebase';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db } from '../services/firebase';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -9,6 +10,7 @@ import PasswordStrength from '../components/PasswordStrength';
 
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -87,28 +89,17 @@ const Signup = () => {
       );
       const user = userCredential.user;
 
-      // Step 2: Call backend API to save user profile
-      const response = await fetch('http://localhost:8000/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          uid: user.uid,
-          email: user.email,
-          name: formData.fullName,
-        }),
+      // Step 2: Save user data to Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        name: formData.fullName,
+        role: 'user',
+        createdAt: serverTimestamp(),
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        // If backend fails, we should ideally handle it (e.g., delete the Firebase user or show error)
-        throw new Error(result.error_details || 'Failed to save user profile');
-      }
-
-      // Step 3: Redirect to dashboard on success
-      window.location.href = '/dashboard';
+      // Step 3: Navigate to dashboard
+      navigate('/dashboard');
     } catch (error) {
       console.error('Signup Error:', error);
       // Map Firebase errors to user-friendly messages

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import Button from './ui/Button';
 
@@ -7,6 +9,15 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -55,7 +66,7 @@ const Navbar = () => {
                 <span className="text-sm text-gray-700">
                   {currentUser.email}
                 </span>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleLogout}>
                   Logout
                 </Button>
               </>
@@ -161,6 +172,7 @@ const Navbar = () => {
                   variant="outline"
                   size="md"
                   className="w-full justify-center"
+                  onClick={handleLogout}
                 >
                   Logout
                 </Button>
