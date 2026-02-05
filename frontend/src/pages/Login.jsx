@@ -110,72 +110,78 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-lg">
         <Card shadow="lg">
           <Card.Header>
-            <h2 className="text-2xl font-bold text-gray-900 text-center">
-              Welcome Back
-            </h2>
-            <p className="text-sm text-gray-600 text-center mt-1">
-              Sign in to continue to CareerVerse
-            </p>
+            <div className="px-6 pt-6">
+              <h2 className="text-3xl font-bold text-gray-900 text-center">
+                Welcome Back
+              </h2>
+              <p className="text-sm text-gray-600 text-center mt-2">
+                Sign in to continue to CareerVerse
+              </p>
+            </div>
           </Card.Header>
 
           <Card.Body>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email Input */}
-              <div>
-                <Input
-                  label="Email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  icon={<EmailIcon />}
-                />
-                {errors.email && (
-                  <p className="text-red-600 text-sm mt-1">{errors.email}</p>
-                )}
-              </div>
+            <div className="px-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Email Input */}
+                <div>
+                  <Input
+                    label="Email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    icon={<EmailIcon />}
+                  />
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
 
-              {/* Password Input */}
-              <div>
-                <Input
-                  label="Password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  icon={<LockIcon />}
-                />
-                {errors.password && (
-                  <p className="text-red-600 text-sm mt-1">{errors.password}</p>
-                )}
-              </div>
+                {/* Password Input */}
+                <div>
+                  <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    icon={<LockIcon />}
+                  />
+                  {errors.password && (
+                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+                  )}
+                </div>
 
-              {/* Login Button */}
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                className="w-full mt-6"
-                isLoading={loading}
-              >
-                Sign In
-              </Button>
-            </form>
+                {/* Login Button */}
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full mt-6 mb-2"
+                  isLoading={loading}
+                >
+                  Sign In
+                </Button>
+              </form>
+            </div>
           </Card.Body>
 
           <Card.Footer>
-            <p className="text-sm text-gray-600 text-center">
-              Don't have an account?{' '}
-              <Link
-                to="/signup"
-                className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
-              >
-                Sign up
-              </Link>
-            </p>
+            <div className="px-6 pb-6">
+              <p className="text-sm text-gray-600 text-center">
+                Don't have an account?{' '}
+                <Link
+                  to="/signup"
+                  className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </div>
           </Card.Footer>
         </Card>
       </div>

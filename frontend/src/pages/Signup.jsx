@@ -127,16 +127,16 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4 py-8">
+      <Card className="w-full max-w-lg shadow-lg">
+        <div className="text-center mb-6 px-6 pt-6">
+          <h1 className="text-3xl font-bold text-gray-900">
             Create an Account
           </h1>
           <p className="text-gray-600 mt-2">Join CareerVerse today</p>
         </div>
 
-        <form onSubmit={handleSignup} className="space-y-4">
+        <form onSubmit={handleSignup} className="space-y-4 px-6">
           {errors.submit && (
             <div className="p-3 bg-red-50 text-red-700 text-sm rounded-md border border-red-200">
               {errors.submit}
@@ -190,7 +190,7 @@ const Signup = () => {
             required
           />
 
-          <div className="mt-6">
+          <div className="mt-6 pb-2">
             <Button
               type="submit"
               variant="primary"
@@ -202,7 +202,7 @@ const Signup = () => {
           </div>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-600">
+        <div className="mt-6 pb-6 px-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
           {/* Using anchor tag since react-router-dom is not yet installed per plan */}
           <Link
