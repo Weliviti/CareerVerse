@@ -61,3 +61,14 @@ export const Skeleton = ({ className = 'h-4 w-full rounded' }) => {
     ></div>
   );
 };
+/**
+ * Loading Component
+ * Default export that handles common loading state.
+ */
+const Loading = () => (
+  <div className="flex h-screen w-full items-center justify-center">
+    <Spinner size="lg" />
+  </div>
+);
+
+export default Loading;
