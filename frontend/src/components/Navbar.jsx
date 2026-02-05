@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Button from './ui/Button';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const { currentUser } = useAuth();
 
   return (
@@ -40,10 +42,10 @@ const Navbar = () => {
             {!currentUser ? (
               // Show Login/Signup when user is not logged in
               <>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => navigate('/login')}>
                   Login
                 </Button>
-                <Button variant="primary" size="sm">
+                <Button variant="primary" size="sm" onClick={() => navigate('/signup')}>
                   Signup
                 </Button>
               </>
@@ -136,6 +138,7 @@ const Navbar = () => {
                   variant="outline"
                   size="md"
                   className="w-full justify-center"
+                  onClick={() => navigate('/login')}
                 >
                   Login
                 </Button>
@@ -143,6 +146,7 @@ const Navbar = () => {
                   variant="primary"
                   size="md"
                   className="w-full justify-center"
+                  onClick={() => navigate('/signup')}
                 >
                   Signup
                 </Button>
