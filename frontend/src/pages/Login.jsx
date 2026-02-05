@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -168,12 +169,12 @@ const Login = () => {
           <Card.Footer>
             <p className="text-sm text-gray-600 text-center">
               Don't have an account?{' '}
-              <a
-                href="/signup"
+              <Link
+                to="/signup"
                 className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </Card.Footer>
         </Card>
