@@ -47,3 +47,35 @@ def get_user_by_uid(uid: str):
         return user_doc.to_dict()
     else:
         return None
+
+
+def update_user(uid: str, updates: dict):
+    """
+    Updates a user profile in Firestore.
+
+    Args:
+        uid (str): The user's UID from Firebase Auth.
+        updates (dict): Dictionary of fields to update.
+
+    Returns:
+        dict: Updated user data.
+
+    Raises:
+        Exception: If user does not exist.
+    """
+    db = get_db_client()
+
+    # Get the user document reference
+    user_ref = db.collection("users").document(uid)
+    user_doc = user_ref.get()
+
+    # Check if user exists
+    if not user_doc.exists:
+        raise Exception(f"User with UID {uid} does not exist")
+
+    # Update the user document
+    user_ref.update(updates)
+
+    # Fetch and return the updated user data
+    updated_doc = user_ref.get()
+    return updated_doc.to_dict()
