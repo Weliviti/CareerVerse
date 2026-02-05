@@ -7,3 +7,4 @@ firebase-admin
 google-generativeai
 pydantic-settings
 python-dotenv
+slowapi
