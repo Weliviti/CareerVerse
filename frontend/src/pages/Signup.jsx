@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import Card from '../components/ui/Card';
@@ -204,12 +205,12 @@ const Signup = () => {
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
           {/* Using anchor tag since react-router-dom is not yet installed per plan */}
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="text-teal-600 hover:text-teal-700 font-medium hover:underline"
           >
             Log in
-          </a>
+          </Link>
         </div>
       </Card>
     </div>
