@@ -1,10 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from pydantic import BaseModel
 from firebase_admin import auth
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from services.user_service import get_user_by_uid, create_user_profile
 from utils.responses import success_response, error_response
 
 router = APIRouter()
+
+# Initialize limiter for this router
+limiter = Limiter(key_func=get_remote_address)
 
 
 class UserRegisterRequest(BaseModel):
@@ -22,7 +27,8 @@ class VerifyTokenRequest(BaseModel):
 
 
 @router.post("/register")
-async def register(user: UserRegisterRequest):
+@limiter.limit("5/minute")
+async def register(request: Request, user: UserRegisterRequest):
     """
     Register endpoint that creates a user profile in Firestore.
     This should be called after a user is successfully created in Firebase Auth on the frontend.
@@ -42,7 +48,8 @@ async def register(user: UserRegisterRequest):
 
 
 @router.post("/login")
-async def login(request: LoginRequest):
+@limiter.limit("5/minute")
+async def login(request: Request, login_request: LoginRequest):
     """
     Login endpoint that verifies Firebase ID token and returns user data.
 
@@ -55,7 +62,7 @@ async def login(request: LoginRequest):
     """
     try:
         # Step 1: Verify Firebase ID token
-        decoded_token = auth.verify_id_token(request.token)
+        decoded_token = auth.verify_id_token(login_request.token)
 
         # Step 2: Extract UID from verified token
         uid = decoded_token["uid"]
