@@ -4,6 +4,8 @@ import { auth } from '../services/firebase';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import PasswordStrength from '../components/PasswordStrength';
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -144,6 +146,10 @@ const Signup = () => {
             error={errors.password}
             required
           />
+
+          {/* Password strength indicator */}
+          <PasswordStrength password={formData.password} />
+
 
           <Input
             label="Confirm Password"
