@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
+import { auth } from '../services/firebase';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -15,6 +18,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
   // Email and password validation function
   const validateForm = () => {
@@ -38,7 +43,7 @@ const Login = () => {
     return newErrors;
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form before submission
@@ -56,19 +61,41 @@ const Login = () => {
     // Set loading state to true
     setLoading(true);
 
-    // Simulate async login process (actual API call will be added in later days)
-    setTimeout(() => {
-      try {
-        // API call will go here in future days
-        // For now, simulate a successful login
-        toast.success('Welcome back!');
-      } catch (error) {
-        toast.error('Invalid credentials');
-      } finally {
-        // Reset loading state regardless of success or failure
-        setLoading(false);
+    try {
+      // Set Firebase auth persistence based on Remember Me checkbox
+      await setPersistence(
+        auth,
+        rememberMe ? browserLocalPersistence : browserSessionPersistence
+      );
+
+      // Sign in with email and password
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // Show success message
+      toast.success('Welcome back!');
+
+      // Redirect to dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+
+      // Handle specific Firebase errors
+      let errorMessage = 'Invalid credentials';
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Too many failed attempts. Please try again later';
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your connection';
       }
-    }, 1500); // Simulate a 1.5-second network request
+
+      toast.error(errorMessage);
+    } finally {
+      // Reset loading state regardless of success or failure
+      setLoading(false);
+    }
   };
 
   // Email icon
@@ -150,6 +177,24 @@ const Login = () => {
                 {errors.password && (
                   <p className="text-red-600 text-sm mt-1">{errors.password}</p>
                 )}
+              </div>
+
+              {/* Remember Me Checkbox */}
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
+                />
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-700 cursor-pointer select-none"
+                >
+                  Remember me
+                </label>
               </div>
 
               {/* Login Button */}
