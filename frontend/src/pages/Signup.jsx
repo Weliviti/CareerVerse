@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../services/firebase';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db } from '../services/firebase';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -9,6 +10,7 @@ import PasswordStrength from '../components/PasswordStrength';
 
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -87,28 +89,17 @@ const Signup = () => {
       );
       const user = userCredential.user;
 
-      // Step 2: Call backend API to save user profile
-      const response = await fetch('http://localhost:8000/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          uid: user.uid,
-          email: user.email,
-          name: formData.fullName,
-        }),
+      // Step 2: Save user data to Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        name: formData.fullName,
+        role: 'user',
+        createdAt: serverTimestamp(),
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        // If backend fails, we should ideally handle it (e.g., delete the Firebase user or show error)
-        throw new Error(result.error_details || 'Failed to save user profile');
-      }
-
-      // Step 3: Redirect to dashboard on success
-      window.location.href = '/dashboard';
+      // Step 3: Navigate to dashboard
+      navigate('/dashboard');
     } catch (error) {
       console.error('Signup Error:', error);
       // Map Firebase errors to user-friendly messages
@@ -127,16 +118,16 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4 py-8">
+      <Card className="w-full max-w-lg shadow-lg">
+        <div className="text-center mb-6 px-6 pt-6">
+          <h1 className="text-3xl font-bold text-gray-900">
             Create an Account
           </h1>
           <p className="text-gray-600 mt-2">Join CareerVerse today</p>
         </div>
 
-        <form onSubmit={handleSignup} className="space-y-4">
+        <form onSubmit={handleSignup} className="space-y-4 px-6">
           {errors.submit && (
             <div className="p-3 bg-red-50 text-red-700 text-sm rounded-md border border-red-200">
               {errors.submit}
@@ -190,7 +181,7 @@ const Signup = () => {
             required
           />
 
-          <div className="mt-6">
+          <div className="mt-6 pb-2">
             <Button
               type="submit"
               variant="primary"
@@ -202,7 +193,7 @@ const Signup = () => {
           </div>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-600">
+        <div className="mt-6 pb-6 px-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
           {/* Using anchor tag since react-router-dom is not yet installed per plan */}
           <Link

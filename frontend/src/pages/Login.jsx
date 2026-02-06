@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../services/firebase';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -11,6 +13,7 @@ import Button from '../components/ui/Button';
  * A centered login form with email and password fields
  */
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
@@ -38,7 +41,7 @@ const Login = () => {
     return newErrors;
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form before submission
@@ -56,20 +59,30 @@ const Login = () => {
     // Set loading state to true
     setLoading(true);
 
-    // Simulate async login process (actual API call will be added in later days)
-    setTimeout(() => {
-      try {
-        console.log('Login attempted with:', { email, password });
-        // API call will go here in future days
-        // For now, assume success
-      } catch (error) {
-        console.error('Login error:', error);
-        // Optionally set an error state for the user
-      } finally {
-        // Reset loading state regardless of success or failure
-        setLoading(false);
+    try {
+      // Sign in with Firebase
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // Navigate to dashboard on success
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+
+      // Map Firebase errors to user-friendly messages
+      let errorMessage = 'Invalid email or password. Please try again.';
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email.';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password. Please try again.';
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = 'Invalid credentials. Please check your email and password.';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Too many failed login attempts. Please try again later.';
       }
-    }, 1500); // Simulate a 1.5-second network request
+
+      setErrors({ submit: errorMessage });
+      setLoading(false);
+    }
   };
 
   // Email icon
@@ -110,72 +123,85 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-lg">
         <Card shadow="lg">
           <Card.Header>
-            <h2 className="text-2xl font-bold text-gray-900 text-center">
-              Welcome Back
-            </h2>
-            <p className="text-sm text-gray-600 text-center mt-1">
-              Sign in to continue to CareerVerse
-            </p>
+            <div className="px-6 pt-6">
+              <h2 className="text-3xl font-bold text-gray-900 text-center">
+                Welcome Back
+              </h2>
+              <p className="text-sm text-gray-600 text-center mt-2">
+                Sign in to continue to CareerVerse
+              </p>
+            </div>
           </Card.Header>
 
           <Card.Body>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email Input */}
-              <div>
-                <Input
-                  label="Email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  icon={<EmailIcon />}
-                />
-                {errors.email && (
-                  <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+            <div className="px-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Error Message */}
+                {errors.submit && (
+                  <div className="p-3 bg-red-50 text-red-700 text-sm rounded-md border border-red-200">
+                    {errors.submit}
+                  </div>
                 )}
-              </div>
 
-              {/* Password Input */}
-              <div>
-                <Input
-                  label="Password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  icon={<LockIcon />}
-                />
-                {errors.password && (
-                  <p className="text-red-600 text-sm mt-1">{errors.password}</p>
-                )}
-              </div>
+                {/* Email Input */}
+                <div>
+                  <Input
+                    label="Email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    icon={<EmailIcon />}
+                  />
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
 
-              {/* Login Button */}
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                className="w-full mt-6"
-                isLoading={loading}
-              >
-                Sign In
-              </Button>
-            </form>
+                {/* Password Input */}
+                <div>
+                  <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    icon={<LockIcon />}
+                  />
+                  {errors.password && (
+                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+                  )}
+                </div>
+
+                {/* Login Button */}
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full mt-6 mb-2"
+                  isLoading={loading}
+                >
+                  Sign In
+                </Button>
+              </form>
+            </div>
           </Card.Body>
 
           <Card.Footer>
-            <p className="text-sm text-gray-600 text-center">
-              Don't have an account?{' '}
-              <Link
-                to="/signup"
-                className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
-              >
-                Sign up
-              </Link>
-            </p>
+            <div className="px-6 pb-6">
+              <p className="text-sm text-gray-600 text-center">
+                Don't have an account?{' '}
+                <Link
+                  to="/signup"
+                  className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </div>
           </Card.Footer>
         </Card>
       </div>
