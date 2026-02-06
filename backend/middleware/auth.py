@@ -35,9 +35,7 @@ def verify_token(authorization: str = Header(...)):
     """
     # Check if authorization header is present and properly formatted
     if not authorization:
-        raise HTTPException(
-            status_code=401, detail="Authorization header missing"
-        )
+        raise HTTPException(status_code=401, detail="Authorization header missing")
 
     # Extract token from "Bearer <token>" format
     parts = authorization.split()
