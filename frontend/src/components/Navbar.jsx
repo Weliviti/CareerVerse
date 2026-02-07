@@ -53,15 +53,18 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Right Side Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             {!currentUser ? (
               // Show Login/Signup when user is not logged in
               <>
-                <Button variant="outline" size="sm" onClick={() => navigate('/login')}>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+                >
                   Login
-                </Button>
+                </button>
                 <Button variant="primary" size="sm" onClick={() => navigate('/signup')}>
-                  Signup
+                  Sign Up
                 </Button>
               </>
             ) : (
