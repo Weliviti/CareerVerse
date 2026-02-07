@@ -204,10 +204,99 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* Account Settings Section - Placeholder for Part 4 */}
+                    {/* Account Settings Section */}
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Settings</h3>
-                        <p className="text-gray-500 text-sm">Settings will be added in Part 4</p>
+
+                        <div className="space-y-4">
+                            {/* Change Password */}
+                            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5 text-primary-600"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900">Change Password</p>
+                                        <p className="text-xs text-gray-500">Update your password regularly</p>
+                                    </div>
+                                </div>
+                                <button className="px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-md transition-colors">
+                                    Change
+                                </button>
+                            </div>
+
+                            {/* Two-Step Login */}
+                            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5 text-primary-600"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900">Enable Two-Step Login</p>
+                                        <p className="text-xs text-gray-500">Make your account more secure</p>
+                                    </div>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" className="sr-only peer" />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-100 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
+                                </label>
+                            </div>
+
+                            {/* Delete Account */}
+                            <div className="flex items-center justify-between py-3">
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5 text-red-600"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900">Delete Account</p>
+                                        <p className="text-xs text-red-500">This action cannot be undone</p>
+                                    </div>
+                                </div>
+                                <button className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
