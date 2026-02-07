@@ -9,16 +9,10 @@ import { auth } from './firebase';
  * @throws {Object} - Firebase error object on failure.
  */
 export const loginUser = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    return userCredential.user;
-  } catch (error) {
-    // Re-throw the error to be handled by the caller
-    // Common errors: auth/user-not-found, auth/wrong-password, auth/invalid-email
-    throw error;
-  }
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  return userCredential.user;
 };
