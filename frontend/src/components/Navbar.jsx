@@ -61,8 +61,14 @@ const Navbar = () => {
                 </Button>
               </>
             ) : (
-              // Show user email and Logout when logged in
+              // Show Profile, user email and Logout when logged in
               <>
+                <button
+                  onClick={() => navigate('/profile')}
+                  className="text-sm text-gray-700 hover:text-primary-600 font-medium transition-colors"
+                >
+                  Profile
+                </button>
                 <span className="text-sm text-gray-700">
                   {currentUser.email}
                 </span>
@@ -163,8 +169,16 @@ const Navbar = () => {
                 </Button>
               </div>
             ) : (
-              // Show user email and Logout when logged in
+              // Show Profile, user email and Logout when logged in
               <div className="flex flex-col space-y-3">
+                <Button
+                  variant="primary"
+                  size="md"
+                  className="w-full justify-center"
+                  onClick={() => navigate('/profile')}
+                >
+                  Profile
+                </Button>
                 <div className="text-sm text-gray-700 text-center">
                   {currentUser.email}
                 </div>
