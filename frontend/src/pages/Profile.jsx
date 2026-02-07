@@ -88,6 +88,117 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Personal Information Section */}
+                <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+
+                    <div className="space-y-4">
+                        {/* Name Field */}
+                        <div className="flex items-center space-x-3">
+                            <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5 text-primary-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                    />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm text-gray-500">Name</p>
+                                <p className="text-base font-medium text-gray-900">
+                                    {currentUser?.displayName || 'Sarah Johnson'}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Email Field */}
+                        <div className="flex items-center space-x-3">
+                            <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5 text-primary-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm text-gray-500">Email</p>
+                                <p className="text-base font-medium text-gray-900">
+                                    {currentUser?.email || 'sarah.johnson@email.com'}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Joined Date Field */}
+                        <div className="flex items-center space-x-3">
+                            <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5 text-primary-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm text-gray-500">Joined Date</p>
+                                <p className="text-base font-medium text-gray-900">
+                                    January 15, 2024
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Preferred Career Track Field */}
+                        <div className="flex items-center space-x-3">
+                            <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5 text-primary-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                    />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm text-gray-500">Preferred Career Track</p>
+                                <p className="text-base font-medium text-gray-900">
+                                    Software Engineering
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
