@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
@@ -8,7 +8,11 @@ import Button from './ui/Button';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentUser } = useAuth();
+
+  // Check if we're on the profile page
+  const isProfilePage = location.pathname === '/profile';
 
   const handleLogout = async () => {
     try {
@@ -63,15 +67,19 @@ const Navbar = () => {
             ) : (
               // Show Profile, user email and Logout when logged in
               <>
-                <button
-                  onClick={() => navigate('/profile')}
-                  className="text-sm text-gray-700 hover:text-primary-600 font-medium transition-colors"
-                >
-                  Profile
-                </button>
-                <span className="text-sm text-gray-700">
-                  {currentUser.email}
-                </span>
+                {!isProfilePage && (
+                  <>
+                    <button
+                      onClick={() => navigate('/profile')}
+                      className="text-sm text-gray-700 hover:text-primary-600 font-medium transition-colors"
+                    >
+                      Profile
+                    </button>
+                    <span className="text-sm text-gray-700">
+                      {currentUser.email}
+                    </span>
+                  </>
+                )}
                 <Button variant="outline" size="sm" onClick={handleLogout}>
                   Logout
                 </Button>
@@ -171,17 +179,21 @@ const Navbar = () => {
             ) : (
               // Show Profile, user email and Logout when logged in
               <div className="flex flex-col space-y-3">
-                <Button
-                  variant="primary"
-                  size="md"
-                  className="w-full justify-center"
-                  onClick={() => navigate('/profile')}
-                >
-                  Profile
-                </Button>
-                <div className="text-sm text-gray-700 text-center">
-                  {currentUser.email}
-                </div>
+                {!isProfilePage && (
+                  <>
+                    <Button
+                      variant="primary"
+                      size="md"
+                      className="w-full justify-center"
+                      onClick={() => navigate('/profile')}
+                    >
+                      Profile
+                    </Button>
+                    <div className="text-sm text-gray-700 text-center">
+                      {currentUser.email}
+                    </div>
+                  </>
+                )}
                 <Button
                   variant="outline"
                   size="md"
