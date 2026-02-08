@@ -1,0 +1,234 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
+import { auth } from '../services/firebase';
+import Navbar from '../components/Navbar';
+import Card from '../components/ui/Card';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
+import toast from 'react-hot-toast';
+
+/**
+ * Login Page Component
+ * Sprint 02, Day 6, Member 1
+ *
+ * A centered login form with email and password fields
+ */
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
+
+  // Email and password validation function
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation - regex format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'Invalid email format';
+    }
+
+    // Password validation - length must be > 6
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length <= 6) {
+      newErrors.password = 'Password must be more than 6 characters';
+    }
+
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate form before submission
+    const validationErrors = validateForm();
+
+    // If there are errors, set them and prevent submission
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    // Clear errors on successful validation
+    setErrors({});
+
+    // Set loading state to true
+    setLoading(true);
+
+    try {
+      // Set Firebase auth persistence based on Remember Me checkbox
+      await setPersistence(
+        auth,
+        rememberMe ? browserLocalPersistence : browserSessionPersistence
+      );
+
+      // Sign in with email and password
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // Show success message
+      toast.success('Welcome back!');
+
+      // Redirect to dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+
+      // Handle specific Firebase errors
+      let errorMessage = 'Invalid credentials';
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Too many failed attempts. Please try again later';
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your connection';
+      }
+
+      toast.error(errorMessage);
+    } finally {
+      // Reset loading state regardless of success or failure
+      setLoading(false);
+    }
+  };
+
+  // Email icon
+  const EmailIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+      />
+    </svg>
+  );
+
+  // Lock icon
+  const LockIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+      />
+    </svg>
+  );
+
+  return (
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <Card shadow="lg">
+            <Card.Header>
+              <h2 className="text-3xl font-bold text-primary-600 text-center">
+                Welcome Back
+              </h2>
+              <p className="text-sm text-gray-600 text-center mt-2">
+                Login to continue your career journey
+              </p>
+            </Card.Header>
+
+            <Card.Body>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Email Input */}
+                <div>
+                  <Input
+                    label="Email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    icon={<EmailIcon />}
+                  />
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
+
+                {/* Password Input */}
+                <div>
+                  <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    icon={<LockIcon />}
+                  />
+                  {errors.password && (
+                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+                  )}
+                </div>
+
+                {/* Remember Me Checkbox */}
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
+                  />
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-700 cursor-pointer select-none"
+                  >
+                    Remember me
+                  </label>
+                </div>
+
+                {/* Login Button */}
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full mt-6"
+                  isLoading={loading}
+                >
+                  Sign In
+                </Button>
+              </form>
+            </Card.Body>
+
+            <Card.Footer>
+              <p className="text-sm text-gray-600 text-center">
+                Don't have an account?{' '}
+                <a
+                  href="/signup"
+                  className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                >
+                  Sign up
+                </a>
+              </p>
+            </Card.Footer>
+          </Card>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Login;
