@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
 import { auth } from '../services/firebase';
+import Navbar from '../components/Navbar';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -135,95 +136,98 @@ const Login = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
-        <Card shadow="lg">
-          <Card.Header>
-            <h2 className="text-2xl font-bold text-gray-900 text-center">
-              Welcome Back
-            </h2>
-            <p className="text-sm text-gray-600 text-center mt-1">
-              Sign in to continue to CareerVerse
-            </p>
-          </Card.Header>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <Card shadow="lg">
+            <Card.Header>
+              <h2 className="text-3xl font-bold text-primary-600 text-center">
+                Welcome Back
+              </h2>
+              <p className="text-sm text-gray-600 text-center mt-2">
+                Login to continue your career journey
+              </p>
+            </Card.Header>
 
-          <Card.Body>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email Input */}
-              <div>
-                <Input
-                  label="Email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  icon={<EmailIcon />}
-                />
-                {errors.email && (
-                  <p className="text-red-600 text-sm mt-1">{errors.email}</p>
-                )}
-              </div>
+            <Card.Body>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Email Input */}
+                <div>
+                  <Input
+                    label="Email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    icon={<EmailIcon />}
+                  />
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
 
-              {/* Password Input */}
-              <div>
-                <Input
-                  label="Password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  icon={<LockIcon />}
-                />
-                {errors.password && (
-                  <p className="text-red-600 text-sm mt-1">{errors.password}</p>
-                )}
-              </div>
+                {/* Password Input */}
+                <div>
+                  <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    icon={<LockIcon />}
+                  />
+                  {errors.password && (
+                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+                  )}
+                </div>
 
-              {/* Remember Me Checkbox */}
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-700 cursor-pointer select-none"
+                {/* Remember Me Checkbox */}
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
+                  />
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-700 cursor-pointer select-none"
+                  >
+                    Remember me
+                  </label>
+                </div>
+
+                {/* Login Button */}
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full mt-6"
+                  isLoading={loading}
                 >
-                  Remember me
-                </label>
-              </div>
+                  Sign In
+                </Button>
+              </form>
+            </Card.Body>
 
-              {/* Login Button */}
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                className="w-full mt-6"
-                isLoading={loading}
-              >
-                Sign In
-              </Button>
-            </form>
-          </Card.Body>
-
-          <Card.Footer>
-            <p className="text-sm text-gray-600 text-center">
-              Don't have an account?{' '}
-              <a
-                href="/signup"
-                className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
-              >
-                Sign up
-              </a>
-            </p>
-          </Card.Footer>
-        </Card>
+            <Card.Footer>
+              <p className="text-sm text-gray-600 text-center">
+                Don't have an account?{' '}
+                <a
+                  href="/signup"
+                  className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                >
+                  Sign up
+                </a>
+              </p>
+            </Card.Footer>
+          </Card>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
