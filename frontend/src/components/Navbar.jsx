@@ -26,7 +26,7 @@ const Navbar = () => {
           <div className="flex items-center">
             {/* Brand Logo */}
             <div className="flex-shrink-0 flex items-center cursor-pointer">
-              <span className="text-2xl font-bold text-primary-600">
+              <span className="text-2xl font-bold text-teal-600">
                 CareerVerse
               </span>
             </div>
@@ -34,14 +34,14 @@ const Navbar = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:ml-8 md:flex md:space-x-8">
               <a
-                href="#"
-                className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-primary-500 text-sm font-medium"
+                href="/"
+                className="text-gray-700 hover:text-teal-600 inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors"
               >
                 Home
               </a>
               <a
-                href="#"
-                className="text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium transition-colors"
+                href="/about"
+                className="text-gray-700 hover:text-teal-600 inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors"
               >
                 About
               </a>
@@ -53,12 +53,18 @@ const Navbar = () => {
             {!currentUser ? (
               // Show Login/Signup when user is not logged in
               <>
-                <Button variant="outline" size="sm" onClick={() => navigate('/login')}>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-gray-700 hover:text-teal-600 transition-colors font-medium px-4 py-2"
+                >
                   Login
-                </Button>
-                <Button variant="primary" size="sm" onClick={() => navigate('/signup')}>
-                  Signup
-                </Button>
+                </button>
+                <button
+                  onClick={() => navigate('/signup')}
+                  className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors font-medium"
+                >
+                  Sign Up
+                </button>
               </>
             ) : (
               // Show user email and Logout when logged in
@@ -66,9 +72,12 @@ const Navbar = () => {
                 <span className="text-sm text-gray-700">
                   {currentUser.email}
                 </span>
-                <Button variant="outline" size="sm" onClick={handleLogout}>
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-700 hover:text-teal-600 transition-colors font-medium px-4 py-2 border border-gray-300 rounded-lg"
+                >
                   Logout
-                </Button>
+                </button>
               </>
             )}
           </div>
