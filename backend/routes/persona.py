@@ -15,10 +15,6 @@ from utils.responses import success_response, error_response
 
 router = APIRouter()
 
-# Initialize services
-gemini_service = GeminiService()
-prompt_manager = PromptManager()
-
 
 class Message(BaseModel):
     """Individual message in conversation history."""
@@ -73,6 +69,10 @@ async def persona_chat(request: ChatRequest, user=Depends(verify_token)):
         500: If LLM generation fails
     """
     try:
+        # Initialize services (lazy initialization to avoid import-time errors)
+        gemini_service = GeminiService()
+        prompt_manager = PromptManager()
+
         # Step 1: Load persona prompt template
         try:
             persona_prompt = prompt_manager.load_template(
