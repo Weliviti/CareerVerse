@@ -8,6 +8,14 @@ with mocked Gemini service to avoid external API calls during testing.
 from unittest.mock import patch, AsyncMock, MagicMock
 from fastapi.testclient import TestClient
 import pytest
+import importlib.util
+
+# Check if persona module exists
+persona_module_exists = importlib.util.find_spec("routes.persona") is not None
+skip_if_no_persona = pytest.mark.skipif(
+    not persona_module_exists,
+    reason="Persona endpoint not yet merged. Tests will run after feature/day11-persona-endpoint is merged.",
+)
 
 
 # Mock dependencies before importing main
@@ -60,6 +68,7 @@ def mock_gemini_response():
 class TestPersonaChatEndpoint:
     """Test suite for the /api/persona/chat endpoint."""
 
+    @skip_if_no_persona
     @patch("routes.persona.GeminiService")
     @patch("routes.persona.PromptManager")
     def test_persona_chat_success(
@@ -106,6 +115,7 @@ class TestPersonaChatEndpoint:
         assert data["emotion"] == "anxious"
         assert len(data["response"]) > 0
 
+    @skip_if_no_persona
     def test_missing_session_id(self, client, valid_chat_request):
         """
         Test request with missing session_id field.
@@ -124,6 +134,7 @@ class TestPersonaChatEndpoint:
         response_data = response.json()
         assert "detail" in response_data
 
+    @skip_if_no_persona
     def test_missing_message(self, client, valid_chat_request):
         """
         Test request with missing message field.
@@ -142,6 +153,7 @@ class TestPersonaChatEndpoint:
         response_data = response.json()
         assert "detail" in response_data
 
+    @skip_if_no_persona
     def test_missing_persona_type(self, client, valid_chat_request):
         """
         Test request with missing persona_type field.
@@ -160,6 +172,7 @@ class TestPersonaChatEndpoint:
         response_data = response.json()
         assert "detail" in response_data
 
+    @skip_if_no_persona
     @patch("routes.persona.GeminiService")
     @patch("routes.persona.PromptManager")
     def test_invalid_persona_type(
@@ -193,6 +206,7 @@ class TestPersonaChatEndpoint:
             or "not found" in response_data["message"].lower()
         )
 
+    @skip_if_no_persona
     @patch("routes.persona.GeminiService")
     @patch("routes.persona.PromptManager")
     def test_persona_chat_with_conversation_history(
