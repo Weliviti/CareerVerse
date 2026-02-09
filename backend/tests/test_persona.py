@@ -14,8 +14,9 @@ import pytest
 @pytest.fixture(autouse=True)
 def mock_firebase_and_gemini():
     """Mock Firebase Admin and Gemini service to avoid initialization errors."""
-    with patch("services.firebase_admin_service.firebase_admin"), \
-         patch("services.gemini_service.genai"):
+    with patch("services.firebase_admin_service.firebase_admin"), patch(
+        "services.gemini_service.genai"
+    ):
         yield
 
 
@@ -61,20 +62,29 @@ class TestPersonaChatEndpoint:
     @patch("routes.persona.GeminiService")
     @patch("routes.persona.PromptManager")
     def test_persona_chat_success(
-        self, mock_prompt_manager, mock_gemini_service, client, valid_chat_request, mock_gemini_response
+        self,
+        mock_prompt_manager,
+        mock_gemini_service,
+        client,
+        valid_chat_request,
+        mock_gemini_response,
     ):
         """
         Test successful persona chat with valid data.
-        
+
         Expected: 200 OK with response, emotion, and session_id fields.
         """
         # Setup mocks
         mock_prompt_instance = MagicMock()
-        mock_prompt_instance.load_template.return_value = "You are an anxious patient..."
+        mock_prompt_instance.load_template.return_value = (
+            "You are an anxious patient..."
+        )
         mock_prompt_manager.return_value = mock_prompt_instance
 
         mock_gemini_instance = MagicMock()
-        mock_gemini_instance.generate_response = AsyncMock(return_value=mock_gemini_response)
+        mock_gemini_instance.generate_response = AsyncMock(
+            return_value=mock_gemini_response
+        )
         mock_gemini_service.return_value = mock_gemini_instance
 
         # Make request
@@ -82,11 +92,11 @@ class TestPersonaChatEndpoint:
 
         # Assertions
         assert response.status_code == 200
-        
+
         response_data = response.json()
         assert response_data["success"] is True
         assert "data" in response_data
-        
+
         data = response_data["data"]
         assert "response" in data
         assert "emotion" in data
@@ -98,7 +108,7 @@ class TestPersonaChatEndpoint:
     def test_missing_session_id(self, client, valid_chat_request):
         """
         Test request with missing session_id field.
-        
+
         Expected: 422 Unprocessable Entity (Pydantic validation error).
         """
         # Remove session_id from request
@@ -116,7 +126,7 @@ class TestPersonaChatEndpoint:
     def test_missing_message(self, client, valid_chat_request):
         """
         Test request with missing message field.
-        
+
         Expected: 422 Unprocessable Entity (Pydantic validation error).
         """
         # Remove message from request
@@ -134,7 +144,7 @@ class TestPersonaChatEndpoint:
     def test_missing_persona_type(self, client, valid_chat_request):
         """
         Test request with missing persona_type field.
-        
+
         Expected: 422 Unprocessable Entity (Pydantic validation error).
         """
         # Remove persona_type from request
@@ -156,7 +166,7 @@ class TestPersonaChatEndpoint:
     ):
         """
         Test request with invalid/non-existent persona_type.
-        
+
         Expected: 400 Bad Request (persona template not found).
         """
         # Setup mocks - PromptManager raises FileNotFoundError for invalid template
@@ -177,25 +187,37 @@ class TestPersonaChatEndpoint:
         assert response.status_code == 400
         response_data = response.json()
         assert response_data["success"] is False
-        assert "Persona type" in response_data["message"] or "not found" in response_data["message"].lower()
+        assert (
+            "Persona type" in response_data["message"]
+            or "not found" in response_data["message"].lower()
+        )
 
     @patch("routes.persona.GeminiService")
     @patch("routes.persona.PromptManager")
     def test_persona_chat_with_conversation_history(
-        self, mock_prompt_manager, mock_gemini_service, client, valid_chat_request, mock_gemini_response
+        self,
+        mock_prompt_manager,
+        mock_gemini_service,
+        client,
+        valid_chat_request,
+        mock_gemini_response,
     ):
         """
         Test persona chat with previous conversation history.
-        
+
         Expected: 200 OK with response including conversation context.
         """
         # Setup mocks
         mock_prompt_instance = MagicMock()
-        mock_prompt_instance.load_template.return_value = "You are an anxious patient..."
+        mock_prompt_instance.load_template.return_value = (
+            "You are an anxious patient..."
+        )
         mock_prompt_manager.return_value = mock_prompt_instance
 
         mock_gemini_instance = MagicMock()
-        mock_gemini_instance.generate_response = AsyncMock(return_value=mock_gemini_response)
+        mock_gemini_instance.generate_response = AsyncMock(
+            return_value=mock_gemini_response
+        )
         mock_gemini_service.return_value = mock_gemini_instance
 
         # Add conversation history
