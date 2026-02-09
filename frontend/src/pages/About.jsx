@@ -200,6 +200,92 @@ function About() {
                 </div>
             </section>
 
+            {/* What Makes Us Different Section */}
+            <section className="py-20 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                        What Makes Us <span className="text-teal-600">Different</span>
+                    </h2>
+                    <p className="text-gray-600 mb-16 max-w-2xl mx-auto">
+                        We combine cutting-edge technology with human-centric design
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Feature 1 */}
+                        <div className="p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow text-left">
+                            <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 mb-6 border border-teal-100">
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                                    />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Hands-On Technology</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                Powered by advanced language models, our AI agents respond authentically
+                                in character, creating truly immersive experiences.
+                            </p>
+                        </div>
+
+                        {/* Feature 2 */}
+                        <div className="p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow text-left">
+                            <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 mb-6 border border-teal-100">
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Adaptive Engine</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                Every decision is analyzed. Get precise skill scores and career matches based
+                                on actual performance, not just answers to questions.
+                            </p>
+                        </div>
+
+                        {/* Feature 3 */}
+                        <div className="p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow text-left">
+                            <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 mb-6 border border-teal-100">
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Instant Feedback</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                Experience what it really feels like in different careers through interactive
+                                scenario-based challenges that mirror real professional situations.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <Footer />
         </div>
     );
