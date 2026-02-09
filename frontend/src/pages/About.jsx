@@ -286,6 +286,119 @@ function About() {
                 </div>
             </section>
 
+            {/* Our Simulations Section */}
+            <section className="py-20 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                            Our <span className="text-teal-600">Simulations</span>
+                        </h2>
+                        <p className="text-gray-600 max-w-2xl mx-auto">
+                            Experience three distinct career paths, each designed to evaluate specific skill sets
+                            through realistic, AI-powered scenarios.
+                        </p>
+                    </div>
+
+                    <div className="space-y-6">
+                        {/* Simulation 1: The Educator */}
+                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center gap-8">
+                            <div className="w-14 h-14 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 shrink-0">
+                                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" />
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">The Educator</h3>
+                                <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                                    Step into a classroom and manage them AI powered students. Handle disruptions, inspire learning, and
+                                    demonstrate your coaching abilities.
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full border border-blue-100">Empathy</span>
+                                    <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full border border-blue-100">Clarity</span>
+                                    <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full border border-blue-100">Classroom Control</span>
+                                    <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full border border-blue-100">Stress Handling</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Simulation 2: The Diagnostician */}
+                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center gap-8">
+                            <div className="w-14 h-14 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 shrink-0">
+                                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">The Diagnostician</h3>
+                                <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                                    Interview AI patients, identify symptoms, and provide accurate diagnoses. Combine medical logic with
+                                    compassionate care.
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="px-3 py-1 bg-teal-50 text-teal-600 text-xs font-semibold rounded-full border border-teal-100">Diagnostic Logic</span>
+                                    <span className="px-3 py-1 bg-teal-50 text-teal-600 text-xs font-semibold rounded-full border border-teal-100">Empathy</span>
+                                    <span className="px-3 py-1 bg-teal-50 text-teal-600 text-xs font-semibold rounded-full border border-teal-100">Communication</span>
+                                    <span className="px-3 py-1 bg-teal-50 text-teal-600 text-xs font-semibold rounded-full border border-teal-100">Problem Solving</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Simulation 3: The Advocate */}
+                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center gap-8">
+                            <div className="w-14 h-14 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 shrink-0">
+                                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">The Advocate</h3>
+                                <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                                    Navigate complex legal negotiations with an AI opposing counsel. Use persuasion and logic to achieve
+                                    favorable outcomes.
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full border border-orange-100">Persuasion</span>
+                                    <span className="px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full border border-orange-100">Logical Acumen</span>
+                                    <span className="px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full border border-orange-100">Negotiation</span>
+                                    <span className="px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full border border-orange-100">Reading People</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* AI Stats Section */}
+            <section className="py-24 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">
+                        Powered by <span className="text-teal-600">Advanced AI</span>
+                    </h2>
+                    <p className="text-gray-600 max-w-3xl mx-auto mb-16 leading-relaxed">
+                        Our platform leverages cutting-edge Large Language Models to create AI agents that
+                        respond naturally and evaluate your performance with precision. Each interaction is analyzed
+                        to build a comprehensive picture of your skills and aptitudes.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="p-10 bg-teal-50 rounded-2xl border border-teal-100/50">
+                            <div className="text-5xl font-bold text-teal-600 mb-2">100%</div>
+                            <div className="text-gray-600 font-medium italic">AI-Powered Analysis</div>
+                        </div>
+                        <div className="p-10 bg-blue-50 rounded-2xl border border-blue-100/50">
+                            <div className="text-5xl font-bold text-blue-600 mb-2">20+</div>
+                            <div className="text-gray-600 font-medium italic">Skill Dimensions</div>
+                        </div>
+                        <div className="p-10 bg-purple-50 rounded-2xl border border-purple-100/50">
+                            <div className="text-5xl font-bold text-purple-600 mb-2">3</div>
+                            <div className="text-gray-600 font-medium italic">Career Paths</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <Footer />
         </div>
     );
