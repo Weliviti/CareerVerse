@@ -14,8 +14,9 @@ import pytest
 @pytest.fixture(autouse=True)
 def mock_firebase_and_gemini():
     """Mock Firebase Admin and Gemini service to avoid initialization errors."""
-    with patch("services.firebase_admin_service.firebase_admin"), patch(
-        "services.gemini_service.genai"
+    with (
+        patch("services.firebase_admin_service.firebase_admin"),
+        patch("services.gemini_service.genai"),
     ):
         yield
 
