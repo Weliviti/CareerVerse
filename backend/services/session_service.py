@@ -14,11 +14,11 @@ from services.firebase_admin_service import get_db_client
 PERSONA_VARIANTS = {
     "doctor": [
         "patient_anxious",
-        "patient_hiding",
-        "patient_elderly",
+        "patient_stoic",
+        "patient_confused",
     ],
     "teacher": [
-        "student_disruptor",
+        "student_disruptive",
         "student_quiet",
         "student_bored",
     ],
