@@ -1,4 +1,3 @@
-
 def get_transcript(session_id: str) -> list:
     """
     Retrieves the transcript of a session.
