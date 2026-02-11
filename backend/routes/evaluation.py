@@ -30,8 +30,10 @@ RUBRIC:
    - Proposed reasonable next steps (20 pts)
 """
 
+
 class EvaluationRequest(BaseModel):
     session_id: str
+
 
 @router.post("/evaluate")
 async def evaluate_session(request: EvaluationRequest):
@@ -42,15 +44,18 @@ async def evaluate_session(request: EvaluationRequest):
         # 1. Get transcript
         transcript = get_transcript(request.session_id)
         if not transcript:
-             return error_response(message="Session transcript not found or empty", status_code=404)
+            return error_response(
+                message="Session transcript not found or empty", status_code=404
+            )
 
         # 2. Evaluate using Gemini
         # TODO: In future, select rubric based on session type. For now using Doctor Rubric default.
-        evaluation_result = await gemini_service.evaluate_transcript(transcript, DOCTOR_RUBRIC)
-        
+        evaluation_result = await gemini_service.evaluate_transcript(
+            transcript, DOCTOR_RUBRIC
+        )
+
         return success_response(
-            data=evaluation_result,
-            message="Session evaluated successfully"
+            data=evaluation_result, message="Session evaluated successfully"
         )
 
     except ValueError as ve:
