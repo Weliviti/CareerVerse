@@ -29,21 +29,27 @@ class GeminiService:
             return response.text
         except Exception as e:
             raise Exception(f"Gemini API error: {str(e)}")
+
     async def evaluate_transcript(self, transcript: list, rubric: str) -> dict:
         """
         Evaluates a session transcript using a provided rubric.
-        
+
         Args:
             transcript: List of message dictionaries containing role and content
             rubric: The evaluation criteria string
-            
+
         Returns:
             Dictionary containing the evaluation results (scores and feedback)
         """
         try:
             # Format transcript for the prompt
-            formatted_transcript = "\n".join([f"{msg.get('role', 'unknown')}: {msg.get('content', '')}" for msg in transcript])
-            
+            formatted_transcript = "\n".join(
+                [
+                    f"{msg.get('role', 'unknown')}: {msg.get('content', '')}"
+                    for msg in transcript
+                ]
+            )
+
             prompt = f"""
             You are an expert evaluator for a career simulation. 
             
@@ -67,15 +73,16 @@ class GeminiService:
             }}
             Do not include any markdown formatting (like ```json) in your response, just the raw JSON string.
             """
-            
+
             response_text = await self.generate_response(prompt)
-            
+
             # Basic cleanup if model wraps in markdown
             clean_text = response_text.replace("```json", "").replace("```", "").strip()
-            
+
             # Simple parsing (in a real app, use a robust parser or schema enforcement)
             import json
+
             return json.loads(clean_text)
-            
+
         except Exception as e:
-             raise Exception(f"Evaluation failed: {str(e)}")
+            raise Exception(f"Evaluation failed: {str(e)}")

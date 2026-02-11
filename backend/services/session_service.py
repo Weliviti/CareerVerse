@@ -4,6 +4,7 @@ from services.firebase_admin_service import get_db_client
 
 db = get_db_client()
 
+
 def append_message(session_id: str, role: str, content: str):
     """
     Appends a new message to the transcript of a session.
@@ -18,22 +19,16 @@ def append_message(session_id: str, role: str, content: str):
     """
     try:
         session_ref = db.collection("sessions").document(session_id)
-        
+
         # Verify session exists
         session_doc = session_ref.get()
         if not session_doc.exists:
-             raise ValueError(f"Session with ID {session_id} not found.")
+            raise ValueError(f"Session with ID {session_id} not found.")
 
-        new_message = {
-            "role": role,
-            "content": content,
-            "timestamp": datetime.now()
-        }
+        new_message = {"role": role, "content": content, "timestamp": datetime.now()}
 
-        session_ref.update({
-            "transcript": firestore.ArrayUnion([new_message])
-        })
-        
+        session_ref.update({"transcript": firestore.ArrayUnion([new_message])})
+
         print(f"Message appended to session {session_id}")
 
     except Exception as e:
