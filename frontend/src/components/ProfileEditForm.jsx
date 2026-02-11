@@ -1,100 +1,126 @@
-
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
 import api from '../services/api';
-import Button from './ui/Button';
-import Input from './ui/Input';
+import ErrorAlert from './ui/ErrorAlert';
 
 const ProfileEditForm = ({ user, onSave, onCancel }) => {
-    const [name, setName] = useState(user?.name || '');
-    const [preferredCareer, setPreferredCareer] = useState(user?.preferredCareer || 'Doctor');
+    const [formData, setFormData] = useState({
+        name: user?.name || '',
+        career_path: user?.career_path || 'Doctor',
+    });
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const careerOptions = ['Doctor', 'Teacher', 'Lawyer'];
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError(null);
 
         try {
             const response = await api.put('/api/user/profile', {
-                name,
-                preferredCareer,
+                name: formData.name,
+                career_path: formData.career_path,
             });
 
-            if (response.data && response.data.user) {
-                toast.success('Profile updated successfully');
-                onSave(response.data.user);
-            } else {
-                // Fallback if API doesn't return user object but succeeds
-                toast.success('Profile updated');
-                onSave({ ...user, name, preferredCareer });
-            }
-        } catch (error) {
-            console.error('Failed to update profile:', error);
-            toast.error('Failed to update profile');
+            onSave(response.data.data); // Assuming response structure { success: true, data: user }
+        } catch (err) {
+            console.error('Failed to update profile:', err);
+            setError(err.response?.data?.message || 'Failed to update profile. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-                label="Full Name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your full name"
-                required
-            />
+        <div className="bg-white shadow sm:rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Edit Profile</h3>
 
-            <div className="flex flex-col gap-1">
-                <label htmlFor="preferredCareer" className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Preferred Career Track
-                </label>
-                <select
-                    id="preferredCareer"
-                    value={preferredCareer}
-                    onChange={(e) => setPreferredCareer(e.target.value)}
-                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-400 dark:focus:border-teal-400 dark:focus:ring-teal-400"
-                >
-                    <option value="Doctor">Doctor</option>
-                    <option value="Teacher">Teacher</option>
-                    <option value="Lawyer">Lawyer</option>
-                </select>
-                <p className="text-xs text-slate-500">
-                    Select the career path you are most interested in.
-                </p>
-            </div>
+                <div className="mt-2 max-w-xl text-sm text-gray-500">
+                    <p>Update your personal information and career preferences.</p>
+                </div>
 
-            <div className="flex gap-4 pt-2">
-                <Button
-                    type="submit"
-                    variant="primary"
-                    isLoading={loading}
-                    disabled={loading}
-                    className="flex-1"
-                >
-                    Save Changes
-                </Button>
-                <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={onCancel}
-                    disabled={loading}
-                    className="flex-1"
-                >
-                    Cancel
-                </Button>
+                <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+                    <ErrorAlert message={error} />
+
+                    {/* Name Field */}
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                            Name
+                        </label>
+                        <div className="mt-1">
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    {/* Preferred Career Dropdown */}
+                    <div>
+                        <label htmlFor="career_path" className="block text-sm font-medium text-gray-700">
+                            Preferred Career Track
+                        </label>
+                        <div className="mt-1">
+                            <select
+                                id="career_path"
+                                name="career_path"
+                                value={formData.career_path}
+                                onChange={handleChange}
+                                className="shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                            >
+                                {careerOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-teal-600 text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:col-start-2 sm:text-sm ${loading ? 'opacity-75 cursor-not-allowed' : ''
+                                }`}
+                        >
+                            {loading ? 'Saving...' : 'Save Changes'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={onCancel}
+                            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     );
 };
 
 ProfileEditForm.propTypes = {
     user: PropTypes.shape({
         name: PropTypes.string,
-        preferredCareer: PropTypes.string,
+        career_path: PropTypes.string,
     }),
     onSave: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
