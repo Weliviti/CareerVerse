@@ -10,8 +10,14 @@ class SessionService:
 
     def __init__(self):
         """Initialize session service with Firestore database reference."""
-        db = get_db_client()
-        self.sessions_ref = db.collection("sessions")
+        self._db = None
+
+    @property
+    def sessions_ref(self):
+        """Lazy-load Firestore sessions collection reference."""
+        if self._db is None:
+            self._db = get_db_client()
+        return self._db.collection("sessions")
 
     async def start_session(self, user_id: str, simulation_type: str) -> Dict[str, str]:
         """
