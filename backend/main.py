@@ -5,6 +5,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from utils.responses import success_response, error_response, setup_exception_handlers
 from routes.auth import router as auth_router
+from routes.evaluator import router as evaluator_router
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -27,6 +28,7 @@ app.add_middleware(
 
 # Register routers
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(evaluator_router, prefix="/api/evaluate", tags=["Evaluation"])
 
 
 @app.get("/")
