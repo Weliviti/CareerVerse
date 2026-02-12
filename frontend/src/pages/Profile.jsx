@@ -1,5 +1,8 @@
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
+import { storage } from '../services/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useState } from 'react';
 
 // User icon for avatar
 const UserIcon = () => (
@@ -25,6 +28,50 @@ const UserIcon = () => (
  */
 const Profile = () => {
     const { currentUser } = useAuth();
+    const [avatarUrl, setAvatarUrl] = useState(null);
+    const [uploadingAvatar, setUploadingAvatar] = useState(false);
+    const [uploadError, setUploadError] = useState(null);
+
+    const handleAvatarUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
+
+        try {
+            setUploadingAvatar(true);
+            setUploadError(null);
+
+            // Create reference to Firebase Storage
+            const storageRef = ref(storage, `avatars/${currentUser.uid}/${file.name}`);
+
+            // Upload file
+            await uploadBytes(storageRef, file);
+
+            // Get download URL
+            const url = await getDownloadURL(storageRef);
+            setAvatarUrl(url);
+
+            // TODO: Update user profile in Firestore with avatar URL
+            // This can be done in a future task
+
+        } catch (error) {
+            console.error('Avatar upload error:', error);
+            setUploadError('Failed to upload avatar. Please try again.');
+        } finally {
+            setUploadingAvatar(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -38,13 +85,64 @@ const Profile = () => {
                         <div className="flex items-center space-x-4">
                             {/* Avatar Circle */}
                             <div className="flex-shrink-0">
-                                <div className="w-20 h-20 rounded-full bg-primary-500 flex items-center justify-center text-white">
-                                    <UserIcon />
-                                </div>
+                                <input
+                                    type="file"
+                                    id="avatar-upload"
+                                    accept="image/*"
+                                    onChange={handleAvatarUpload}
+                                    className="hidden"
+                                />
+                                <label
+                                    htmlFor="avatar-upload"
+                                    className="cursor-pointer block relative"
+                                >
+                                    <div className="w-20 h-20 rounded-full bg-primary-500 flex items-center justify-center text-white overflow-hidden hover:opacity-90 transition-opacity">
+                                        {uploadingAvatar ? (
+                                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                                        ) : avatarUrl ? (
+                                            <img
+                                                src={avatarUrl}
+                                                alt="User avatar"
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <UserIcon />
+                                        )}
+                                    </div>
+                                    {!uploadingAvatar && (
+                                        <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-lg">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-4 w-4 text-primary-600"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                                                />
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                                                />
+                                            </svg>
+                                        </div>
+                                    )}
+                                </label>
                             </div>
 
                             {/* User Name and Email */}
-                            <div>
+                            <div className="flex-1">
+                                {uploadError && (
+                                    <div className="mb-2 text-sm text-red-600">
+                                        {uploadError}
+                                    </div>
+                                )}
                                 <h2 className="text-xl font-semibold text-gray-900">
                                     {currentUser?.displayName || 'Sarah Johnson'}
                                 </h2>
