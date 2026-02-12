@@ -5,7 +5,12 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from utils.responses import success_response, error_response, setup_exception_handlers
 from routes.auth import router as auth_router
+<<<<<<< feature/D13-M6-Evaluator
 from routes.evaluator import router as evaluator_router
+=======
+from routes.persona import router as persona_router
+from routes.evaluation import router as evaluation_router
+>>>>>>> develop
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -28,7 +33,12 @@ app.add_middleware(
 
 # Register routers
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+<<<<<<< feature/D13-M6-Evaluator
 app.include_router(evaluator_router, prefix="/api/evaluate", tags=["Evaluation"])
+=======
+app.include_router(persona_router, prefix="/api/persona", tags=["Persona Chat"])
+app.include_router(evaluation_router, prefix="/api", tags=["Evaluation"])
+>>>>>>> develop
 
 
 @app.get("/")
