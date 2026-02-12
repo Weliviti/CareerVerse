@@ -52,9 +52,7 @@ async def evaluate_session(request: EvaluateRequest):
 
         # Load evaluation rubric based on simulation type
         simulation_type = session_data.get("simulation_type", "doctor")
-        rubric_path = os.path.join(
-            "prompts", "rubrics", f"{simulation_type}.txt"
-        )
+        rubric_path = os.path.join("prompts", "rubrics", f"{simulation_type}.txt")
 
         try:
             with open(rubric_path, "r", encoding="utf-8") as f:
@@ -86,7 +84,10 @@ async def evaluate_session(request: EvaluateRequest):
             evaluation_data = json.loads(cleaned_result)
 
             # Validate required fields
-            if "total_score" not in evaluation_data or "feedback" not in evaluation_data:
+            if (
+                "total_score" not in evaluation_data
+                or "feedback" not in evaluation_data
+            ):
                 raise ValueError("Missing required fields in evaluation response")
 
             return success_response(
@@ -107,6 +108,4 @@ async def evaluate_session(request: EvaluateRequest):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Evaluation failed: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Evaluation failed: {str(e)}")

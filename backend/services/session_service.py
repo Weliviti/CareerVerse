@@ -12,9 +12,7 @@ class SessionService:
         """Initialize session service with Firestore database reference."""
         self.sessions_ref = db.collection("sessions")
 
-    async def start_session(
-        self, user_id: str, simulation_type: str
-    ) -> Dict[str, str]:
+    async def start_session(self, user_id: str, simulation_type: str) -> Dict[str, str]:
         """
         Create a new simulation session.
 
