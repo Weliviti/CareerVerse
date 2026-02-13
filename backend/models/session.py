@@ -9,6 +9,7 @@ class Session(BaseModel):
     simulation_type: str
     start_time: datetime
     end_time: Optional[datetime] = None
+    duration: Optional[int] = None
     status: str = "active"
     transcript: List[Dict[str, str]] = []
 

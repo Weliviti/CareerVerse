@@ -1,41 +1,173 @@
 from datetime import datetime
-from google.cloud import firestore
+from typing import Dict, Optional, List
 from services.firebase_admin_service import get_db_client
+from models.session import Session
+import uuid
 
-db = get_db_client()
 
-def append_message(session_id: str, role: str, content: str):
-    """
-    Appends a new message to the transcript of a session.
+class SessionService:
+    """Service for managing simulation sessions in Firestore."""
 
-    Args:
-        session_id (str): The ID of the session document.
-        role (str): The role of the message sender (e.g., 'user', 'model').
-        content (str): The content of the message.
+    def __init__(self):
+        """Initialize session service with Firestore database reference."""
+        self._db = None
 
-    Returns:
-        None
-    """
-    try:
-        session_ref = db.collection("sessions").document(session_id)
-        
-        # Verify session exists
-        session_doc = session_ref.get()
-        if not session_doc.exists:
-             raise ValueError(f"Session with ID {session_id} not found.")
+    @property
+    def sessions_ref(self):
+        """Lazy-load Firestore sessions collection reference."""
+        if self._db is None:
+            self._db = get_db_client()
+        return self._db.collection("sessions")
 
-        new_message = {
-            "role": role,
-            "content": content,
-            "timestamp": datetime.now()
-        }
+    async def start_session(self, user_id: str, simulation_type: str) -> Dict[str, str]:
+        """
+        Create a new simulation session.
 
-        session_ref.update({
-            "transcript": firestore.ArrayUnion([new_message])
-        })
-        
-        print(f"Message appended to session {session_id}")
+        Args:
+            user_id: The ID of the user starting the session
+            simulation_type: Type of simulation (e.g., 'doctor', 'teacher', 'lawyer')
 
-    except Exception as e:
-        print(f"Error appending message to session {session_id}: {e}")
-        raise e
+        Returns:
+            Dict containing session_id and status
+
+        Raises:
+            Exception: If session creation fails
+        """
+        try:
+            session_id = f"session_{uuid.uuid4().hex[:12]}"
+
+            session_data = {
+                "session_id": session_id,
+                "user_id": user_id,
+                "simulation_type": simulation_type,
+                "start_time": datetime.utcnow(),
+                "end_time": None,
+                "status": "active",
+                "transcript": [],
+            }
+
+            # Create session document in Firestore
+            self.sessions_ref.document(session_id).set(session_data)
+
+            return {"session_id": session_id, "status": "active"}
+
+        except Exception as e:
+            raise Exception(f"Failed to create session: {str(e)}")
+
+    async def end_session(self, session_id: str) -> Dict[str, any]:
+        """
+        Mark a session as completed and calculate duration.
+
+        Args:
+            session_id: The ID of the session to end
+
+        Returns:
+            Dict containing session_id, status, and duration in minutes
+
+        Raises:
+            Exception: If session not found or update fails
+        """
+        try:
+            session_doc = self.sessions_ref.document(session_id).get()
+
+            if not session_doc.exists:
+                raise ValueError(f"Session {session_id} not found")
+
+            session_data = session_doc.to_dict()
+            end_time = datetime.utcnow()
+
+            # Calculate duration in minutes
+            start_time = session_data.get("start_time")
+            if isinstance(start_time, datetime):
+                duration = (end_time - start_time).total_seconds() / 60
+            else:
+                duration = 0
+
+            # Update session
+            self.sessions_ref.document(session_id).update(
+                {"end_time": end_time, "status": "completed"}
+            )
+
+            return {
+                "session_id": session_id,
+                "status": "completed",
+                "duration": round(duration, 2),
+            }
+
+        except ValueError as ve:
+            raise ve
+        except Exception as e:
+            raise Exception(f"Failed to end session: {str(e)}")
+
+    async def append_transcript(
+        self, session_id: str, role: str, message: str
+    ) -> Dict[str, str]:
+        """
+        Add a message to the session transcript.
+
+        Args:
+            session_id: The ID of the session
+            role: The role of the speaker ('user' or 'npc')
+            message: The message content
+
+        Returns:
+            Dict containing success status
+
+        Raises:
+            Exception: If session not found or update fails
+        """
+        try:
+            session_doc = self.sessions_ref.document(session_id).get()
+
+            if not session_doc.exists:
+                raise ValueError(f"Session {session_id} not found")
+
+            # Append message to transcript array
+            from google.cloud.firestore import ArrayUnion
+
+            self.sessions_ref.document(session_id).update(
+                {"transcript": ArrayUnion([{"role": role, "message": message}])}
+            )
+
+            return {"status": "success", "message": "Transcript updated"}
+
+        except ValueError as ve:
+            raise ve
+        except Exception as e:
+            raise Exception(f"Failed to append transcript: {str(e)}")
+
+    async def get_session(self, session_id: str) -> Optional[Dict]:
+        """
+        Retrieve a session by ID.
+
+        Args:
+            session_id: The ID of the session to retrieve
+
+        Returns:
+            Session data as dictionary, or None if not found
+
+        Raises:
+            Exception: If retrieval fails
+        """
+        try:
+            session_doc = self.sessions_ref.document(session_id).get()
+
+            if not session_doc.exists:
+                return None
+
+            return session_doc.to_dict()
+
+        except Exception as e:
+            raise Exception(f"Failed to retrieve session: {str(e)}")
+
+
+# Create global instance
+session_service = SessionService()
+
+# Helper function for evaluation service
+async def get_transcript(session_id: str) -> List[Dict]:
+    """Retrieve transcript for a session."""
+    session = await session_service.get_session(session_id)
+    if session and 'transcript' in session:
+        return session['transcript']
+    return []
