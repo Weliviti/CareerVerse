@@ -42,7 +42,7 @@ async def evaluate_session(request: EvaluationRequest):
     """
     try:
         # 1. Get transcript
-        transcript = get_transcript(request.session_id)
+        transcript = await get_transcript(request.session_id)
         if not transcript:
             return error_response(
                 message="Session transcript not found or empty", status_code=404

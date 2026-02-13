@@ -11,12 +11,16 @@ export const useSimulation = () => {
     const startSimulation = async (type) => {
         setLoading(true);
         try {
-            const response = await api.post('/api/simulations/launch', { simulationType: type });
-            if (response.data && response.data.sessionId) {
-                setSessionId(response.data.sessionId);
-                // Initialize with welcome message if provided, or just empty
-                if (response.data.initialMessage) {
-                    setMessages([{ role: 'npc', text: response.data.initialMessage }]);
+            // Updated to use the actual session start endpoint
+            const { data } = await api.post('/api/sessions/start', {
+                simulation_type: type, // Ensure backend expects 'simulation_type' or 'type'
+            });
+
+            if (data && data.session_id) {
+                setSessionId(data.session_id);
+                // Backend might return initial message or just session ID
+                if (data.initial_message) {
+                    setMessages([{ role: 'npc', text: data.initial_message }]);
                 } else {
                     setMessages([]);
                 }
@@ -38,15 +42,16 @@ export const useSimulation = () => {
         setLoading(true);
 
         try {
-            const response = await api.post('/api/persona/chat', {
-                sessionId,
+            // Updated to use the actual chat endpoint
+            const { data } = await api.post('/api/persona/chat', {
+                session_id: sessionId,
                 message: text,
             });
 
-            if (response.data && response.data.response) {
+            if (data && data.response) {
                 setMessages((prev) => [
                     ...prev,
-                    { role: 'npc', text: response.data.response },
+                    { role: 'npc', text: data.response },
                 ]);
             }
         } catch (error) {
