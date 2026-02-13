@@ -9,7 +9,7 @@ import Button from './ui/Button';
  * @param {Object} props
  * @param {Array} props.scores - List of score objects
  */
-const SimulationHistoryList = ({ scores = [] }) => {
+const SimulationHistoryList = ({ scores = [], hasMore = false, onLoadMore = () => {}, loading = false }) => {
     // Helper to determine score color
     const getScoreColor = (score) => {
         if (score > 80) return 'text-green-600';
@@ -59,6 +59,19 @@ const SimulationHistoryList = ({ scores = [] }) => {
                     </div>
                 </Card>
             ))}
+
+            {hasMore && (
+                <div className="flex justify-center pt-4">
+                    <Button
+                        variant="outline"
+                        onClick={onLoadMore}
+                        isLoading={loading}
+                        disabled={loading}
+                    >
+                        Load More
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };
@@ -72,6 +85,9 @@ SimulationHistoryList.propTypes = {
             totalScore: PropTypes.number.isRequired,
         })
     ),
+    hasMore: PropTypes.bool,
+    onLoadMore: PropTypes.func,
+    loading: PropTypes.bool,
 };
 
 export default SimulationHistoryList;
