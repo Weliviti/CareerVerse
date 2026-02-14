@@ -19,11 +19,8 @@ async def evaluate_session(request: EvaluationRequest):
     try:
         # Use the service layer logic (Best Practice)
         result = await evaluation_service.evaluate_session(request.session_id)
-        
-        return success_response(
-            data=result, 
-            message="Session evaluated successfully"
-        )
+
+        return success_response(data=result, message="Session evaluated successfully")
 
     except ValueError as ve:
         return error_response(message=str(ve), status_code=404)

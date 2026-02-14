@@ -164,10 +164,11 @@ class SessionService:
 # Create global instance
 session_service = SessionService()
 
+
 # Helper function for evaluation service
 async def get_transcript(session_id: str) -> List[Dict]:
     """Retrieve transcript for a session."""
     session = await session_service.get_session(session_id)
-    if session and 'transcript' in session:
-        return session['transcript']
+    if session and "transcript" in session:
+        return session["transcript"]
     return []
