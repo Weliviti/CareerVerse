@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
+import SimulationHub from './pages/SimulationHub';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -19,6 +20,15 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
+          <Route
+            path="/simulation-hub"
+            element={
+              <ProtectedRoute>
+                <SimulationHub />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/dashboard"

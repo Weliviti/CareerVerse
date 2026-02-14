@@ -42,6 +42,14 @@ const Navbar = () => {
             >
               Home
             </button>
+            {currentUser && (
+              <button
+                onClick={() => navigate('/simulation-hub')}
+                className="text-gray-700 hover:text-teal-600 text-sm font-medium"
+              >
+                Simulation Hub
+              </button>
+            )}
             <button
               onClick={() => navigate('/about')}
               className="text-gray-700 hover:text-teal-600 text-sm font-medium"
@@ -107,6 +115,14 @@ const Navbar = () => {
           >
             Home
           </button>
+          {currentUser && (
+            <button
+              onClick={() => navigate('/simulation-hub')}
+              className="block w-full text-left text-gray-700"
+            >
+              Simulation Hub
+            </button>
+          )}
           <button
             onClick={() => navigate('/about')}
             className="block w-full text-left text-gray-700"
