@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const SimulationHub = () => {
+    const navigate = useNavigate();
     const { currentUser } = useAuth();
     const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User';
 
@@ -183,6 +185,22 @@ const SimulationHub = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                {/* CTA Banner Section */}
+                <div className="mt-16 bg-teal-600 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 text-white shadow-xl shadow-teal-100">
+                    <div>
+                        <h2 className="text-2xl font-bold mb-2 text-white">Complete All Three Simulations</h2>
+                        <p className="text-teal-50 opacity-90 text-lg">
+                            Get comprehensive career recommendations by completing all simulation paths
+                        </p>
+                    </div>
+                    <button
+                        onClick={() => navigate('/dashboard')}
+                        className="bg-white text-teal-600 hover:bg-teal-50 font-bold px-8 py-4 rounded-2xl transition-all shadow-md whitespace-nowrap"
+                    >
+                        View Dashboard
+                    </button>
                 </div>
 
             </main>
