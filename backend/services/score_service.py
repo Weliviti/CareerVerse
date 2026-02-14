@@ -4,6 +4,7 @@ from firebase_admin import firestore
 from services.firebase_admin_service import get_db_client
 from models.score import Score
 
+
 class ScoreService:
     """Service for querying and saving user scores."""
 
@@ -23,7 +24,9 @@ class ScoreService:
         """Lazy-load Firestore scores collection reference."""
         return self.db.collection("scores")
 
-    def save_score(self, user_id: str, session_id: str, score_data: Dict[str, Any]) -> Dict[str, Any]:
+    def save_score(
+        self, user_id: str, session_id: str, score_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """
         Save evaluation score and update user statistics.
         """
@@ -34,14 +37,14 @@ class ScoreService:
 
         # Prepare score document data
         score_doc = {
-            'score_id': score_id,
-            'user_id': user_id,
-            'session_id': session_id,
-            'simulation_type': score_data.get('simulation_type', 'unknown'),
-            'skills': score_data.get('skills', {}),
-            'total_score': score_data.get('total_score', 0),
-            'feedback': score_data.get('feedback', ''),
-            'created_at': timestamp
+            "score_id": score_id,
+            "user_id": user_id,
+            "session_id": session_id,
+            "simulation_type": score_data.get("simulation_type", "unknown"),
+            "skills": score_data.get("skills", {}),
+            "total_score": score_data.get("total_score", 0),
+            "feedback": score_data.get("feedback", ""),
+            "created_at": timestamp,
         }
 
         # Validate with Pydantic model
@@ -52,7 +55,7 @@ class ScoreService:
             raise ValueError(f"Invalid score data: {e}")
 
         # Reference to the user document
-        user_ref = self.db.collection('users').document(user_id)
+        user_ref = self.db.collection("users").document(user_id)
 
         # Use a batch write for atomic operation
         batch = self.db.batch()
@@ -62,7 +65,11 @@ class ScoreService:
 
         # 2. Increment total_simulations for the user
         # We use set with merge=True to ensure it creates the stats field if missing
-        batch.set(user_ref, {'stats': {'total_simulations': firestore.Increment(1)}}, merge=True)
+        batch.set(
+            user_ref,
+            {"stats": {"total_simulations": firestore.Increment(1)}},
+            merge=True,
+        )
 
         batch.commit()
 
@@ -105,6 +112,7 @@ class ScoreService:
         next_cursor = scores[-1]["score_id"] if len(scores) == limit else None
 
         return {"scores": scores, "next_cursor": next_cursor}
+
 
 # Create global instance
 score_service = ScoreService()
