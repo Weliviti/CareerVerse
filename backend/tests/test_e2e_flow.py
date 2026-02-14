@@ -106,12 +106,16 @@ def test_03_persona_chat():
     This endpoint EXISTS and should work.
     Tests the AI persona interaction.
     """
-    headers = get_mock_headers()
+    from middleware.auth import verify_token
 
-    # Mock the Firebase auth verification
-    with patch("middleware.auth.verify_token") as mock_verify:
-        mock_verify.return_value = {"uid": TEST_USER_ID, "email": TEST_EMAIL}
+    # Override the verify_token dependency to bypass authentication
+    def override_verify_token():
+        return {"uid": TEST_USER_ID, "email": TEST_EMAIL}
 
+    app.dependency_overrides[verify_token] = override_verify_token
+
+    try:
+        headers = get_mock_headers()
         payload = {
             "session_id": TEST_SESSION_ID,
             "message": "Hello, I'm experiencing chest pain.",
@@ -134,6 +138,9 @@ def test_03_persona_chat():
             print(f"✓ Step 3: Persona chat successful")
         else:
             print(f"✓ Step 3: Persona endpoint exists (service not configured)")
+    finally:
+        # Clean up dependency overrides
+        app.dependency_overrides.clear()
 
 
 # ============================================================================
