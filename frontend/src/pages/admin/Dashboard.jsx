@@ -85,9 +85,55 @@ const AdminDashboard = () => {
 
             {/* Placeholder for Next Phases */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column - Recent Activity (Phase 3) */}
-                <div className="lg:col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 min-h-[400px] flex items-center justify-center border-dashed">
-                    <p className="text-gray-400 font-medium">Recent Activity Feed (Phase 3)</p>
+                {/* Left Column - Recent Activity */}
+                <div className="lg:col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-full">
+                    <h2 className="text-lg font-bold text-gray-900 mb-6">Recent Activity</h2>
+                    <div className="space-y-6">
+                        {[
+                            {
+                                id: 1,
+                                title: 'User completed Technical Interview simulation',
+                                time: '2025-11-30 14:32:15',
+                                type: 'success'
+                            },
+                            {
+                                id: 2,
+                                title: 'New simulation started: Behavioral Interview',
+                                time: '2025-11-30 14:28:42',
+                                type: 'info'
+                            },
+                            {
+                                id: 3,
+                                title: 'System Design simulation completed successfully',
+                                time: '2025-11-30 14:15:33',
+                                type: 'success'
+                            },
+                            {
+                                id: 4,
+                                title: 'Simulation timeout warning for user',
+                                time: '2025-11-30 14:05:21',
+                                type: 'warning'
+                            }
+                        ].map((activity, index, arr) => (
+                            <div key={activity.id} className="relative pl-6">
+                                {/* Timeline Line */}
+                                {index !== arr.length - 1 && (
+                                    <div className="absolute left-2 top-2 w-0.5 h-full bg-gray-100" style={{ height: 'calc(100% + 24px)' }}></div>
+                                )}
+
+                                {/* Timeline Dot */}
+                                <div className={`absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-white box-content ${activity.type === 'success' ? 'bg-emerald-500' :
+                                        activity.type === 'info' ? 'bg-teal-500' :
+                                            'bg-amber-500'
+                                    }`}></div>
+
+                                <div>
+                                    <p className="text-sm font-medium text-gray-800">{activity.title}</p>
+                                    <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Right Column - System Health (Phase 4) */}
