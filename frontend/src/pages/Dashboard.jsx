@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useScore } from '../hooks/useScore';
 import { useState, useEffect } from 'react';
 import SkillRadarChart from '../components/RadarChart';
+import CareerCard from '../components/CareerCard';
 
 function Dashboard() {
     const { currentUser } = useAuth();
@@ -27,6 +28,34 @@ function Dashboard() {
         { subject: 'Clarity', A: 82, fullMark: 100 },
         { subject: 'Problem Solving', A: 78, fullMark: 100 },
         { subject: 'Stress Handling', A: 65, fullMark: 100 },
+    ];
+
+    // Mock data for Career Recommendations
+    const recommendations = [
+        {
+            rank: 1,
+            title: 'Lawyer',
+            matchPercentage: 92,
+            description: 'Your strong persuasion and logical reasoning skills make you an excellent fit for legal advocacy.',
+            skills: ['Persuasion', 'Logic', 'Clarity'],
+            colorClass: 'bg-teal-500' // Using teal/green for top match
+        },
+        {
+            rank: 2,
+            title: 'Doctor',
+            matchPercentage: 88,
+            description: 'Your empathy combined with analytical problem-solving abilities align well with medical practice.',
+            skills: ['Empathy', 'Problem Solving', 'Stress Handling'],
+            colorClass: 'bg-blue-500' // Blue for second
+        },
+        {
+            rank: 3,
+            title: 'Teacher',
+            matchPercentage: 84,
+            description: 'Your clarity in communication and natural empathy make you well-suited for education.',
+            skills: ['Clarity', 'Empathy', 'Communication'],
+            colorClass: 'bg-purple-500' // Purple for third
+        }
     ];
 
     useEffect(() => {
@@ -142,11 +171,19 @@ function Dashboard() {
                         <h3 className="text-lg font-bold text-gray-900 mb-1">Career Recommendations</h3>
                         <p className="text-gray-500 text-sm mb-6">Based on your simulation performance</p>
 
-                        {/* Placeholder for Phase 3: Career Recommendations List */}
+                        {/* Career Recommendations List */}
                         <div className="space-y-4">
-                            <div className="flex items-center justify-center h-32 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                                <p className="text-gray-400 font-medium">Recommendations Coming Soon (Phase 3)</p>
-                            </div>
+                            {recommendations.map((rec) => (
+                                <CareerCard
+                                    key={rec.rank}
+                                    rank={rec.rank}
+                                    title={rec.title}
+                                    matchPercentage={rec.matchPercentage}
+                                    description={rec.description}
+                                    skills={rec.skills}
+                                    colorClass={rec.colorClass}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
