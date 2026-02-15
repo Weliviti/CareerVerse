@@ -123,8 +123,8 @@ const AdminDashboard = () => {
 
                                 {/* Timeline Dot */}
                                 <div className={`absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-white box-content ${activity.type === 'success' ? 'bg-emerald-500' :
-                                        activity.type === 'info' ? 'bg-teal-500' :
-                                            'bg-amber-500'
+                                    activity.type === 'info' ? 'bg-teal-500' :
+                                        'bg-amber-500'
                                     }`}></div>
 
                                 <div>
@@ -136,9 +136,60 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Right Column - System Health (Phase 4) */}
-                <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 min-h-[400px] flex items-center justify-center border-dashed">
-                    <p className="text-gray-400 font-medium">System Health Section (Phase 4)</p>
+                {/* Right Column - System Health */}
+                <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-full">
+                    <h2 className="text-lg font-bold text-gray-900 mb-6">System Health</h2>
+
+                    <div className="space-y-8">
+                        {/* API Response Time */}
+                        <div>
+                            <div className="flex justify-between items-end mb-2">
+                                <span className="text-gray-600 font-medium">API Response Time</span>
+                                <span className="text-emerald-600 font-bold">125ms</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                                <div className="bg-emerald-500 h-3 rounded-full" style={{ width: '85%' }}></div>
+                            </div>
+                        </div>
+
+                        {/* Database Performance */}
+                        <div>
+                            <div className="flex justify-between items-end mb-2">
+                                <span className="text-gray-600 font-medium">Database Performance</span>
+                                <span className="text-teal-600 font-bold">98%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                                <div className="bg-teal-500 h-3 rounded-full" style={{ width: '98%' }}></div>
+                            </div>
+                        </div>
+
+                        {/* AI Model Uptime */}
+                        <div>
+                            <div className="flex justify-between items-end mb-2">
+                                <span className="text-gray-600 font-medium">AI Model Uptime</span>
+                                <span className="text-cyan-600 font-bold">99.9%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                                <div className="bg-cyan-500 h-3 rounded-full" style={{ width: '99.9%' }}></div>
+                            </div>
+                        </div>
+
+                        {/* Status Indicators Grid */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-gray-100">
+                            {[
+                                { label: 'Auth Service', status: 'Operational', color: 'bg-emerald-500' },
+                                { label: 'Sim Engine', status: 'Operational', color: 'bg-emerald-500' },
+                                { label: 'AI Core', status: 'Processing', color: 'bg-blue-500' },
+                                { label: 'Storage', status: 'Operational', color: 'bg-emerald-500' },
+                            ].map((service, idx) => (
+                                <div key={idx} className="bg-gray-50 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+                                    <div className={`w-2.5 h-2.5 rounded-full ${service.color} mb-2 shadow-sm`}></div>
+                                    <span className="text-xs font-semibold text-gray-700">{service.label}</span>
+                                    <span className="text-[10px] text-gray-500 mt-0.5">{service.status}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
