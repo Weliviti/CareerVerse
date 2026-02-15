@@ -57,8 +57,42 @@ const SimulationLogs = () => {
             </div>
           </div>
 
+          {/* Info Entry */}
+          <div className="flex items-start gap-4 p-4 bg-blue-50/50 border border-blue-100 rounded-xl hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 rounded-full bg-white border border-blue-200 flex items-center justify-center text-blue-600 flex-shrink-0 mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">Info</span>
+                <span className="text-xs text-gray-400 font-medium whitespace-nowrap">🕒 2025-11-30 14:28:42</span>
+                <span className="text-xs text-gray-400 font-medium">User: <span className="text-gray-500">bob@email.com</span></span>
+              </div>
+              <p className="text-sm font-semibold text-blue-800">New simulation started: Behavioral Interview</p>
+            </div>
+          </div>
+
+          {/* Warning Entry */}
+          <div className="flex items-start gap-4 p-4 bg-yellow-50/50 border border-yellow-100 rounded-xl hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 rounded-full bg-white border border-yellow-200 flex items-center justify-center text-yellow-600 flex-shrink-0 mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold text-yellow-700 uppercase tracking-wider">Warning</span>
+                <span className="text-xs text-gray-400 font-medium whitespace-nowrap">🕒 2025-11-30 14:05:21</span>
+                <span className="text-xs text-gray-400 font-medium">User: <span className="text-gray-500">carol@email.com</span></span>
+              </div>
+              <p className="text-sm font-semibold text-yellow-800">Simulation timeout warning for user</p>
+            </div>
+          </div>
+
           <div className="flex flex-col items-center justify-center py-6 text-center border-t border-gray-50 mt-4">
-            <p className="text-gray-400 text-xs italic">Other status styles (Info, Warning) will be added in the next step...</p>
+            <p className="text-gray-400 text-xs italic">Mock data integration and final polish in the final step...</p>
           </div>
         </div>
       </div>
