@@ -58,15 +58,12 @@ const AdminSidebar = () => {
 
     return (
         <div className="w-64 bg-white border-r border-gray-200 h-screen flex flex-col fixed left-0 top-0 z-40 hidden md:flex">
-            {/* Logo Section */}
-            <div className="p-6">
-                <h1 className="text-2xl font-bold text-teal-600">CareerVerse</h1>
-            </div>
+
 
             {/* Admin Profile Summary (Top - Matching design roughly, or keep at bottom) 
                 Design shows Admin Profile at bottom left.
             */}
-            <div className="px-4 mb-6">
+            <div className="px-4 mb-6 mt-6">
                 <div className="flex items-center gap-3 p-3 bg-teal-50 rounded-xl">
                     <div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center text-white font-bold">
                         CV
@@ -87,8 +84,8 @@ const AdminSidebar = () => {
                             key={item.path}
                             onClick={() => navigate(item.path)}
                             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${isActive
-                                    ? 'bg-teal-500 text-white shadow-md shadow-teal-200'
-                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                ? 'bg-teal-500 text-white shadow-md shadow-teal-200'
+                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                 }`}
                         >
                             {item.icon}
