@@ -28,6 +28,12 @@ const Settings = () => {
                     <h2 className="text-lg font-bold text-gray-900 mb-2">Security Settings</h2>
                     <p className="text-gray-500 text-sm">Update security policies and access controls</p>
                 </div>
+
+                {/* API Configuration Card */}
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer">
+                    <h2 className="text-lg font-bold text-gray-900 mb-2">API Configuration</h2>
+                    <p className="text-gray-500 text-sm">Manage API keys and integrations</p>
+                </div>
             </div>
         </div>
     );
