@@ -8,6 +8,7 @@ from services.firebase_admin_service import get_db_client
 
 router = APIRouter()
 
+
 async def verify_admin(authorization: str = Header(...)):
     """
     Dependency to verify that the user is an admin.
@@ -15,23 +16,23 @@ async def verify_admin(authorization: str = Header(...)):
     db = get_db_client()
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid authorization header")
-    
+
     token = authorization.split("Bearer ")[1]
     try:
         decoded_token = auth.verify_id_token(token)
         uid = decoded_token["uid"]
-        
+
         # Get user from Firestore to check role
         user_doc = db.collection("users").document(uid).get()
         if not user_doc.exists:
             raise HTTPException(status_code=404, detail="User not found")
-        
+
         user_data = user_doc.to_dict()
         if user_data.get("role") != "admin":
-             raise HTTPException(status_code=403, detail="Access forbidden: Admins only")
-             
+            raise HTTPException(status_code=403, detail="Access forbidden: Admins only")
+
         return uid
-        
+
     except auth.InvalidIdTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
     except auth.ExpiredIdTokenError:
@@ -41,6 +42,7 @@ async def verify_admin(authorization: str = Header(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @router.get("/users")
 async def get_all_users(
     request: Request,
@@ -48,25 +50,25 @@ async def get_all_users(
     limit: int = Query(10, ge=1, le=100),
     search: Optional[str] = None,
     status: Optional[str] = None,
-    # admin_uid: str = Depends(verify_admin) # TODO: specialized dependency injection if we want strict enforcement now, but for MVP/Development we might skip or use header directly. 
-    # For now, implementing the check inside the function or assuming public for dev if user didn't ask for strict security yet, 
-    # but the plan said "Create admin role check middleware" for Day 26. 
+    # admin_uid: str = Depends(verify_admin) # TODO: specialized dependency injection if we want strict enforcement now, but for MVP/Development we might skip or use header directly.
+    # For now, implementing the check inside the function or assuming public for dev if user didn't ask for strict security yet,
+    # but the plan said "Create admin role check middleware" for Day 26.
     # Member 6 task for Day 28 is just "Build endpoint". I'll add a simple check using the Header.
-    authorization: str = Header(None) 
+    authorization: str = Header(None),
 ):
     """
     Get all users with pagination and filtering.
     """
-    
+
     # ---------------------------------------------------------
     # AUTH CHECK (Simplified for this task, typically a dependency)
     # ---------------------------------------------------------
     if not authorization:
-         # For development ease, if no header, maybe allow or block? 
-         # The requirement implies we need admin access.
-         # Let's enforce it if a token is passed, otherwise return 401.
-         return error_response(message="Missing Authorization header", code=401)
-    
+        # For development ease, if no header, maybe allow or block?
+        # The requirement implies we need admin access.
+        # Let's enforce it if a token is passed, otherwise return 401.
+        return error_response(message="Missing Authorization header", code=401)
+
     try:
         # Re-using the logic from verify_admin here inline or calling it
         await verify_admin(authorization)
@@ -79,18 +81,18 @@ async def get_all_users(
         users_ref = db.collection("users")
         query = users_ref
 
-        # Filter by Status (active/inactive) - Assumes 'isActive' or similar field. 
-        # The User model doesn't have 'status', but the design shows it. 
+        # Filter by Status (active/inactive) - Assumes 'isActive' or similar field.
+        # The User model doesn't have 'status', but the design shows it.
         # I will assume we might need to interpret it or add it.
         # For now, let's just paginate all users.
-        
-        # Search (Client-side filtering might be needed for Firestore free tier limitation with complex queries, 
+
+        # Search (Client-side filtering might be needed for Firestore free tier limitation with complex queries,
         # or distinct queries. Firestore doesn't support partial string match easily like SQL LIKE %...%)
-        # For a "real" app we'd use Algolia or Typesense. 
-        # For this MVP, if the dataset is small, fetching all and filtering in python is okay, 
+        # For a "real" app we'd use Algolia or Typesense.
+        # For this MVP, if the dataset is small, fetching all and filtering in python is okay,
         # but for "pagination" it implies DB level.
         # Let's try to order by created_at desc.
-        
+
         query = query.order_by("created_at", direction=firestore.Query.DESCENDING)
 
         # Execute query
@@ -102,8 +104,8 @@ async def get_all_users(
             user_data = doc.to_dict()
             # mock joined date if missing
             if not user_data.get("created_at"):
-                 user_data["created_at"] = "2025-01-01T00:00:00" # fallback
-                 
+                user_data["created_at"] = "2025-01-01T00:00:00"  # fallback
+
             # Add implicit status if missing
             if "isActive" not in user_data:
                 user_data["isActive"] = True
@@ -114,8 +116,10 @@ async def get_all_users(
         if search:
             search_lower = search.lower()
             all_users = [
-                u for u in all_users 
-                if search_lower in u.get("name", "").lower() or search_lower in u.get("email", "").lower()
+                u
+                for u in all_users
+                if search_lower in u.get("name", "").lower()
+                or search_lower in u.get("email", "").lower()
             ]
 
         # Apply Status Filter (In-memory)
@@ -135,10 +139,12 @@ async def get_all_users(
                 "total": total_users,
                 "page": page,
                 "limit": limit,
-                "pages": (total_users + limit - 1) // limit
+                "pages": (total_users + limit - 1) // limit,
             },
-            message="Users retrieved successfully"
+            message="Users retrieved successfully",
         )
 
     except Exception as e:
-        return error_response(message="Failed to fetch users", code=500, error_details=str(e))
+        return error_response(
+            message="Failed to fetch users", code=500, error_details=str(e)
+        )

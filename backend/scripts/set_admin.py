@@ -2,6 +2,7 @@
 Script to set a user's role to 'admin' in Firestore.
 Usage: python scripts/set_admin.py <email>
 """
+
 import sys
 import os
 
@@ -14,7 +15,7 @@ from services.firebase_admin_service import get_db_client
 def set_admin_role(email: str):
     db = get_db_client()
     users_ref = db.collection("users")
-    
+
     # Find user by email
     docs = users_ref.where("email", "==", email).stream()
     found = False
@@ -22,7 +23,7 @@ def set_admin_role(email: str):
         doc.reference.update({"role": "admin"})
         print(f"✅ User '{email}' (UID: {doc.id}) role updated to 'admin'")
         found = True
-    
+
     if not found:
         print(f"❌ No user found with email: {email}")
 
@@ -31,6 +32,6 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python scripts/set_admin.py <email>")
         sys.exit(1)
-    
+
     email = sys.argv[1]
     set_admin_role(email)
