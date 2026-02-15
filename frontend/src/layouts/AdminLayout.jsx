@@ -23,7 +23,7 @@ const AdminLayout = ({ children }) => {
         { name: 'User Management', path: '/admin/users', icon: '👥' },
         { name: 'Simulation Logs', path: '/admin/logs/simulations', icon: '▶️' },
         { name: 'AI Evaluation Logs', path: '/admin/logs/ai', icon: '🧠' },
-        { name: 'Settings', path: '/admin/settings', icon: '⚙️' },
+
     ];
 
     return (
