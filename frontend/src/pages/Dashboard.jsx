@@ -4,6 +4,7 @@ import Footer from '../components/Footer'; // Assuming Footer component exists b
 import { useAuth } from '../context/AuthContext';
 import { useScore } from '../hooks/useScore';
 import { useState, useEffect } from 'react';
+import SkillRadarChart from '../components/RadarChart';
 
 function Dashboard() {
     const { currentUser } = useAuth();
@@ -17,6 +18,16 @@ function Dashboard() {
         timeInvested: '57m',
         completion: 100
     });
+
+    // Mock data for Radar Chart
+    const radarData = [
+        { subject: 'Empathy', A: 85, fullMark: 100 },
+        { subject: 'Logic', A: 72, fullMark: 100 },
+        { subject: 'Persuasion', A: 70, fullMark: 100 },
+        { subject: 'Clarity', A: 82, fullMark: 100 },
+        { subject: 'Problem Solving', A: 78, fullMark: 100 },
+        { subject: 'Stress Handling', A: 65, fullMark: 100 },
+    ];
 
     useEffect(() => {
         if (scores && scores.length > 0) {
@@ -115,13 +126,14 @@ function Dashboard() {
                 {/* Dashboard Grid Content - Left (Radar) & Right (Recommendations) */}
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-12">
                     {/* Left Column: Skill Analysis Radar Chart (Span 2) */}
-                    <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-full">
+                    {/* Left Column: Skill Analysis Radar Chart (Span 2) */}
+                    <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-full flex flex-col">
                         <h3 className="text-lg font-bold text-gray-900 mb-1">Skill Analysis</h3>
                         <p className="text-gray-500 text-sm mb-6">Your performance across different skill dimensions</p>
 
-                        {/* Placeholder for Phase 2: Radar Chart */}
-                        <div className="flex items-center justify-center h-64 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                            <p className="text-gray-400 font-medium">Radar Chart Coming Soon (Phase 2)</p>
+                        {/* Radar Chart Component */}
+                        <div className="flex-1 min-h-[300px] flex items-center justify-center">
+                            <SkillRadarChart data={radarData} />
                         </div>
                     </div>
 
