@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import SimulationHub from './pages/SimulationHub';
 import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/Dashboard';
 import UserManagement from './pages/admin/UserManagement';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
@@ -51,6 +52,17 @@ function App() {
           />
 
           {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AdminDashboard />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/admin/users"
             element={
