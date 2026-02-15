@@ -38,3 +38,20 @@ async def start_session(request: StartSessionRequest, user=Depends(verify_token)
         return error_response(
             message="Failed to start session", code=500, error_details=str(e)
         )
+
+
+@router.post("/{session_id}/end")
+async def end_session(session_id: str, user=Depends(verify_token)):
+    """
+    End an active simulation session.
+    """
+    try:
+        # In a real scenario, you'd check if the session belongs to the user
+        result = await session_service.end_session(session_id)
+        return success_response(data=result, message="Session ended successfully")
+    except ValueError as e:
+        return error_response(message=str(e), code=404)
+    except Exception as e:
+        return error_response(
+            message="Failed to end session", code=500, error_details=str(e)
+        )
