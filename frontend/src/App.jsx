@@ -10,6 +10,8 @@ import SimulationHub from './pages/SimulationHub';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/Dashboard';
 import UserManagement from './pages/admin/UserManagement';
+
+import AIEvaluationLogs from './pages/admin/AIEvaluationLogs';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -69,6 +71,19 @@ function App() {
               <ProtectedRoute>
                 <AdminLayout>
                   <UserManagement />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+
+
+          <Route
+            path="/admin/logs/ai"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AIEvaluationLogs />
                 </AdminLayout>
               </ProtectedRoute>
             }
