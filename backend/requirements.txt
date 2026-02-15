@@ -8,3 +8,4 @@ google-generativeai
 pydantic-settings
 python-dotenv
 slowapi
+email-validator
