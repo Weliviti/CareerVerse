@@ -6,6 +6,7 @@ import { useScore } from '../hooks/useScore';
 import { useState, useEffect } from 'react';
 import SkillRadarChart from '../components/RadarChart';
 import CareerCard from '../components/CareerCard';
+import SessionHistoryItem from '../components/SessionHistoryItem';
 
 function Dashboard() {
     const { currentUser } = useAuth();
@@ -55,6 +56,49 @@ function Dashboard() {
             description: 'Your clarity in communication and natural empathy make you well-suited for education.',
             skills: ['Clarity', 'Empathy', 'Communication'],
             colorClass: 'bg-purple-500' // Purple for third
+        }
+    ];
+
+    // Mock data for Session History
+    const sessionHistory = [
+        {
+            id: 1,
+            title: 'The Advocate',
+            rating: 'Excellent',
+            date: 'Feb 10, 2025',
+            duration: '18 minutes',
+            themeColor: 'teal', // or green/emerald
+            skills: [
+                { name: 'Persuasion', score: 92 },
+                { name: 'Logic', score: 85 },
+                { name: 'Negotiation', score: 89 }
+            ]
+        },
+        {
+            id: 2,
+            title: 'The Diagnostician',
+            rating: 'Very Good',
+            date: 'Feb 8, 2025',
+            duration: '19 minutes',
+            themeColor: 'blue',
+            skills: [
+                { name: 'Empathy', score: 88 },
+                { name: 'Problem Solving', score: 86 },
+                { name: 'Stress Handling', score: 75 }
+            ]
+        },
+        {
+            id: 3,
+            title: 'The Educator',
+            rating: 'Very Good',
+            date: 'Feb 5, 2025',
+            duration: '20 minutes',
+            themeColor: 'indigo', // or purple
+            skills: [
+                { name: 'Empathy', score: 85 },
+                { name: 'Clarity', score: 87 },
+                { name: 'Communication', score: 82 }
+            ]
         }
     ];
 
@@ -203,9 +247,19 @@ function Dashboard() {
                         </button>
                     </div>
 
-                    {/* Placeholder for Phase 4: Session List */}
-                    <div className="flex items-center justify-center h-32 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                        <p className="text-gray-400 font-medium">Session History Coming Soon (Phase 4)</p>
+                    {/* Session History List */}
+                    <div className="space-y-4">
+                        {sessionHistory.map((session) => (
+                            <SessionHistoryItem
+                                key={session.id}
+                                title={session.title}
+                                rating={session.rating}
+                                date={session.date}
+                                duration={session.duration}
+                                skills={session.skills}
+                                themeColor={session.themeColor}
+                            />
+                        ))}
                     </div>
                 </div>
 
