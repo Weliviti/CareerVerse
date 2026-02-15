@@ -30,11 +30,11 @@ const AdminLayout = ({ children }) => {
         <div className="min-h-screen bg-gray-50 flex">
             {/* Sidebar */}
             <aside className="w-64 bg-white shadow-md fixed h-full z-10 flex flex-col">
-                <div className="p-6 border-b">
+                <div className="p-4 border-b">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-teal-500 rounded-lg"></div>
+                        <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg flex-shrink-0"></div>
                         <div>
-                            <h1 className="text-lg font-bold text-gray-800">CareerVerse</h1>
+                            <h1 className="text-sm font-bold text-gray-800 whitespace-nowrap">CareerVerse</h1>
                             <p className="text-xs text-gray-500">Admin Panel</p>
                         </div>
                     </div>
@@ -48,8 +48,8 @@ const AdminLayout = ({ children }) => {
                                 key={item.path}
                                 to={item.path}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive
-                                        ? 'bg-teal-50 text-teal-700'
-                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                    ? 'bg-teal-50 text-teal-700'
+                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                     }`}
                             >
                                 <span>{item.icon}</span>
