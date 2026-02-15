@@ -1,4 +1,3 @@
-```
 import React from 'react';
 
 const SimulationLogs = () => {
@@ -10,21 +9,27 @@ const SimulationLogs = () => {
         <p className="text-gray-500 mt-1">Track all simulation activities and events</p>
       </div>
 
-      {/* Main Content Placeholder for next steps */}
-      <div className="bg-white p-12 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
-        <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-600 mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-          </svg>
+      {/* Main Card Container */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        {/* Card Header */}
+        <div className="p-6 border-b border-gray-50 flex items-center gap-3">
+          <div className="w-10 h-10 bg-teal-50 rounded-lg flex items-center justify-center text-teal-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-bold text-gray-800">Recent Simulation Activities</h2>
         </div>
-        <h3 className="text-lg font-semibold text-gray-900">Logs Empty</h3>
-        <p className="text-gray-500 max-w-xs mx-auto mt-2">
-          Waiting for activity logs to be loaded in the next phase.
-        </p>
+
+        {/* Log Entries Container (Placeholder for Part 4) */}
+        <div className="p-6">
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <p className="text-gray-400 italic">Log entries will be implemented in the next step...</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default SimulationLogs;
-```
