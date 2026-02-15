@@ -21,10 +21,44 @@ const SimulationLogs = () => {
           <h2 className="text-lg font-bold text-gray-800">Recent Simulation Activities</h2>
         </div>
 
-        {/* Log Entries Container (Placeholder for Part 4) */}
-        <div className="p-6">
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <p className="text-gray-400 italic">Log entries will be implemented in the next step...</p>
+        {/* Log Entries Container */}
+        <div className="p-6 space-y-4">
+          {/* Success Entry */}
+          <div className="flex items-start gap-4 p-4 bg-green-50/50 border border-green-100 rounded-xl hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 rounded-full bg-white border border-green-200 flex items-center justify-center text-green-600 flex-shrink-0 mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold text-green-700 uppercase tracking-wider">Success</span>
+                <span className="text-xs text-gray-400 font-medium whitespace-nowrap">🕒 2025-11-30 14:32:15</span>
+                <span className="text-xs text-gray-400 font-medium">User: <span className="text-gray-500">alice@email.com</span></span>
+              </div>
+              <p className="text-sm font-semibold text-green-800">User completed Technical Interview simulation</p>
+            </div>
+          </div>
+
+          {/* Success Entry 2 */}
+          <div className="flex items-start gap-4 p-4 bg-green-50/50 border border-green-100 rounded-xl hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 rounded-full bg-white border border-green-200 flex items-center justify-center text-green-600 flex-shrink-0 mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold text-green-700 uppercase tracking-wider">Success</span>
+                <span className="text-xs text-gray-400 font-medium whitespace-nowrap">🕒 2025-11-30 14:15:33</span>
+                <span className="text-xs text-gray-400 font-medium">User: <span className="text-gray-500">emma@email.com</span></span>
+              </div>
+              <p className="text-sm font-semibold text-green-800">System Design simulation completed successfully</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center justify-center py-6 text-center border-t border-gray-50 mt-4">
+            <p className="text-gray-400 text-xs italic">Other status styles (Info, Warning) will be added in the next step...</p>
           </div>
         </div>
       </div>
