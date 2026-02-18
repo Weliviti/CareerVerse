@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import SimulationHub from './pages/SimulationHub';
+import SimulationPlayer from './pages/SimulationPlayer';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/Dashboard';
 import UserManagement from './pages/admin/UserManagement';
@@ -32,6 +33,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <SimulationHub />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/simulation/play/:type"
+            element={
+              <ProtectedRoute>
+                <SimulationPlayer />
               </ProtectedRoute>
             }
           />

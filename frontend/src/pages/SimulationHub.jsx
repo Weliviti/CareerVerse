@@ -100,7 +100,10 @@ const SimulationHub = () => {
                                     </div>
                                     <span className="px-3 py-1 bg-gray-100 text-gray-600 font-bold rounded-lg text-xs">Medium</span>
                                 </div>
-                                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                                <button
+                                    onClick={() => navigate('/simulation/play/educator')}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                                >
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                     </svg>
@@ -138,7 +141,10 @@ const SimulationHub = () => {
                                     </div>
                                     <span className="px-3 py-1 bg-red-500 text-white font-bold rounded-lg text-xs">Hard</span>
                                 </div>
-                                <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                                <button
+                                    onClick={() => navigate('/simulation/play/diagnostician')}
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                                >
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                     </svg>
@@ -176,7 +182,10 @@ const SimulationHub = () => {
                                     </div>
                                     <span className="px-3 py-1 bg-red-500 text-white font-bold rounded-lg text-xs">Hard</span>
                                 </div>
-                                <button className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                                <button
+                                    onClick={() => navigate('/simulation/play/advocate')}
+                                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                                >
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                     </svg>
