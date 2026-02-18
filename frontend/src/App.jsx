@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import SimulationHub from './pages/SimulationHub';
+import SimulationPlayer from './pages/SimulationPlayer';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -26,6 +27,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <SimulationHub />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/simulation/play/:type"
+            element={
+              <ProtectedRoute>
+                <SimulationPlayer />
               </ProtectedRoute>
             }
           />
