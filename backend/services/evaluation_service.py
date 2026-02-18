@@ -27,7 +27,7 @@ class EvaluationService:
     def gemini_service(self):
         """Lazy-load GeminiService to avoid import-time API key check."""
         if self._gemini_service is None:
-            self._gemini_service = GeminiService()
+            self._gemini_service = GeminiService(purpose="scoring")
         return self._gemini_service
 
     async def evaluate_session(self, session_id: str) -> dict:
