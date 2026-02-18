@@ -8,6 +8,12 @@ import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import SimulationHub from './pages/SimulationHub';
 import SimulationPlayer from './pages/SimulationPlayer';
+import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/Dashboard';
+import UserManagement from './pages/admin/UserManagement';
+import AIEvaluationLogs from './pages/admin/AIEvaluationLogs';
+import SimulationLogs from './pages/admin/SimulationLogs';
+import Settings from './pages/admin/Settings';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -54,6 +60,62 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AdminDashboard />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <UserManagement />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/logs/ai"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AIEvaluationLogs />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/logs/simulations"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <SimulationLogs />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <Settings />
+                </AdminLayout>
               </ProtectedRoute>
             }
           />

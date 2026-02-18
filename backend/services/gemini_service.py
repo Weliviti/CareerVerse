@@ -1,13 +1,29 @@
 import os
 import google.generativeai as genai
+from config import settings
 
 
 class GeminiService:
-    def __init__(self):
-        """Initialize Gemini API with API key from environment variables."""
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise ValueError("GEMINI_API_KEY not found in environment variables")
+    """
+    Gemini AI service with purpose-based API key selection.
+
+    Supports 3 separate API keys for different purposes:
+    - 'personas': AI agent conversations (student/patient agents)
+    - 'scoring': Real-time scoring and final session evaluation
+    - 'careers': Career recommendation generation
+
+    Falls back to the legacy GEMINI_API_KEY if specific keys are not set.
+    """
+
+    def __init__(self, purpose: str = "personas"):
+        """
+        Initialize Gemini API with the appropriate key for the given purpose.
+
+        Args:
+            purpose: One of 'personas', 'scoring', or 'careers'
+        """
+        self.purpose = purpose
+        api_key = settings.get_gemini_key(purpose)
         genai.configure(api_key=api_key)
 
     async def generate_response(self, prompt: str) -> str:
@@ -28,7 +44,7 @@ class GeminiService:
             response = await model.generate_content_async(prompt)
             return response.text
         except Exception as e:
-            raise Exception(f"Gemini API error: {str(e)}")
+            raise Exception(f"Gemini API error ({self.purpose}): {str(e)}")
 
     async def evaluate_transcript(self, transcript: list, rubric: str) -> dict:
         """
@@ -85,4 +101,4 @@ class GeminiService:
             return json.loads(clean_text)
 
         except Exception as e:
-            raise Exception(f"Evaluation failed: {str(e)}")
+            raise Exception(f"Evaluation failed ({self.purpose}): {str(e)}")

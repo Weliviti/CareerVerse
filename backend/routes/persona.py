@@ -70,7 +70,7 @@ async def persona_chat(request: ChatRequest, user=Depends(verify_token)):
     """
     try:
         # Initialize services (lazy initialization to avoid import-time errors)
-        gemini_service = GeminiService()
+        gemini_service = GeminiService(purpose="personas")
         prompt_manager = PromptManager()
 
         # Step 1: Load persona prompt template
