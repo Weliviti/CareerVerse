@@ -5,12 +5,12 @@ from typing import Optional
 class Settings(BaseSettings):
     # ─── Gemini API Keys ───
     # 3 separate keys for different AI purposes (cost tracking & isolation)
-    GEMINI_KEY_PERSONAS: Optional[str] = None  # AI agent conversations
-    GEMINI_KEY_SCORING: Optional[str] = None  # Scoring & evaluation
-    GEMINI_KEY_CAREERS: Optional[str] = None  # Career recommendations
+    GEMINI_KEY_PERSONAS: str = ""  # AI agent conversations
+    GEMINI_KEY_SCORING: str = ""  # Scoring & evaluation
+    GEMINI_KEY_CAREERS: str = ""  # Career recommendations
 
     # Legacy single key — used as fallback if specific keys are not set
-    GEMINI_API_KEY: Optional[str] = None
+    GEMINI_API_KEY: str
 
     # ─── Firebase ───
     FIREBASE_CREDENTIALS_PATH: str = "service-account.json"
