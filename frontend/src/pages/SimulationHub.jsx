@@ -1,12 +1,45 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import api from '../services/api';
+import toast from 'react-hot-toast';
 
 const SimulationHub = () => {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
+    const [launching, setLaunching] = useState(false);
     const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User';
+
+    const handleLaunch = async (simulationType) => {
+        if (launching) return;
+
+        setLaunching(true);
+        const toastId = toast.loading(`Preparing ${simulationType} simulation...`);
+
+        try {
+            // Mapping frontend types to backend expected types
+            // Backend expects: 'doctor', 'teacher', or 'lawyer'
+            const backendType = simulationType === 'educator' ? 'teacher' : 'doctor';
+
+            const response = await api.post('/api/simulations/launch', {
+                simulation_type: backendType
+            });
+
+            if (response.data.success) {
+                toast.success('Simulation ready!', { id: toastId });
+                navigate(`/simulation/play/${simulationType}`);
+            } else {
+                throw new Error(response.data.message || 'Failed to launch simulation');
+            }
+        } catch (error) {
+            console.error('Launch Error:', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Failed to start simulation';
+            toast.error(errorMessage, { id: toastId });
+            setLaunching(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 font-sans">
@@ -69,7 +102,7 @@ const SimulationHub = () => {
                 {/* Available Simulations Section */}
                 <div className="mb-8">
                     <h2 className="text-3xl font-bold text-gray-900 mb-8">Available Simulations</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* The Educator */}
                         <div className="bg-white rounded-3xl border-2 border-blue-500 overflow-hidden shadow-sm flex flex-col h-full">
                             <div className="p-8 flex-1">
@@ -101,13 +134,14 @@ const SimulationHub = () => {
                                     <span className="px-3 py-1 bg-gray-100 text-gray-600 font-bold rounded-lg text-xs">Medium</span>
                                 </div>
                                 <button
-                                    onClick={() => navigate('/simulation/play/educator')}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                                    onClick={() => handleLaunch('educator')}
+                                    disabled={launching}
+                                    className={`w-full ${launching ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2`}
                                 >
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                     </svg>
-                                    Launch Simulation
+                                    {launching ? 'Launching...' : 'Launch Simulation'}
                                 </button>
                             </div>
                         </div>
@@ -142,64 +176,25 @@ const SimulationHub = () => {
                                     <span className="px-3 py-1 bg-red-500 text-white font-bold rounded-lg text-xs">Hard</span>
                                 </div>
                                 <button
-                                    onClick={() => navigate('/simulation/play/diagnostician')}
-                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                                    onClick={() => handleLaunch('diagnostician')}
+                                    disabled={launching}
+                                    className={`w-full ${launching ? 'bg-emerald-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'} text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2`}
                                 >
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                     </svg>
-                                    Launch Simulation
+                                    {launching ? 'Launching...' : 'Launch Simulation'}
                                 </button>
                             </div>
                         </div>
 
-                        {/* The Advocate */}
-                        <div className="bg-white rounded-3xl border-2 border-orange-500 overflow-hidden shadow-sm flex flex-col h-full">
-                            <div className="p-8 flex-1">
-                                <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 mb-6">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                                    </svg>
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">The Advocate</h3>
-                                <p className="text-gray-700 font-medium mb-4">Defend a Client in Court</p>
-                                <p className="text-gray-500 text-sm mb-6 leading-relaxed">
-                                    Navigate a courtroom setting, present arguments, cross-examine witnesses, and advocate for your client's best interests.
-                                </p>
-                                <div className="flex flex-wrap gap-2 mb-8">
-                                    <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full">Persuasion</span>
-                                    <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full">Logical Acumen</span>
-                                    <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full">Negotiation</span>
-                                </div>
-                            </div>
-                            <div className="px-8 pb-8">
-                                <div className="flex items-center justify-between mb-6 text-sm">
-                                    <div className="flex items-center text-gray-500 gap-1">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        20 minutes
-                                    </div>
-                                    <span className="px-3 py-1 bg-red-500 text-white font-bold rounded-lg text-xs">Hard</span>
-                                </div>
-                                <button
-                                    onClick={() => navigate('/simulation/play/advocate')}
-                                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
-                                >
-                                    <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                                    </svg>
-                                    Launch Simulation
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 {/* CTA Banner Section */}
                 <div className="mt-16 bg-teal-600 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 text-white shadow-xl shadow-teal-100">
                     <div>
-                        <h2 className="text-2xl font-bold mb-2 text-white">Complete All Three Simulations</h2>
+                        <h2 className="text-2xl font-bold mb-2 text-white">Complete Both Simulations</h2>
                         <p className="text-teal-50 opacity-90 text-lg">
                             Get comprehensive career recommendations by completing all simulation paths
                         </p>
