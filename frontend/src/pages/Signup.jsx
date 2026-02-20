@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -287,7 +287,6 @@ const Signup = () => {
         </Card>
       </div>
 
-      <Footer />
     </div>
   );
 };
