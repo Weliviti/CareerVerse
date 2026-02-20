@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import BackToTop from '../components/ui/BackToTop';
 import Footer from '../components/Footer'; // Assuming Footer component exists based on SimulationHub
 import { useAuth } from '../context/AuthContext';
 import { useScore } from '../hooks/useScore';
@@ -272,7 +273,7 @@ function Dashboard() {
                         </p>
                     </div>
                     <button
-                        onClick={() => navigate('/simulation-hub')}  // Assuming this route exists based on context
+                        onClick={() => { window.scrollTo(0, 0); navigate('/simulation-hub'); }}
                         className="bg-white text-teal-600 hover:bg-teal-50 font-bold px-8 py-3 rounded-xl transition-all shadow-md whitespace-nowrap flex items-center gap-2"
                     >
                         Go to Hub
@@ -284,6 +285,7 @@ function Dashboard() {
 
             </main>
 
+            <BackToTop />
             <Footer />
         </div>
     );
