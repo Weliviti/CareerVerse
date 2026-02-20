@@ -359,3 +359,169 @@ button:focus-visible {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   transform: translateY(-1px);
 }
+
+/* ─── Feature Cards (Why Choose Section) ─────────── */
+
+.feature-card {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Colored gradient strip at the top of each card */
+.feature-card-border {
+  height: 4px;
+  width: 100%;
+}
+
+/* ─── Footer Styles ──────────────────────────── */
+
+/* Animated gradient top border */
+.footer-gradient-border {
+  height: 3px;
+  background: linear-gradient(90deg, #0d9488, #7c3aed, #d97706, #0d9488);
+  background-size: 300% 100%;
+  animation: footerBorderShimmer 6s linear infinite;
+}
+
+@keyframes footerBorderShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+/* Email input */
+.footer-email-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #e5e7eb;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.footer-email-input::placeholder {
+  color: #6b7280;
+}
+
+.footer-email-input:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+}
+
+/* Subscribe arrow button */
+.footer-subscribe-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+
+.footer-subscribe-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+/* Text links */
+.footer-link {
+  display: inline-block;
+  color: #9ca3af;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #14b8a6;
+  transition: width 0.3s;
+}
+
+.footer-link:hover {
+  color: #14b8a6;
+  transform: translateX(3px);
+}
+
+.footer-link:hover::after {
+  width: 100%;
+}
+
+/* Simulation links (icon + text) */
+.footer-sim-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  padding: 6px 0;
+  transition: transform 0.2s;
+}
+
+.footer-sim-link:hover {
+  transform: translateX(3px);
+}
+
+/* Social icons */
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #9ca3af;
+  transition: all 0.25s ease;
+}
+
+.footer-social-icon:hover {
+  color: white;
+  background: rgba(20, 184, 166, 0.15);
+  border-color: rgba(20, 184, 166, 0.3);
+  box-shadow: 0 0 16px rgba(20, 184, 166, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Stats ribbon */
+.footer-stats-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+}
