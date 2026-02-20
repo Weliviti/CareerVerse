@@ -14,6 +14,7 @@ import UserManagement from './pages/admin/UserManagement';
 import AIEvaluationLogs from './pages/admin/AIEvaluationLogs';
 import SimulationLogs from './pages/admin/SimulationLogs';
 import Settings from './pages/admin/Settings';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
 
           <Route
             path="/simulation-hub"
