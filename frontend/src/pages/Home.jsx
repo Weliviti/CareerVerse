@@ -9,53 +9,49 @@ function Home() {
 
             {/* Hero Section */}
             <section className="relative overflow-hidden">
-                {/* Background decoration */}
+                {/* Background decoration — soft side gradients */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-                    <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+                    <div className="absolute top-0 left-0 w-[40%] h-full bg-gradient-to-r from-primary-50/60 to-transparent"></div>
+                    <div className="absolute top-0 right-0 w-[40%] h-full bg-gradient-to-l from-primary-50/60 to-transparent"></div>
+                    <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                    <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
                 </div>
 
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-24 sm:pb-32">
+                <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-20 sm:pb-28">
                     <div className="text-center">
-                        {/* Tagline */}
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-100 mb-8">
-                            <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            <span className="text-sm font-medium text-primary-700">AI-Powered Career Discovery</span>
+                        {/* Badge Pill */}
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-primary-200 shadow-sm mb-10">
+                            <span className="text-lg">✨</span>
+                            <span className="text-sm font-semibold text-primary-700 tracking-wide">Next-Gen Career Intelligence</span>
                         </div>
 
-                        {/* Main Heading */}
-                        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 tracking-tight mb-6">
-                            Discover Your{' '}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-teal-500">
-                                True Career Path
-                            </span>
+                        {/* Main Heading — big, bold, with italic accent */}
+                        <h1 className="hero-heading mb-6">
+                            <span className="block text-gray-900">Discover Your</span>
+                            <span className="block hero-heading-accent">True Career Path</span>
                         </h1>
 
-                        {/* Description */}
-                        <p className="max-w-3xl mx-auto text-lg sm:text-xl text-gray-600 mb-10 leading-relaxed">
-                            Step into <span className="font-semibold text-gray-900">hyper-realistic simulations</span>.
-                            Let <span className="font-semibold text-gray-900">AI analyze</span> your natural skills.
-                            Discover <span className="font-semibold text-gray-900">precise career recommendations</span> based on your actual performance.
+                        {/* Description — clean, centered */}
+                        <p className="max-w-2xl mx-auto text-base sm:text-lg text-gray-500 mb-12 leading-relaxed">
+                            Step into AI-powered career universes. Experience real work, not
+                            guesswork. Get precision-matched to your perfect path through
+                            machine learning magic.
                         </p>
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <Button
-                                variant="primary"
-                                size="lg"
-                                className="w-full sm:w-auto px-8 py-4 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
-                            >
-                                Get Started Free
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="lg"
-                                className="w-full sm:w-auto px-8 py-4 text-base font-semibold hover:bg-gray-50 transition-all duration-300"
-                            >
-                                Learn More
-                            </Button>
+                            <button className="hero-btn-primary">
+                                Launch Experience
+                                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </button>
+                            <button className="hero-btn-outline">
+                                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                Watch Demo
+                            </button>
                         </div>
                     </div>
                 </div>
