@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
+import BackToTop from '../components/ui/BackToTop';
 import Footer from '../components/Footer';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -200,7 +201,7 @@ const SimulationHub = () => {
                         </p>
                     </div>
                     <button
-                        onClick={() => navigate('/dashboard')}
+                        onClick={() => { window.scrollTo(0, 0); navigate('/dashboard'); }}
                         className="bg-white text-teal-600 hover:bg-teal-50 font-bold px-8 py-4 rounded-2xl transition-all shadow-md whitespace-nowrap"
                     >
                         View Dashboard
@@ -209,6 +210,7 @@ const SimulationHub = () => {
 
             </main>
 
+            <BackToTop />
             <Footer />
         </div>
     );

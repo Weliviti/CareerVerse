@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar';
+import BackToTop from '../components/ui/BackToTop';
 import Footer from '../components/Footer';
 
 function About() {
@@ -431,6 +432,7 @@ function About() {
                 </div>
             </section>
 
+            <BackToTop />
             <Footer />
         </div>
     );

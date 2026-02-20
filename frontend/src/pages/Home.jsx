@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar';
+import BackToTop from '../components/ui/BackToTop';
 import Button from '../components/ui/Button';
 import Footer from '../components/Footer';
 
@@ -274,6 +275,7 @@ function Home() {
                 </div>
             </section>
 
+            <BackToTop />
             <Footer />
         </div>
     );
