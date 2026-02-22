@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
 import Navbar from '../components/Navbar';
@@ -139,7 +139,10 @@ const Signup = () => {
       );
       const user = userCredential.user;
 
-      // Step 2: Save user data to Firestore
+      // Step 2: Set displayName on Firebase Auth profile
+      await updateProfile(user, { displayName: formData.fullName });
+
+      // Step 3: Save user data to Firestore
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
@@ -148,7 +151,7 @@ const Signup = () => {
         createdAt: serverTimestamp(),
       });
 
-      // Step 3: Navigate to dashboard
+      // Step 4: Navigate to dashboard
       navigate('/dashboard');
     } catch (error) {
       console.error('Signup Error:', error);

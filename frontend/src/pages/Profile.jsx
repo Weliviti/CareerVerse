@@ -144,7 +144,7 @@ const Profile = () => {
                                     </div>
                                 )}
                                 <h2 className="text-xl font-semibold text-gray-900">
-                                    {currentUser?.displayName || 'Sarah Johnson'}
+                                    {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                 </h2>
                                 <div className="flex items-center mt-1 text-gray-600">
                                     <svg
@@ -217,7 +217,7 @@ const Profile = () => {
                                 <div className="flex-1">
                                     <p className="text-sm text-gray-500">Name</p>
                                     <p className="text-base font-medium text-gray-900">
-                                        {currentUser?.displayName || 'Sarah Johnson'}
+                                        {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                     </p>
                                 </div>
                             </div>
