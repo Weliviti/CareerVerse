@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../../components/ui/Input';
-import api from '../../services/api';
+import { db } from '../../services/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 
 const UserManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [allUsers, setAllUsers] = useState([]);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,33 +14,53 @@ const UserManagement = () => {
     const [totalPages, setTotalPages] = useState(1);
     const limit = 10;
 
-    // Debounce search term
+    // Fetch all users from Firestore on mount
     useEffect(() => {
-        const timer = setTimeout(() => {
-            fetchUsers();
-        }, 500);
+        fetchUsers();
+    }, []);
 
-        return () => clearTimeout(timer);
-    }, [searchTerm, page]);
+    // Filter + paginate when search or page changes
+    useEffect(() => {
+        let filtered = allUsers;
+        if (searchTerm.trim()) {
+            const term = searchTerm.toLowerCase();
+            filtered = allUsers.filter(
+                (u) =>
+                    (u.name || '').toLowerCase().includes(term) ||
+                    (u.email || '').toLowerCase().includes(term)
+            );
+        }
+        const total = Math.max(1, Math.ceil(filtered.length / limit));
+        setTotalPages(total);
+        if (page > total) setPage(1);
+        const start = (page - 1) * limit;
+        setUsers(filtered.slice(start, start + limit));
+    }, [searchTerm, page, allUsers]);
 
     const fetchUsers = async () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await api.get('/api/admin/users', {
-                params: {
-                    page,
-                    limit,
-                    search: searchTerm,
-                },
+            const usersRef = collection(db, 'users');
+            const snapshot = await getDocs(usersRef);
+            const usersList = snapshot.docs.map((doc) => {
+                const data = doc.data();
+                return {
+                    uid: doc.id,
+                    name: data.name || data.email?.split('@')[0] || 'Unknown',
+                    email: data.email || 'N/A',
+                    role: data.role || 'user',
+                    created_at: data.created_at?.toDate?.() || null,
+                    isActive: data.isActive !== false,
+                };
             });
-
-            if (response.data.success) {
-                setUsers(response.data.data.users);
-                setTotalPages(response.data.data.pages);
-            } else {
-                throw new Error(response.data.message || 'Failed to fetch users');
-            }
+            // Sort by created_at descending (newest first), nulls last
+            usersList.sort((a, b) => {
+                if (!a.created_at) return 1;
+                if (!b.created_at) return -1;
+                return b.created_at - a.created_at;
+            });
+            setAllUsers(usersList);
         } catch (err) {
             console.error('Error fetching users:', err);
             setError(err.message || 'An error occurred while fetching users');

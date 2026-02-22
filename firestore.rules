@@ -1,10 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper function: Check if the authenticated user is an admin
+    function isAdmin() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
     
-    // User data rule: Read/Write allowed only if authenticated user's UID matches the document ID
+    // User data rule: 
+    // - Read/Write allowed if authenticated user's UID matches the document ID
+    // - Admin users can read all user documents (for User Management)
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow write: if request.auth != null && request.auth.uid == userId;
     }
     
     // Careers rule: Read allowed for everyone (public)
