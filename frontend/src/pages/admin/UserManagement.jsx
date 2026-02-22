@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../../components/ui/Input';
 import { db } from '../../services/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
 const UserManagement = () => {
+    const { currentUser } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
     const [allUsers, setAllUsers] = useState([]);
     const [users, setUsers] = useState([]);
@@ -67,6 +69,28 @@ const UserManagement = () => {
             toast.error('Failed to load users');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDeleteUser = async (user) => {
+        // Prevent admin from deleting themselves
+        if (user.uid === currentUser?.uid) {
+            toast.error('You cannot delete your own account');
+            return;
+        }
+
+        const confirmed = window.confirm(
+            `Are you sure you want to delete "${user.name}" (${user.email})? This action cannot be undone.`
+        );
+        if (!confirmed) return;
+
+        try {
+            await deleteDoc(doc(db, 'users', user.uid));
+            setAllUsers((prev) => prev.filter((u) => u.uid !== user.uid));
+            toast.success(`User "${user.name}" deleted successfully`);
+        } catch (err) {
+            console.error('Error deleting user:', err);
+            toast.error('Failed to delete user');
         }
     };
 
@@ -175,9 +199,13 @@ const UserManagement = () => {
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                         </svg>
                                                     </button>
-                                                    <button className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete/Deactivate">
+                                                    <button
+                                                        onClick={() => handleDeleteUser(user)}
+                                                        className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                        title="Delete User"
+                                                    >
                                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6" />
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>
                                                     </button>
                                                 </div>
