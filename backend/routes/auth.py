@@ -160,7 +160,9 @@ async def delete_account(authorization: str = Header(None)):
     Delete the current user's account from both Firebase Auth and Firestore.
     """
     if not authorization or not authorization.startswith("Bearer "):
-        return error_response(message="Missing or invalid Authorization header", code=401)
+        return error_response(
+            message="Missing or invalid Authorization header", code=401
+        )
 
     token = authorization.split("Bearer ")[1]
     try:
