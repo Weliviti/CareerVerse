@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     GEMINI_KEY_CAREERS: str = ""  # Career recommendations
 
     # Legacy single key — used as fallback if specific keys are not set
-    GEMINI_API_KEY: str
+    GEMINI_API_KEY: str = ""
 
     # ─── Firebase ───
     FIREBASE_CREDENTIALS_PATH: str = "service-account.json"
