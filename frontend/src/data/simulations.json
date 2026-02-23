@@ -1,0 +1,34 @@
+[
+    {
+        "id": "educator",
+        "type": "teacher",
+        "title": "The Educator",
+        "subtitle": "Teach a 10th Grade English Class",
+        "description": "Guide students through a lesson on Shakespeare's Romeo and Juliet. Handle classroom dynamics, answer questions, and inspire learning.",
+        "skills": [
+            "Empathy",
+            "Clarity",
+            "Classroom Control"
+        ],
+        "duration": "20 minutes",
+        "difficulty": "Medium",
+        "webGLUrl": "/simulation/educator/index.html",
+        "color": "blue"
+    },
+    {
+        "id": "diagnostician",
+        "type": "doctor",
+        "title": "The Diagnostician",
+        "subtitle": "Diagnose a Complex Medical Case",
+        "description": "Interview a patient, analyze symptoms, order tests, and reach a diagnosis. Balance empathy with analytical thinking under pressure.",
+        "skills": [
+            "Diagnostic Logic",
+            "Empathy",
+            "Communication"
+        ],
+        "duration": "20 minutes",
+        "difficulty": "Hard",
+        "webGLUrl": "/simulation/diagnostician/index.html",
+        "color": "emerald"
+    }
+]

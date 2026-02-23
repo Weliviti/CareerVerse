@@ -50,25 +50,10 @@ h1 {
   line-height: 1.1;
 }
 
+/* Default button reset — no background override so Tailwind classes work */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -79,10 +64,6 @@ button:focus-visible {
 
   a:hover {
     color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
   }
 }
 
@@ -111,4 +92,417 @@ button:focus-visible {
 
 .animation-delay-2000 {
   animation-delay: 2s;
+}
+
+/* ─── Navbar Styles ──────────────────────────────── */
+
+/* Glassmorphism navbar background */
+.navbar-glass {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Logo */
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #134e4a;
+  letter-spacing: -0.02em;
+  transition: opacity 0.2s;
+}
+
+.navbar-logo-accent {
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Curved bottom edge below the navbar */
+.navbar-curve {
+  width: 100%;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 40;
+  margin-top: -1px;
+}
+
+/* Nav link base style */
+.navbar-link {
+  position: relative;
+  color: #4b5563;
+  font-size: 1rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.navbar-link-text {
+  position: relative;
+  z-index: 1;
+}
+
+.navbar-link:hover {
+  color: #0d9488;
+  background-color: rgba(13, 148, 136, 0.06);
+  border-color: transparent;
+}
+
+/* Active nav link */
+.navbar-link-active {
+  color: #0d9488 !important;
+  font-weight: 600;
+  background-color: rgba(13, 148, 136, 0.08);
+}
+
+.navbar-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, #0d9488, #14b8a6);
+  border-radius: 3px;
+}
+
+/* Icon button (theme toggle, mobile menu) */
+.navbar-icon-btn {
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-icon-btn:hover {
+  color: #374151;
+  background-color: #f3f4f6;
+  border-color: transparent;
+  transform: scale(1.05);
+}
+
+/* Login button */
+.navbar-login-btn {
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.navbar-login-btn:hover {
+  color: #0d9488;
+  background-color: rgba(13, 148, 136, 0.06);
+  border-color: transparent;
+}
+
+/* Sign Up button (teal filled with gradient) */
+.navbar-signup-btn {
+  background: linear-gradient(135deg, #0d9488, #0f766e);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.55rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+}
+
+.navbar-signup-btn:hover {
+  background: linear-gradient(135deg, #0f766e, #115e59);
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+}
+
+/* Sign Out button (outlined) */
+.navbar-signout-btn {
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.45rem 1.2rem;
+  border: 2px solid #fca5a5;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.navbar-signout-btn:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border-color: #ef4444;
+  transform: translateY(-1px);
+}
+
+/* Mobile nav links */
+.navbar-mobile-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.navbar-mobile-link:hover {
+  background-color: rgba(13, 148, 136, 0.06);
+  color: #0d9488;
+  border-color: transparent;
+}
+
+/* ─── Hero Section Styles ────────────────────────── */
+
+/* Hero heading */
+.hero-heading {
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+/* Italic teal accent line */
+.hero-heading-accent {
+  color: #0d9488;
+  font-style: italic;
+  font-weight: 900;
+}
+
+/* Primary CTA — teal filled rounded */
+.hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0d9488, #0f766e);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+  border-color: transparent;
+}
+
+/* Secondary CTA — white outlined rounded */
+.hero-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.hero-btn-outline:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+/* ─── Feature Cards (Why Choose Section) ─────────── */
+
+.feature-card {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Colored gradient strip at the top of each card */
+.feature-card-border {
+  height: 4px;
+  width: 100%;
+}
+
+/* ─── Footer Styles ──────────────────────────── */
+
+/* Animated gradient top border */
+.footer-gradient-border {
+  height: 3px;
+  background: linear-gradient(90deg, #0d9488, #7c3aed, #d97706, #0d9488);
+  background-size: 300% 100%;
+  animation: footerBorderShimmer 6s linear infinite;
+}
+
+@keyframes footerBorderShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+/* Email input */
+.footer-email-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #e5e7eb;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.footer-email-input::placeholder {
+  color: #6b7280;
+}
+
+.footer-email-input:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+}
+
+/* Subscribe arrow button */
+.footer-subscribe-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+
+.footer-subscribe-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+/* Text links */
+.footer-link {
+  display: inline-block;
+  color: #9ca3af;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #14b8a6;
+  transition: width 0.3s;
+}
+
+.footer-link:hover {
+  color: #14b8a6;
+  transform: translateX(3px);
+}
+
+.footer-link:hover::after {
+  width: 100%;
+}
+
+/* Simulation links (icon + text) */
+.footer-sim-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  padding: 6px 0;
+  transition: transform 0.2s;
+}
+
+.footer-sim-link:hover {
+  transform: translateX(3px);
+}
+
+/* Social icons */
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #9ca3af;
+  transition: all 0.25s ease;
+}
+
+.footer-social-icon:hover {
+  color: white;
+  background: rgba(20, 184, 166, 0.15);
+  border-color: rgba(20, 184, 166, 0.3);
+  box-shadow: 0 0 16px rgba(20, 184, 166, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Stats ribbon */
+.footer-stats-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
 }

@@ -5,6 +5,14 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from utils.responses import success_response, error_response, setup_exception_handlers
 from routes.auth import router as auth_router
+from routes.evaluator import router as evaluator_router
+from routes.persona import router as persona_router
+from routes.evaluation import router as evaluation_router
+from routes.sessions import router as sessions_router
+from routes.scores import router as scores_router
+from routes.simulations import router as simulations_router
+from routes.admin import router as admin_router
+from routes.unity import router as unity_router
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -16,10 +24,14 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Setup global exception handlers
 setup_exception_handlers(app)
 
-# Configure CORS
+# --- UPDATED CORS SETTINGS FOR PRODUCTION ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite default port
+    allow_origins=[
+        "http://localhost:5173",  # Vite default port (Local testing)
+        "https://careerverse.lk",  # Your custom domain
+        "https://www.careerverse.lk",  # Your custom domain (www version)
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,6 +39,16 @@ app.add_middleware(
 
 # Register routers
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(evaluator_router, prefix="/api/evaluate", tags=["Evaluation"])
+app.include_router(persona_router, prefix="/api/persona", tags=["Persona Chat"])
+app.include_router(
+    sessions_router, prefix="/api/sessions", tags=["Sessions"]
+)  # Added sessions router
+app.include_router(scores_router, prefix="/api/scores", tags=["Scores"])
+app.include_router(simulations_router, prefix="/api/simulations", tags=["Simulations"])
+app.include_router(evaluation_router, prefix="/api", tags=["Evaluation"])
+app.include_router(admin_router, prefix="/api/admin", tags=["Admin"])
+app.include_router(unity_router, prefix="/api/unity", tags=["Unity Integration"])
 
 
 @app.get("/")
