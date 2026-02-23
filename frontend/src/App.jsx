@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import SimulationHub from './pages/SimulationHub';
 import SimulationPlayer from './pages/SimulationPlayer';
 import AdminLayout from './layouts/AdminLayout';
@@ -70,66 +71,66 @@ function App() {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminLayout>
                   <AdminDashboard />
                 </AdminLayout>
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
 
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminLayout>
                   <AdminDashboard />
                 </AdminLayout>
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
 
           <Route
             path="/admin/users"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminLayout>
                   <UserManagement />
                 </AdminLayout>
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
 
           <Route
             path="/admin/logs/ai"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminLayout>
                   <AIEvaluationLogs />
                 </AdminLayout>
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
 
           <Route
             path="/admin/logs/simulations"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminLayout>
                   <SimulationLogs />
                 </AdminLayout>
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
 
           <Route
             path="/admin/settings"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminLayout>
                   <Settings />
                 </AdminLayout>
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
 

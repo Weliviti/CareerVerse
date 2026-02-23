@@ -140,7 +140,7 @@ def test_03_persona_chat():
         elif response.status_code == 400:
             print(f"✓ Step 3: Persona endpoint exists (prompt template not found)")
         else:
-            print(f"✓ Step 3: Persona endpoint exists (service not configured)")
+            print("✓ Step 3: Persona endpoint exists (service not configured)")
     finally:
         # Clean up dependency overrides
         app.dependency_overrides.clear()

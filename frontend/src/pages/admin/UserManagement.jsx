@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../../components/ui/Input';
 import { db } from '../../services/firebase';
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext';
+import api from '../../services/api';
 import toast from 'react-hot-toast';
 
 const UserManagement = () => {
@@ -72,25 +73,38 @@ const UserManagement = () => {
         }
     };
 
-    const handleDeleteUser = async (user) => {
-        // Prevent admin from deleting themselves
+    // Delete modal state
+    const [deleteModal, setDeleteModal] = useState({ open: false, user: null, deleting: false });
+
+    const openDeleteModal = (user) => {
         if (user.uid === currentUser?.uid) {
             toast.error('You cannot delete your own account');
             return;
         }
+        setDeleteModal({ open: true, user, deleting: false });
+    };
 
-        const confirmed = window.confirm(
-            `Are you sure you want to delete "${user.name}" (${user.email})? This action cannot be undone.`
-        );
-        if (!confirmed) return;
+    const closeDeleteModal = () => {
+        if (!deleteModal.deleting) {
+            setDeleteModal({ open: false, user: null, deleting: false });
+        }
+    };
 
+    const confirmDeleteUser = async () => {
+        const user = deleteModal.user;
+        if (!user) return;
+
+        setDeleteModal((prev) => ({ ...prev, deleting: true }));
         try {
-            await deleteDoc(doc(db, 'users', user.uid));
+            await api.delete(`/api/admin/users/${user.uid}`);
             setAllUsers((prev) => prev.filter((u) => u.uid !== user.uid));
-            toast.success(`User "${user.name}" deleted successfully`);
+            toast.success(`User "${user.name}" deleted from Authentication & Database`);
+            setDeleteModal({ open: false, user: null, deleting: false });
         } catch (err) {
             console.error('Error deleting user:', err);
-            toast.error('Failed to delete user');
+            const msg = err.response?.data?.message || 'Failed to delete user';
+            toast.error(msg);
+            setDeleteModal((prev) => ({ ...prev, deleting: false }));
         }
     };
 
@@ -200,7 +214,7 @@ const UserManagement = () => {
                                                         </svg>
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDeleteUser(user)}
+                                                        onClick={() => openDeleteModal(user)}
                                                         className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                                         title="Delete User"
                                                     >
@@ -217,6 +231,53 @@ const UserManagement = () => {
                         </table>
                     )}
                 </div>
+
+                {/* Delete Confirmation Modal */}
+                {deleteModal.open && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={closeDeleteModal}>
+                        <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-in" onClick={(e) => e.stopPropagation()}>
+                            {/* Warning Icon */}
+                            <div className="mx-auto w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                            </div>
+
+                            <h3 className="text-lg font-bold text-gray-900 text-center">Delete User</h3>
+                            <p className="text-gray-500 text-center text-sm mt-2">
+                                Are you sure you want to delete <span className="font-semibold text-gray-700">{deleteModal.user?.name}</span> ({deleteModal.user?.email})?
+                            </p>
+                            <p className="text-red-500 text-center text-xs mt-2 font-medium">
+                                This will permanently remove the user from both Authentication and Database. This action cannot be undone.
+                            </p>
+
+                            {/* Buttons */}
+                            <div className="flex gap-3 mt-6">
+                                <button
+                                    onClick={closeDeleteModal}
+                                    disabled={deleteModal.deleting}
+                                    className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium text-sm disabled:opacity-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmDeleteUser}
+                                    disabled={deleteModal.deleting}
+                                    className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                                >
+                                    {deleteModal.deleting ? (
+                                        <>
+                                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                            Deleting...
+                                        </>
+                                    ) : (
+                                        'Delete User'
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Pagination */}
                 <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50">

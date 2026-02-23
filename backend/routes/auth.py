@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Header, HTTPException
 from pydantic import BaseModel
 from firebase_admin import auth
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from services.user_service import get_user_by_uid, create_user_profile
+from services.firebase_admin_service import get_db_client
 from utils.responses import success_response, error_response
 
 router = APIRouter()
@@ -150,4 +151,48 @@ async def verify_token(request: VerifyTokenRequest):
             message="Token verification failed",
             code=401,
             error_details=f"An error occurred: {str(e)}",
+        )
+
+
+@router.delete("/account")
+async def delete_account(authorization: str = Header(None)):
+    """
+    Delete the current user's account from both Firebase Auth and Firestore.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        return error_response(
+            message="Missing or invalid Authorization header", code=401
+        )
+
+    token = authorization.split("Bearer ")[1]
+    try:
+        # Initialize Firebase first (get_db_client triggers SDK init)
+        db = get_db_client()
+
+        decoded_token = auth.verify_id_token(token)
+        uid = decoded_token["uid"]
+
+        # Step 1: Delete from Firebase Authentication
+        try:
+            auth.delete_user(uid)
+        except auth.UserNotFoundError:
+            pass
+
+        # Step 2: Delete from Firestore Database
+        user_ref = db.collection("users").document(uid)
+        if user_ref.get().exists:
+            user_ref.delete()
+
+        return success_response(
+            data={"uid": uid},
+            message="Account deleted successfully",
+        )
+
+    except auth.InvalidIdTokenError:
+        return error_response(message="Invalid token", code=401)
+    except auth.ExpiredIdTokenError:
+        return error_response(message="Token expired", code=401)
+    except Exception as e:
+        return error_response(
+            message="Failed to delete account", code=500, error_details=str(e)
         )
