@@ -151,3 +151,51 @@ async def get_all_users(
         return error_response(
             message="Failed to fetch users", code=500, error_details=str(e)
         )
+
+
+@router.delete("/users/{uid}")
+async def delete_user(
+    uid: str,
+    authorization: str = Header(None),
+):
+    """
+    Delete a user from both Firebase Authentication and Firestore Database.
+    """
+    # Auth check
+    if not authorization:
+        return error_response(message="Missing Authorization header", code=401)
+
+    try:
+        admin_uid = await verify_admin(authorization)
+    except HTTPException as e:
+        return error_response(message=e.detail, code=e.status_code)
+
+    # Prevent admins from deleting themselves
+    if admin_uid == uid:
+        return error_response(message="You cannot delete your own account", code=400)
+
+    try:
+        db = get_db_client()
+
+        # Step 1: Delete from Firebase Authentication
+        try:
+            auth.delete_user(uid)
+        except auth.UserNotFoundError:
+            # User might already be removed from Auth, continue to clean Firestore
+            pass
+
+        # Step 2: Delete from Firestore Database
+        user_ref = db.collection("users").document(uid)
+        user_doc = user_ref.get()
+        if user_doc.exists:
+            user_ref.delete()
+
+        return success_response(
+            data={"uid": uid},
+            message="User deleted from both Authentication and Database",
+        )
+
+    except Exception as e:
+        return error_response(
+            message="Failed to delete user", code=500, error_details=str(e)
+        )
