@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
 import Navbar from '../components/Navbar';
@@ -138,6 +138,9 @@ const Signup = () => {
         formData.password
       );
       const user = userCredential.user;
+
+      // Set displayName on Firebase Auth user
+      await updateProfile(user, { displayName: formData.fullName });
 
       // Step 2: Save user data to Firestore
       await setDoc(doc(db, 'users', user.uid), {
