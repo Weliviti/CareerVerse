@@ -1,54 +1,10 @@
-import React from 'react';
-
-// Mock Data
-const mockLogs = [
-    {
-        id: 1,
-        type: 'success',
-        timestamp: '2025-11-30 14:35:22',
-        title: 'AI evaluation completed for Technical Interview - Score: 85/100',
-        message: 'AI evaluation completed for Technical Interview - Score: 85/100' // Keeping title/message same for now based on image layout
-    },
-    {
-        id: 2,
-        type: 'info',
-        timestamp: '2025-11-30 14:32:18',
-        title: 'Processing natural language response for behavioral assessment',
-        message: 'Processing natural language response for behavioral assessment'
-    },
-    {
-        id: 3,
-        type: 'success',
-        timestamp: '2025-11-30 14:28:45',
-        title: 'Skill scoring algorithm completed - Communication: 78/100',
-        message: 'Skill scoring algorithm completed - Communication: 78/100'
-    },
-    {
-        id: 4,
-        type: 'warning',
-        timestamp: '2025-11-30 14:20:33',
-        title: 'AI model response time exceeded 2 seconds - Performance degradation detected',
-        message: 'AI model response time exceeded 2 seconds - Performance degradation detected'
-    },
-    {
-        id: 5,
-        type: 'success',
-        timestamp: '2025-11-30 14:15:55',
-        title: 'System design evaluation completed with detailed feedback',
-        message: 'System design evaluation completed with detailed feedback'
-    },
-    {
-        id: 6,
-        type: 'error',
-        timestamp: '2025-11-30 14:10:12',
-        title: 'Evaluation failed - retrying',
-        message: 'Error processing request'
-    }
-];
+import React, { useState, useEffect } from 'react';
+import { db } from '../../services/firebase';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 
 // Helper for styles based on type
 const getStatusStyles = (type) => {
-    switch (type) {
+    switch (type.toLowerCase()) {
         case 'success':
             return {
                 bg: 'bg-green-50',
@@ -133,6 +89,67 @@ const LogItem = ({ log }) => {
 };
 
 const AIEvaluationLogs = () => {
+    const [logs, setLogs] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchLogs();
+    }, []);
+
+    const fetchLogs = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            // 1. Fetch scores as Success logs
+            const scoresRef = collection(db, 'scores');
+            const scoresQuery = query(scoresRef, orderBy('created_at', 'desc'), limit(30));
+            const scoresSnapshot = await getDocs(scoresQuery);
+
+            const scoreLogs = scoresSnapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    type: 'success',
+                    timestamp: data.created_at?.toDate?.().toLocaleString() || 'Unknown',
+                    message: `AI evaluation completed for ${data.simulation_type || 'Unknown'} - Score: ${data.total_score || 0}/100`,
+                    rawDate: data.created_at?.toDate?.() || new Date(0)
+                };
+            });
+
+            // 2. Fetch general logs if any
+            const genLogsRef = collection(db, 'logs');
+            const genLogsQuery = query(genLogsRef, orderBy('timestamp', 'desc'), limit(30));
+            let systemLogs = [];
+            try {
+                const genLogsSnapshot = await getDocs(genLogsQuery);
+                systemLogs = genLogsSnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        type: data.type || 'info',
+                        timestamp: data.timestamp?.toDate?.().toLocaleString() || 'Unknown',
+                        message: data.message || 'System event log',
+                        rawDate: data.timestamp?.toDate?.() || new Date(0)
+                    };
+                });
+            } catch (loggingErr) {
+                console.warn('Logging collection might not exist yet:', loggingErr);
+                // Non-critical, continue with scores only
+            }
+
+            // Combine and sort
+            const combined = [...scoreLogs, ...systemLogs].sort((a, b) => b.rawDate - a.rawDate);
+            setLogs(combined);
+        } catch (err) {
+            console.error('Error fetching AI evaluation logs:', err);
+            setError('Failed to load logs. Ensure Firestore rules are updated and indices exist.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="max-w-5xl">
             <div className="mb-8">
@@ -140,17 +157,52 @@ const AIEvaluationLogs = () => {
                 <p className="text-gray-600 mt-2">Monitor AI performance and evaluation results</p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h2 className="text-lg font-semibold text-gray-700 mb-6 flex items-center gap-2">
-                    <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    AI Evaluation Activities
-                </h2>
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 min-h-[400px]">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                        <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        AI Evaluation Activities
+                    </h2>
+                    <button
+                        onClick={fetchLogs}
+                        disabled={loading}
+                        className="text-sm text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                    >
+                        <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+
                 <div className="space-y-4">
-                    {mockLogs.map(log => (
-                        <LogItem key={log.id} log={log} />
-                    ))}
+                    {loading ? (
+                        <div className="flex flex-col items-center justify-center py-20">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 mb-2"></div>
+                            <p className="text-gray-500 text-sm">Fetching real-time logs...</p>
+                        </div>
+                    ) : error ? (
+                        <div className="text-center py-20 bg-red-50 rounded-xl border border-red-100">
+                            <p className="text-red-600 text-sm mb-4">{error}</p>
+                            <button
+                                onClick={fetchLogs}
+                                className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700"
+                            >
+                                Retry
+                            </button>
+                        </div>
+                    ) : logs.length === 0 ? (
+                        <div className="text-center py-20 text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                            <p>No evaluation logs found yet.</p>
+                            <p className="text-xs mt-1 text-gray-400">Scores will appear here once users complete simulations.</p>
+                        </div>
+                    ) : (
+                        logs.map(log => (
+                            <LogItem key={log.id} log={log} />
+                        ))
+                    )}
                 </div>
             </div>
         </div>
