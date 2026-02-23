@@ -129,16 +129,16 @@ def test_03_persona_chat():
         print(f"Response status: {response.status_code}")
         print(f"Response body: {response.json()}")
 
-        # Accept 200 (success), 400 (invalid persona_type), or 500 (service error)
-        # as the endpoint exists and is responding correctly
+        # Accept 200 (success), 400 (prompt not found), or 500 (service error)
+        # as the endpoint exists
         assert response.status_code in [200, 400, 500]
 
         if response.status_code == 200:
             data = response.json()
             assert "data" in data or "response" in data
-            print("✓ Step 3: Persona chat successful")
+            print(f"✓ Step 3: Persona chat successful")
         elif response.status_code == 400:
-            print("✓ Step 3: Persona endpoint exists (persona_type not configured)")
+            print(f"✓ Step 3: Persona endpoint exists (prompt template not found)")
         else:
             print("✓ Step 3: Persona endpoint exists (service not configured)")
     finally:

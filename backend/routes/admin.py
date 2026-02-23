@@ -102,9 +102,12 @@ async def get_all_users(
         all_users = []
         for doc in docs:
             user_data = doc.to_dict()
-            # mock joined date if missing
-            if not user_data.get("created_at"):
-                user_data["created_at"] = "2025-01-01T00:00:00"  # fallback
+            # Convert Firestore Timestamp to ISO string for JSON serialization
+            created_at = user_data.get("created_at")
+            if created_at and hasattr(created_at, "isoformat"):
+                user_data["created_at"] = created_at.isoformat()
+            elif not created_at:
+                user_data["created_at"] = None
 
             # Add implicit status if missing
             if "isActive" not in user_data:

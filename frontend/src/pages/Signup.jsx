@@ -139,10 +139,10 @@ const Signup = () => {
       );
       const user = userCredential.user;
 
-      // Set displayName on Firebase Auth user
+      // Step 2: Set displayName on Firebase Auth profile
       await updateProfile(user, { displayName: formData.fullName });
 
-      // Step 2: Save user data to Firestore
+      // Step 3: Save user data to Firestore
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
@@ -151,7 +151,7 @@ const Signup = () => {
         createdAt: serverTimestamp(),
       });
 
-      // Step 3: Navigate to dashboard
+      // Step 4: Navigate to dashboard
       navigate('/dashboard');
     } catch (error) {
       console.error('Signup Error:', error);
