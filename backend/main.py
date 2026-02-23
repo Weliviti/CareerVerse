@@ -28,9 +28,9 @@ setup_exception_handlers(app)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",      # Vite default port (Local testing)
-        "https://careerverse.lk",     # Your custom domain
-        "https://www.careerverse.lk"  # Your custom domain (www version)
+        "http://localhost:5173",  # Vite default port (Local testing)
+        "https://careerverse.lk",  # Your custom domain
+        "https://www.careerverse.lk",  # Your custom domain (www version)
     ],
     allow_credentials=True,
     allow_methods=["*"],
