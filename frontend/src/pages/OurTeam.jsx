@@ -448,6 +448,278 @@ function OurTeam() {
                 </div>
             </section>
 
+            {/* Achievements & Competitions Section */}
+            <section className="py-24 relative overflow-hidden bg-white">
+                <div className="absolute top-20 right-10 w-80 h-80 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
+                <div className="absolute bottom-10 left-10 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-700 mb-5">
+                            🏆 Achievements
+                        </span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">Victories</span>
+                        </h2>
+                        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                            Recognition and achievements from competitions and showcases.
+                        </p>
+                    </div>
+
+                    {/* Achievement Cards Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {/* Achievement 1 */}
+                        <div className="group relative">
+                            <div className="relative bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                                {/* Decorative corner accent */}
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400 to-orange-500 opacity-10 rounded-bl-full"></div>
+                                
+                                <div className="relative p-8">
+                                    {/* Trophy Icon */}
+                                    <div className="mb-6 flex justify-center">
+                                        <div className="relative">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                            <div className="relative w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Achievement Details */}
+                                    <div className="text-center mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                            Innovation Hackathon 2026
+                                        </h3>
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-semibold shadow-sm">
+                                            <span>🥇</span>
+                                            <span>1st Place Winner</span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-gray-600 text-center leading-relaxed mb-4">
+                                        Won first place for innovative AI-powered career discovery platform among 50+ competing teams.
+                                    </p>
+
+                                    <div className="flex items-center justify-center text-sm text-gray-400">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        February 2026
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Achievement 2 */}
+                        <div className="group relative">
+                            <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-400 to-cyan-500 opacity-10 rounded-bl-full"></div>
+                                
+                                <div className="relative p-8">
+                                    <div className="mb-6 flex justify-center">
+                                        <div className="relative">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                            <div className="relative w-20 h-20 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="text-center mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                            EdTech Excellence Awards
+                                        </h3>
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm font-semibold shadow-sm">
+                                            <span>🎖️</span>
+                                            <span>Best Innovation</span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-gray-600 text-center leading-relaxed mb-4">
+                                        Recognized as the most innovative educational technology solution for career guidance.
+                                    </p>
+
+                                    <div className="flex items-center justify-center text-sm text-gray-400">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        January 2026
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Achievement 3 */}
+                        <div className="group relative">
+                            <div className="relative bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-violet-400 to-purple-500 opacity-10 rounded-bl-full"></div>
+                                
+                                <div className="relative p-8">
+                                    <div className="mb-6 flex justify-center">
+                                        <div className="relative">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-violet-400 to-purple-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                            <div className="relative w-20 h-20 bg-gradient-to-br from-violet-400 to-purple-500 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="text-center mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                            AI Showcase 2025
+                                        </h3>
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 text-white text-sm font-semibold shadow-sm">
+                                            <span>🌟</span>
+                                            <span>Featured Project</span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-gray-600 text-center leading-relaxed mb-4">
+                                        Selected as a featured project at the national AI and ML innovation showcase.
+                                    </p>
+
+                                    <div className="flex items-center justify-center text-sm text-gray-400">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        December 2025
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Achievement 4 */}
+                        <div className="group relative">
+                            <div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 opacity-10 rounded-bl-full"></div>
+                                
+                                <div className="relative p-8">
+                                    <div className="mb-6 flex justify-center">
+                                        <div className="relative">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                            <div className="relative w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="text-center mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                            University Tech Fest
+                                        </h3>
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-semibold shadow-sm">
+                                            <span>🥈</span>
+                                            <span>2nd Place Winner</span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-gray-600 text-center leading-relaxed mb-4">
+                                        Secured second place in the university-wide technology innovation competition.
+                                    </p>
+
+                                    <div className="flex items-center justify-center text-sm text-gray-400">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        November 2025
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Achievement 5 */}
+                        <div className="group relative">
+                            <div className="relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border border-pink-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-pink-400 to-rose-500 opacity-10 rounded-bl-full"></div>
+                                
+                                <div className="relative p-8">
+                                    <div className="mb-6 flex justify-center">
+                                        <div className="relative">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                            <div className="relative w-20 h-20 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="text-center mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                            Startup Pitch Competition
+                                        </h3>
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white text-sm font-semibold shadow-sm">
+                                            <span>💼</span>
+                                            <span>Top 10 Finalist</span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-gray-600 text-center leading-relaxed mb-4">
+                                        Selected as one of the top 10 finalists in national startup pitch competition.
+                                    </p>
+
+                                    <div className="flex items-center justify-center text-sm text-gray-400">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        October 2025
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Achievement 6 */}
+                        <div className="group relative">
+                            <div className="relative bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl border border-indigo-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-400 to-blue-500 opacity-10 rounded-bl-full"></div>
+                                
+                                <div className="relative p-8">
+                                    <div className="mb-6 flex justify-center">
+                                        <div className="relative">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                            <div className="relative w-20 h-20 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="text-center mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                            Research Paper Published
+                                        </h3>
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white text-sm font-semibold shadow-sm">
+                                            <span>📄</span>
+                                            <span>Publication</span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-gray-600 text-center leading-relaxed mb-4">
+                                        Published research paper on AI-driven career assessment at international conference.
+                                    </p>
+
+                                    <div className="flex items-center justify-center text-sm text-gray-400">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        September 2025
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <BackToTop />
             <Footer />
         </div>
