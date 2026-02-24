@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import BackToTop from '../components/ui/BackToTop';
 import Button from '../components/ui/Button';
 import Footer from '../components/Footer';
 
 function Home() {
+    const navigate = useNavigate();
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary-50">
             <Navbar />
@@ -262,21 +265,20 @@ function Home() {
                     <p className="text-xl text-primary-50 mb-10 max-w-2xl mx-auto">
                         Join thousands discovering their true potential through AI powered career simulations
                     </p>
-                    <Button
-                        variant="primary"
-                        size="lg"
-                        className="bg-white text-primary-700 hover:bg-gray-100 border-transparent shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 px-8 py-4 text-lg font-bold inline-flex items-center gap-2"
+                    <button
+                        onClick={() => { window.scrollTo(0, 0); navigate('/signup'); }}
+                        className="bg-white text-primary-700 hover:bg-gray-100 border-transparent shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 px-8 py-4 text-lg font-bold inline-flex items-center gap-2 rounded-lg"
                     >
                         Start Your Journey
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
-                    </Button>
-                    
+                    </button>
+
                     {/* Meet Our Team Link */}
                     <div className="mt-8">
-                        <a 
-                            href="/our-team" 
+                        <a
+                            href="/our-team"
                             className="group inline-flex items-center gap-2 text-white/90 hover:text-white text-base font-semibold transition-all duration-300 hover:gap-3"
                         >
                             <span>Meet the team behind CareerVerse</span>
