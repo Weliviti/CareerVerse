@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 
 function OurTeam() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary-50">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary-50 scroll-smooth">
             <Navbar />
 
             {/* Hero Section */}
@@ -22,6 +22,11 @@ function OurTeam() {
 
                 <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 sm:pt-36 sm:pb-28">
                     <div className="text-center">
+                        {/* Decorative sparkle elements */}
+                        <div className="absolute top-24 left-12 w-2 h-2 bg-teal-400 rounded-full animate-pulse hidden sm:block"></div>
+                        <div className="absolute top-32 right-16 w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse animation-delay-300 hidden sm:block"></div>
+                        <div className="absolute bottom-24 left-20 w-1 h-1 bg-violet-400 rounded-full animate-pulse animation-delay-600 hidden sm:block"></div>
+                        
                         {/* Pill badge */}
                         <span className="inline-block px-4 py-1.5 rounded-full bg-white/80 backdrop-blur border border-teal-200 text-sm font-semibold text-teal-700 mb-6 shadow-sm animate-fade-in animation-delay-100">
                             👥 Meet the Creators
@@ -36,16 +41,40 @@ function OurTeam() {
                         </h1>
 
                         {/* Description */}
-                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-500 mb-14 leading-relaxed animate-fade-in-up animation-delay-300">
+                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-500 mb-8 leading-relaxed animate-fade-in-up animation-delay-300">
                             Meet the passionate team of innovators behind CareerVerse, dedicated to
                             revolutionizing career discovery through cutting-edge AI and immersive technology.
                         </p>
+                        
+                        {/* Stats/Quick Info */}
+                        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400 animate-fade-in animation-delay-400">
+                            <div className="flex items-center gap-2">
+                                <svg className="w-4 h-4 text-teal-500" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                <span className="font-medium">6 Developers</span>
+                            </div>
+                            <span className="hidden sm:inline text-gray-300">•</span>
+                            <div className="flex items-center gap-2">
+                                <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                <span className="font-medium">Multiple Specializations</span>
+                            </div>
+                            <span className="hidden sm:inline text-gray-300">•</span>
+                            <div className="flex items-center gap-2">
+                                <svg className="w-4 h-4 text-violet-500" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                                </svg>
+                                <span className="font-medium">Award Winning</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Team Members Section */}
-            <section className="py-24 relative overflow-hidden bg-white">
+            <section className="py-20 sm:py-24 relative overflow-hidden bg-white">
                 <div className="absolute top-10 right-20 w-72 h-72 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
                 <div className="absolute bottom-20 left-20 w-72 h-72 bg-violet-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
 
@@ -57,7 +86,7 @@ function OurTeam() {
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight animate-fade-in-up animation-delay-100">
                             Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">Minds</span> Behind CareerVerse
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
+                        <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
                             A talented team of six developers pushing the boundaries of career exploration.
                         </p>
                     </div>
@@ -318,12 +347,12 @@ function OurTeam() {
             </section>
 
             {/* Project Updates Section */}
-            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%)' }}>
+            <section className="py-20 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%)' }}>
                 <div className="absolute top-20 left-10 w-64 h-64 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-15 pointer-events-none"></div>
                 <div className="absolute bottom-10 right-10 w-64 h-64 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-15 pointer-events-none"></div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-12 sm:mb-16">
                         <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600 mb-5 shadow-sm animate-fade-in">
                             📢 Latest Updates
                         </span>
@@ -449,7 +478,7 @@ function OurTeam() {
             </section>
 
             {/* Achievements & Competitions Section */}
-            <section className="py-24 relative overflow-hidden bg-white">
+            <section className="py-20 sm:py-24 relative overflow-hidden bg-white">
                 <div className="absolute top-20 right-10 w-80 h-80 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
                 <div className="absolute bottom-10 left-10 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
 
