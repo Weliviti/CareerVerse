@@ -23,12 +23,12 @@ function OurTeam() {
                 <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 sm:pt-36 sm:pb-28">
                     <div className="text-center">
                         {/* Pill badge */}
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-white/80 backdrop-blur border border-teal-200 text-sm font-semibold text-teal-700 mb-6 shadow-sm">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-white/80 backdrop-blur border border-teal-200 text-sm font-semibold text-teal-700 mb-6 shadow-sm animate-fade-in animation-delay-100">
                             👥 Meet the Creators
                         </span>
 
                         {/* Main Heading */}
-                        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 tracking-tight mb-6 leading-[1.1]">
+                        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 tracking-tight mb-6 leading-[1.1] animate-fade-in-up animation-delay-200">
                             Our{' '}
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500 italic">
                                 Team
@@ -36,7 +36,7 @@ function OurTeam() {
                         </h1>
 
                         {/* Description */}
-                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-500 mb-14 leading-relaxed">
+                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-500 mb-14 leading-relaxed animate-fade-in-up animation-delay-300">
                             Meet the passionate team of innovators behind CareerVerse, dedicated to
                             revolutionizing career discovery through cutting-edge AI and immersive technology.
                         </p>
@@ -51,13 +51,13 @@ function OurTeam() {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-sm font-semibold text-teal-700 mb-5">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-sm font-semibold text-teal-700 mb-5 animate-fade-in">
                             🌟 The Innovators
                         </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight animate-fade-in-up animation-delay-100">
                             Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">Minds</span> Behind CareerVerse
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                        <p className="text-lg text-gray-500 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
                             A talented team of six developers pushing the boundaries of career exploration.
                         </p>
                     </div>
@@ -65,7 +65,7 @@ function OurTeam() {
                     {/* Team Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* Team Member 1 - Sandeesh */}
-                        <div className="group relative">
+                        <div className="group relative animate-fade-in-up animation-delay-100">
                             <div className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                                 {/* Gradient Border on Hover */}
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
@@ -115,7 +115,7 @@ function OurTeam() {
                         </div>
 
                         {/* Team Member 2 - Nishantha */}
-                        <div className="group relative">
+                        <div className="group relative animate-fade-in-up animation-delay-200">
                             <div className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                     <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-purple-500 rounded-2xl"></div>
@@ -155,7 +155,7 @@ function OurTeam() {
                         </div>
 
                         {/* Team Member 3 - Crishal */}
-                        <div className="group relative">
+                        <div className="group relative animate-fade-in-up animation-delay-300">
                             <div className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl"></div>
@@ -195,7 +195,7 @@ function OurTeam() {
                         </div>
 
                         {/* Team Member 4 - Kavindu */}
-                        <div className="group relative">
+                        <div className="group relative animate-fade-in-up animation-delay-400">
                             <div className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl"></div>
@@ -235,7 +235,7 @@ function OurTeam() {
                         </div>
 
                         {/* Team Member 5 - Pramudi */}
-                        <div className="group relative">
+                        <div className="group relative animate-fade-in-up animation-delay-500">
                             <div className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                     <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl"></div>
@@ -275,7 +275,7 @@ function OurTeam() {
                         </div>
 
                         {/* Team Member 6 - Chamindu */}
-                        <div className="group relative">
+                        <div className="group relative animate-fade-in-up animation-delay-600">
                             <div className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                     <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-2xl"></div>
@@ -324,13 +324,13 @@ function OurTeam() {
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600 mb-5 shadow-sm">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600 mb-5 shadow-sm animate-fade-in">
                             📢 Latest Updates
                         </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight animate-fade-in-up animation-delay-100">
                             Project <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">Journey</span>
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                        <p className="text-lg text-gray-500 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
                             Track our progress as we build the future of career discovery.
                         </p>
                     </div>
@@ -341,7 +341,7 @@ function OurTeam() {
                         <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-teal-200 via-emerald-200 to-teal-200 transform md:-translate-x-1/2 hidden sm:block"></div>
 
                         {/* Update 1 */}
-                        <div className="relative flex flex-col md:flex-row gap-8 items-center">
+                        <div className="relative flex flex-col md:flex-row gap-8 items-center animate-fade-in-up animation-delay-100">
                             <div className="md:w-1/2 md:text-right md:pr-12">
                                 <div className="inline-block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6 text-left">
                                     <div className="flex items-center gap-3 mb-3">
@@ -367,7 +367,7 @@ function OurTeam() {
                         </div>
 
                         {/* Update 2 */}
-                        <div className="relative flex flex-col md:flex-row gap-8 items-center">
+                        <div className="relative flex flex-col md:flex-row-reverse gap-8 items-center animate-fade-in-up animation-delay-200">
                             <div className="md:w-1/2"></div>
                             <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 items-center justify-center shadow-xl shadow-violet-200 relative z-10">
                                 <span className="text-2xl">🎮</span>
@@ -394,7 +394,7 @@ function OurTeam() {
                         </div>
 
                         {/* Update 3 */}
-                        <div className="relative flex flex-col md:flex-row gap-8 items-center">
+                        <div className="relative flex flex-col md:flex-row gap-8 items-center animate-fade-in-up animation-delay-300">
                             <div className="md:w-1/2 md:text-right md:pr-12">
                                 <div className="inline-block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6 text-left">
                                     <div className="flex items-center gap-3 mb-3">
@@ -420,7 +420,7 @@ function OurTeam() {
                         </div>
 
                         {/* Update 4 */}
-                        <div className="relative flex flex-col md:flex-row gap-8 items-center">
+                        <div className="relative flex flex-col md:flex-row-reverse gap-8 items-center animate-fade-in-up animation-delay-400">
                             <div className="md:w-1/2"></div>
                             <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 items-center justify-center shadow-xl shadow-blue-200 relative z-10">
                                 <span className="text-2xl">🏆</span>
@@ -455,13 +455,13 @@ function OurTeam() {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-700 mb-5">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-700 mb-5 animate-fade-in">
                             🏆 Achievements
                         </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight animate-fade-in-up animation-delay-100">
                             Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">Victories</span>
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                        <p className="text-lg text-gray-500 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
                             Recognition and achievements from competitions and showcases.
                         </p>
                     </div>
@@ -469,7 +469,7 @@ function OurTeam() {
                     {/* Achievement Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* Achievement 1 */}
-                        <div className="group relative">
+                        <div className="group relative animate-scale-in animation-delay-100">
                             <div className="relative bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                                 {/* Decorative corner accent */}
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400 to-orange-500 opacity-10 rounded-bl-full"></div>
@@ -513,7 +513,7 @@ function OurTeam() {
                         </div>
 
                         {/* Achievement 2 */}
-                        <div className="group relative">
+                        <div className="group relative animate-scale-in animation-delay-200">
                             <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-400 to-cyan-500 opacity-10 rounded-bl-full"></div>
                                 
@@ -554,7 +554,7 @@ function OurTeam() {
                         </div>
 
                         {/* Achievement 3 */}
-                        <div className="group relative">
+                        <div className="group relative animate-scale-in animation-delay-300">
                             <div className="relative bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-violet-400 to-purple-500 opacity-10 rounded-bl-full"></div>
                                 
@@ -595,7 +595,7 @@ function OurTeam() {
                         </div>
 
                         {/* Achievement 4 */}
-                        <div className="group relative">
+                        <div className="group relative animate-scale-in animation-delay-400">
                             <div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 opacity-10 rounded-bl-full"></div>
                                 
@@ -636,7 +636,7 @@ function OurTeam() {
                         </div>
 
                         {/* Achievement 5 */}
-                        <div className="group relative">
+                        <div className="group relative animate-scale-in animation-delay-500">
                             <div className="relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border border-pink-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-pink-400 to-rose-500 opacity-10 rounded-bl-full"></div>
                                 
@@ -677,7 +677,7 @@ function OurTeam() {
                         </div>
 
                         {/* Achievement 6 */}
-                        <div className="group relative">
+                        <div className="group relative animate-scale-in animation-delay-600">
                             <div className="relative bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl border border-indigo-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-400 to-blue-500 opacity-10 rounded-bl-full"></div>
                                 
