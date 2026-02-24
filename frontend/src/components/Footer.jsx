@@ -58,6 +58,7 @@ const Footer = () => {
                         <ul className="space-y-3">
                             <li><Link to="/" className="footer-link">Home</Link></li>
                             <li><Link to="/about" className="footer-link">About</Link></li>
+                            <li><Link to="/our-team" className="footer-link">Our Team</Link></li>
                             <li><Link to="/community" className="footer-link">Community</Link></li>
                             <li><Link to="/privacy" className="footer-link">Privacy</Link></li>
                             <li><Link to="/terms" className="footer-link">Terms</Link></li>

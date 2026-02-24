@@ -60,6 +60,12 @@ const Navbar = () => {
                   >
                     <span className="navbar-link-text">About</span>
                   </button>
+                  <button
+                    onClick={() => navigate('/our-team')}
+                    className={`navbar-link ${isActive('/our-team') ? 'navbar-link-active' : ''}`}
+                  >
+                    <span className="navbar-link-text">Our Team</span>
+                  </button>
                 </>
               ) : (
                 <>
@@ -74,6 +80,12 @@ const Navbar = () => {
                     className={`navbar-link ${isActive('/about') ? 'navbar-link-active' : ''}`}
                   >
                     <span className="navbar-link-text">About</span>
+                  </button>
+                  <button
+                    onClick={() => navigate('/our-team')}
+                    className={`navbar-link ${isActive('/our-team') ? 'navbar-link-active' : ''}`}
+                  >
+                    <span className="navbar-link-text">Our Team</span>
                   </button>
                 </>
               )}
@@ -152,6 +164,9 @@ const Navbar = () => {
               <button onClick={() => { navigate('/about'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 About
               </button>
+              <button onClick={() => { navigate('/our-team'); setIsMenuOpen(false); }} className="navbar-mobile-link">
+                Our Team
+              </button>
               <button onClick={() => { navigate('/profile'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 Profile
               </button>
@@ -168,6 +183,9 @@ const Navbar = () => {
               </button>
               <button onClick={() => { navigate('/about'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 About
+              </button>
+              <button onClick={() => { navigate('/our-team'); setIsMenuOpen(false); }} className="navbar-mobile-link">
+                Our Team
               </button>
               <div className="pt-3 space-y-2 border-t border-gray-100 mt-2">
                 <button onClick={() => { navigate('/login'); setIsMenuOpen(false); }} className="navbar-mobile-link">
