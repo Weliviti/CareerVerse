@@ -432,6 +432,63 @@ function About() {
                 </div>
             </section>
 
+            {/* Meet Our Team CTA Section */}
+            <section className="py-20 relative overflow-hidden bg-gradient-to-br from-teal-600 via-emerald-600 to-teal-700">
+                {/* Decorative background elements */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-900/20 rounded-full blur-3xl"></div>
+                </div>
+
+                <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div className="mb-6">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-sm font-semibold text-white mb-4">
+                            👥 The Team
+                        </span>
+                    </div>
+                    
+                    <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+                        Meet the Minds Behind CareerVerse
+                    </h2>
+                    
+                    <p className="text-lg sm:text-xl text-teal-50 mb-10 max-w-2xl mx-auto leading-relaxed">
+                        A passionate team of developers, designers, and AI enthusiasts working together to revolutionize career discovery.
+                    </p>
+                    
+                    <a 
+                        href="/our-team" 
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-white text-teal-700 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:gap-4"
+                    >
+                        <span>Meet Our Team</span>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+
+                    {/* Quick Stats */}
+                    <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-white/90">
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            <span className="font-semibold">6 Team Members</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                            </svg>
+                            <span className="font-semibold">Multiple Achievements</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            <span className="font-semibold">Innovation-Driven</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <BackToTop />
             <Footer />
         </div>
