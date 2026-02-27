@@ -25,7 +25,6 @@ function Home() {
                     <div className="text-center">
                         {/* Badge Pill */}
                         <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-primary-200 shadow-sm mb-10">
-                            <span className="text-lg">✨</span>
                             <span className="text-sm font-semibold text-primary-700 tracking-wide">Next-Gen Career Intelligence</span>
                         </div>
 
@@ -44,7 +43,7 @@ function Home() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button className="hero-btn-primary">
+                            <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="hero-btn-primary">
                                 Launch Experience
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
