@@ -160,6 +160,55 @@ class SessionService:
         except Exception as e:
             raise Exception(f"Failed to retrieve session: {str(e)}")
 
+    async def get_user_sessions(
+        self, user_id: str, limit: int = 10, cursor: Optional[str] = None
+    ) -> Dict:
+        """
+        Retrieve all sessions for a specific user with pagination.
+
+        Args:
+            user_id: The ID of the user
+            limit: Maximum number of sessions to return
+            cursor: Session ID for cursor-based pagination
+
+        Returns:
+            Dict containing sessions list and next_cursor
+
+        Raises:
+            Exception: If retrieval fails
+        """
+        try:
+            query = (
+                self.sessions_ref.where("user_id", "==", user_id)
+                .order_by("start_time", direction="DESCENDING")
+                .limit(limit)
+            )
+
+            # Apply cursor if provided
+            if cursor:
+                cursor_doc = self.sessions_ref.document(cursor).get()
+                if cursor_doc.exists:
+                    query = query.start_after(cursor_doc)
+
+            # Execute query
+            docs = query.stream()
+            sessions = []
+            last_doc = None
+
+            for doc in docs:
+                session_data = doc.to_dict()
+                session_data["id"] = doc.id
+                sessions.append(session_data)
+                last_doc = doc
+
+            # Determine next cursor
+            next_cursor = last_doc.id if last_doc and len(sessions) == limit else None
+
+            return {"sessions": sessions, "next_cursor": next_cursor}
+
+        except Exception as e:
+            raise Exception(f"Failed to retrieve user sessions: {str(e)}")
+
 
 # Create global instance
 session_service = SessionService()
