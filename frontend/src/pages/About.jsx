@@ -456,7 +456,7 @@ function About() {
                     </p>
                     
                     <a 
-                        href="/our-team" 
+                        href="/community" 
                         className="inline-flex items-center gap-3 px-8 py-4 bg-white text-teal-700 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:gap-4"
                     >
                         <span>Meet Our Team</span>

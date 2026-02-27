@@ -58,7 +58,7 @@ const Footer = () => {
                         <ul className="space-y-3">
                             <li><Link to="/" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Home</Link></li>
                             <li><Link to="/about" className="footer-link" onClick={() => window.scrollTo(0, 0)}>About</Link></li>
-                            <li><Link to="/our-team" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Our Team</Link></li>
+                            <li><Link to="/community" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Community</Link></li>
                             <li><Link to="/community" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Community</Link></li>
                             <li><Link to="/privacy" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Privacy</Link></li>
                             <li><Link to="/terms" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Terms</Link></li>
