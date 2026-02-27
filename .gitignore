@@ -5,7 +5,6 @@ __pycache__/
 venv/
 .env
 frontend/.env
-frontend/public/games/teacher-sim
 backend/.env
 .venv
 env/
