@@ -128,9 +128,14 @@ const Footer = () => {
                                 </svg>
                             </a>
                         </div>
-                        <p className="text-xs text-gray-500 leading-relaxed">
-                            Built with ❤️ by students, for students. Powered by Gemini AI.
-                        </p>
+                        <div className="mt-6 pt-6 border-t border-gray-800/40">
+                            <p className="text-xs text-gray-400 font-medium tracking-wide">
+                                Built by <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">CS-26</span>
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                CareerVerse Team • IIT
+                            </p>
+                        </div>
                     </div>
                 </div>
 
