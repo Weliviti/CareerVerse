@@ -123,6 +123,28 @@ function TermsOfService() {
                                     <li>To impersonate or attempt to impersonate the Company, a Company employee, another user, or any other person or entity.</li>
                                 </ul>
                             </div>
+
+                            {/* Section 7: Privacy & Data */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center text-teal-600 text-sm">7</span>
+                                    Privacy & Data
+                                </h2>
+                                <p>
+                                    Your use of the Service is also governed by our Privacy Policy, which is incorporated into these Terms by reference. Please review our <a href="/privacy" className="text-teal-600 hover:text-teal-700 font-medium underline underline-offset-4">Privacy Policy</a> to understand how we collect, use, and share your information.
+                                </p>
+                            </div>
+
+                            {/* Section 8: Disclaimers & Warranties */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 text-sm">8</span>
+                                    Disclaimers & Warranties
+                                </h2>
+                                <p>
+                                    The Service is provided on an "AS IS" and "AS AVAILABLE" basis. CareerVerse makes no representations or warranties of any kind, express or implied, as to the operation of their services, or the information, content, or materials included therein. You expressly agree that your use of these services, their content, and any services or items obtained from us is at your sole risk.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
