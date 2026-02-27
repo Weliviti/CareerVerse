@@ -12,7 +12,6 @@ from routes.sessions import router as sessions_router
 from routes.scores import router as scores_router
 from routes.simulations import router as simulations_router
 from routes.admin import router as admin_router
-from routes.unity import router as unity_router
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -48,7 +47,6 @@ app.include_router(scores_router, prefix="/api/scores", tags=["Scores"])
 app.include_router(simulations_router, prefix="/api/simulations", tags=["Simulations"])
 app.include_router(evaluation_router, prefix="/api", tags=["Evaluation"])
 app.include_router(admin_router, prefix="/api/admin", tags=["Admin"])
-app.include_router(unity_router, prefix="/api/unity", tags=["Unity Integration"])
 
 
 @app.get("/")
