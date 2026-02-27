@@ -145,6 +145,46 @@ function TermsOfService() {
                                     The Service is provided on an "AS IS" and "AS AVAILABLE" basis. CareerVerse makes no representations or warranties of any kind, express or implied, as to the operation of their services, or the information, content, or materials included therein. You expressly agree that your use of these services, their content, and any services or items obtained from us is at your sole risk.
                                 </p>
                             </div>
+
+                            {/* Section 9: Limitation of Liability */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-violet-50 rounded-lg flex items-center justify-center text-violet-600 text-sm">9</span>
+                                    Limitation of Liability
+                                </h2>
+                                <p>
+                                    In no event shall CareerVerse, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content.
+                                </p>
+                            </div>
+
+                            {/* Section 10: Changes to Terms */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600 text-sm">10</span>
+                                    Changes to Terms
+                                </h2>
+                                <p>
+                                    We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.
+                                </p>
+                            </div>
+
+                            {/* Contact Us */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-rose-50 rounded-lg flex items-center justify-center text-rose-600 text-sm">11</span>
+                                    Contact Us
+                                </h2>
+                                <p>
+                                    If you have any questions about these Terms, please contact us:
+                                </p>
+                                <ul className="list-disc pl-6 mt-4 space-y-2">
+                                    <li>By email: <a href="mailto:careerverselk@gmail.com" className="text-rose-600 hover:text-rose-700 font-medium underline underline-offset-4">careerverselk@gmail.com</a></li>
+                                    <li>By visiting the Contact page on our website</li>
+                                </ul>
+                                <p className="mt-8 text-sm text-gray-400">
+                                    Last Updated: February 27, 2026
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
