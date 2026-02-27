@@ -25,7 +25,6 @@ function Home() {
                     <div className="text-center">
                         {/* Badge Pill */}
                         <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-primary-200 shadow-sm mb-10">
-                            <span className="text-lg">✨</span>
                             <span className="text-sm font-semibold text-primary-700 tracking-wide">Next-Gen Career Intelligence</span>
                         </div>
 
@@ -44,7 +43,7 @@ function Home() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button className="hero-btn-primary">
+                            <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="hero-btn-primary">
                                 Launch Experience
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -62,10 +61,11 @@ function Home() {
             </section>
 
             {/* Why Choose CareerVerse Section */}
-            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%)' }}>
-                {/* Subtle background decorations */}
-                <div className="absolute top-20 left-10 w-64 h-64 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-                <div className="absolute bottom-10 right-10 w-64 h-64 bg-violet-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f0fdfa 50%, #f5f3ff 100%)' }}>
+                {/* Animated background decorations */}
+                <div className="absolute top-20 left-10 w-72 h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 4s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 right-10 w-72 h-72 bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite 1s' }}></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 2s' }}></div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -82,10 +82,10 @@ function Home() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {/* Feature 1: AI-Powered Analysis */}
-                        <div className="feature-card group">
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #0d9488, #14b8a6)' }}></div>
+                        <div className="feature-card group" style={{ '--card-glow': 'rgba(13,148,136,0.08)' }}>
+                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #0d9488, #5eead4, #0d9488)' }}></div>
                             <div className="p-8 pt-10">
-                                <div className="relative mb-6">
+                                <div className="relative mb-6 feature-icon-float">
                                     <div className="absolute inset-0 w-16 h-16 bg-teal-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
                                     <div className="relative w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-200">
                                         <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,10 +101,10 @@ function Home() {
                         </div>
 
                         {/* Feature 2: Precise Recommendations */}
-                        <div className="feature-card group">
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #7c3aed, #a78bfa)' }}></div>
+                        <div className="feature-card group" style={{ '--card-glow': 'rgba(124,58,237,0.08)' }}>
+                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #7c3aed, #c4b5fd, #7c3aed)' }}></div>
                             <div className="p-8 pt-10">
-                                <div className="relative mb-6">
+                                <div className="relative mb-6 feature-icon-float">
                                     <div className="absolute inset-0 w-16 h-16 bg-violet-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
                                     <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
                                         <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,10 +120,10 @@ function Home() {
                         </div>
 
                         {/* Feature 3: Track Your Growth */}
-                        <div className="feature-card group">
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #d97706, #fbbf24)' }}></div>
+                        <div className="feature-card group" style={{ '--card-glow': 'rgba(217,119,6,0.08)' }}>
+                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #d97706, #fde68a, #d97706)' }}></div>
                             <div className="p-8 pt-10">
-                                <div className="relative mb-6">
+                                <div className="relative mb-6 feature-icon-float">
                                     <div className="absolute inset-0 w-16 h-16 bg-amber-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
                                     <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-200">
                                         <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,14 +142,15 @@ function Home() {
             </section>
 
             {/* Career Paths Section */}
-            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f0fdfa 0%, #f8fafc 50%, #ffffff 100%)' }}>
-                <div className="absolute top-10 right-20 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-15"></div>
-                <div className="absolute bottom-20 left-20 w-72 h-72 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-15"></div>
+            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f5f3ff 0%, #f0fdfa 50%, #ffffff 100%)' }}>
+                <div className="absolute top-10 right-20 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-20 left-20 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 4s ease-in-out infinite 1.5s' }}></div>
+                <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 0.5s' }}></div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600 mb-5 shadow-sm">
-                            🎮 Simulations
+                            Simulations
                         </span>
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
                             Experience three <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500 italic">Career Paths</span>
@@ -161,10 +162,10 @@ function Home() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
                         {/* The Educator */}
-                        <div className="feature-card group">
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #2563eb, #60a5fa)' }}></div>
+                        <div className="feature-card group" style={{ '--card-glow': 'rgba(37,99,235,0.08)' }}>
+                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #2563eb, #93c5fd, #2563eb)' }}></div>
                             <div className="p-8 pt-10">
-                                <div className="relative mb-6">
+                                <div className="relative mb-6 feature-icon-float">
                                     <div className="absolute inset-0 w-16 h-16 bg-blue-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
                                     <div className="relative w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
                                         <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,17 +182,17 @@ function Home() {
                                     <span className="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-full">Control</span>
                                 </div>
                                 <div className="flex items-center gap-4 text-xs text-gray-400">
-                                    <span>⏱ 20 min</span>
-                                    <span>📊 Medium</span>
+                                    <span>20 min</span>
+                                    <span>Medium</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* The Diagnostician */}
-                        <div className="feature-card group">
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #0d9488, #14b8a6)' }}></div>
+                        <div className="feature-card group" style={{ '--card-glow': 'rgba(13,148,136,0.08)' }}>
+                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #0d9488, #5eead4, #0d9488)' }}></div>
                             <div className="p-8 pt-10">
-                                <div className="relative mb-6">
+                                <div className="relative mb-6 feature-icon-float">
                                     <div className="absolute inset-0 w-16 h-16 bg-teal-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
                                     <div className="relative w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-200">
                                         <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,17 +208,17 @@ function Home() {
                                     <span className="px-2.5 py-1 text-xs font-medium bg-teal-50 text-teal-700 rounded-full">Stress</span>
                                 </div>
                                 <div className="flex items-center gap-4 text-xs text-gray-400">
-                                    <span>⏱ 20 min</span>
-                                    <span>📊 Hard</span>
+                                    <span>20 min</span>
+                                    <span>Hard</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* The Advocate */}
-                        <div className="feature-card group">
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #d97706, #fbbf24)' }}></div>
+                        <div className="feature-card group" style={{ '--card-glow': 'rgba(217,119,6,0.08)' }}>
+                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #d97706, #fde68a, #d97706)' }}></div>
                             <div className="p-8 pt-10">
-                                <div className="relative mb-6">
+                                <div className="relative mb-6 feature-icon-float">
                                     <div className="absolute inset-0 w-16 h-16 bg-amber-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
                                     <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-200">
                                         <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,8 +234,8 @@ function Home() {
                                     <span className="px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-700 rounded-full">Ethics</span>
                                 </div>
                                 <div className="flex items-center gap-4 text-xs text-gray-400">
-                                    <span>⏱ 20 min</span>
-                                    <span>📊 Hard</span>
+                                    <span>20 min</span>
+                                    <span>Hard</span>
                                 </div>
                             </div>
                         </div>

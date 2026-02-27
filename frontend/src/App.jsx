@@ -19,6 +19,7 @@ import Settings from './pages/admin/Settings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
+import TeacherSimulation from './pages/TeacherSimulation';
 
 function App() {
   return (
@@ -48,6 +49,13 @@ function App() {
               <ProtectedRoute>
                 <SimulationPlayer />
               </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/teacher-simulation"
+            element={
+              <TeacherSimulation />
             }
           />
 
