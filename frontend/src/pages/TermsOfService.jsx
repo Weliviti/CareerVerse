@@ -68,6 +68,33 @@ function TermsOfService() {
                                     You must be at least 13 years of age to use the Service. By agreeing to these Terms, you represent and warrant to us that: (a) you are at least 13 years old; (b) you have not previously been suspended or removed from the Service; and (c) your registration and your use of the Service is in compliance with all applicable laws and regulations.
                                 </p>
                             </div>
+
+                            {/* Section 3: User Accounts & Security */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-violet-50 rounded-lg flex items-center justify-center text-violet-600 text-sm">3</span>
+                                    User Accounts & Security
+                                </h2>
+                                <p>
+                                    When you create an account with us, you must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account. You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password.
+                                </p>
+                            </div>
+
+                            {/* Section 4: AI-Powered Simulations */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600 text-sm">4</span>
+                                    AI-Powered Simulations & Data
+                                </h2>
+                                <p>
+                                    CareerVerse uses advanced Google Gemini AI to power its career simulations and evaluation engine. By using these simulations, you understand and agree that:
+                                </p>
+                                <ul className="list-disc pl-6 mt-4 space-y-2">
+                                    <li><strong>Transcripts:</strong> Your interactions within the 3D simulations are recorded as text transcripts for AI analysis.</li>
+                                    <li><strong>Evaluation:</strong> AI models generate performance scores and career recommendations based on these transcripts.</li>
+                                    <li><strong>Data Use:</strong> We use this data to provide you with insights into your natural aptitudes and career matches as described in our Privacy Policy.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
