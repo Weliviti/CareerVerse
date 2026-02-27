@@ -17,6 +17,7 @@ import AIEvaluationLogs from './pages/admin/AIEvaluationLogs';
 import SimulationLogs from './pages/admin/SimulationLogs';
 import Settings from './pages/admin/Settings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 import TeacherSimulation from './pages/TeacherSimulation';
@@ -33,6 +34,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
 
           <Route
             path="/simulation-hub"
