@@ -95,6 +95,34 @@ function TermsOfService() {
                                     <li><strong>Data Use:</strong> We use this data to provide you with insights into your natural aptitudes and career matches as described in our Privacy Policy.</li>
                                 </ul>
                             </div>
+
+                            {/* Section 5: Intellectual Property */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600 text-sm">5</span>
+                                    Intellectual Property
+                                </h2>
+                                <p>
+                                    The Service and its original content (excluding User Content), features, and functionality are and will remain the exclusive property of CareerVerse and its licensors. The Service is protected by copyright, trademark, and other laws. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of CareerVerse.
+                                </p>
+                            </div>
+
+                            {/* Section 6: User Conduct */}
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 bg-rose-50 rounded-lg flex items-center justify-center text-rose-600 text-sm">6</span>
+                                    User Conduct
+                                </h2>
+                                <p>
+                                    You agree not to use the Service:
+                                </p>
+                                <ul className="list-disc pl-6 mt-4 space-y-2">
+                                    <li>In any way that violates any applicable local, state, national, or international law or regulation.</li>
+                                    <li>For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way by exposing them to inappropriate content or otherwise.</li>
+                                    <li>To transmit, or procure the sending of, any advertising or promotional material, including any "junk mail", "chain letter", "spam", or any other similar solicitation.</li>
+                                    <li>To impersonate or attempt to impersonate the Company, a Company employee, another user, or any other person or entity.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
