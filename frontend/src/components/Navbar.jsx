@@ -22,7 +22,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full sticky top-0 z-50">
+    <div className="w-full sticky top-0 z-50 overflow-hidden">
       {/* Glassmorphism navbar background */}
       <div className="navbar-glass">
         <div className="max-w-5xl mx-auto px-8">
