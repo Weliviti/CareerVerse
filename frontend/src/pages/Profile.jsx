@@ -224,9 +224,9 @@ const Profile = () => {
             console.log('Response status:', response.status);
             console.log('Response data:', response.data);
 
-            // Check if backend returned success
-            if (response.data && response.data.success) {
-                console.log('✅ Backend confirmed success');
+            // If we got here without an exception and status is 2xx, it's a success
+            if (response.status >= 200 && response.status < 300) {
+                console.log('✅ Backend confirmed success (status 2xx)');
                 
                 // Update local state with new avatar URL
                 setAvatarUrl(url);
