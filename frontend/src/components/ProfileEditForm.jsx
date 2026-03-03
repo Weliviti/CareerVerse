@@ -84,7 +84,7 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
             }
 
             // Send update to backend
-            const response = await api.put('/api/user/profile', updateData);
+            const response = await api.put('/api/auth/user/profile', updateData);
 
             onSave(response.data.data);
         } catch (err) {

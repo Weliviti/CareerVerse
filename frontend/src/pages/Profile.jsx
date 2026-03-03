@@ -181,7 +181,7 @@ const Profile = () => {
             setAvatarUrl(url);
 
             // Update user profile in backend
-            await api.put('/api/user/profile', {
+            await api.put('/api/auth/user/profile', {
                 profile_picture_url: url
             });
 
