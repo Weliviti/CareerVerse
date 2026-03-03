@@ -195,47 +195,83 @@ const Profile = () => {
             setUploadingAvatar(true);
             setUploadError(null);
 
-            console.log('Starting avatar upload...');
+            console.log('=== AVATAR UPLOAD START ===');
+            console.log('User UID:', currentUser?.uid);
+            console.log('File:', file.name, 'Size:', (file.size / 1024).toFixed(2), 'KB');
 
             // Create reference to Firebase Storage
             const storageRef = ref(storage, `avatars/${currentUser.uid}/profile.jpg`);
 
             // Upload file
+            console.log('Uploading to storage...');
             await uploadBytes(storageRef, file);
-            console.log('File uploaded to storage');
+            console.log('✅ File uploaded to storage');
 
             // Get download URL
             const url = await getDownloadURL(storageRef);
-            console.log('Got download URL:', url);
+            console.log('✅ Got download URL:', url);
 
             // Update user profile in backend
+            console.log('Calling backend API...');
+            console.log('API URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000');
+            console.log('Request data:', { profile_picture_url: url });
+            
             const response = await api.put('/api/auth/user/profile', {
                 profile_picture_url: url
             });
-            console.log('Backend updated:', response.data);
-
-            // Update local state with new avatar URL
-            setAvatarUrl(url);
             
-            // Update userData state so it persists
-            setUserData(prev => ({
-                ...prev,
-                profile_picture_url: url
-            }));
+            console.log('✅ Backend response:', response);
+            console.log('Response status:', response.status);
+            console.log('Response data:', response.data);
 
-            // Optionally reload from backend to ensure sync
-            setTimeout(() => reloadUserData(), 500);
+            // Check if backend returned success
+            if (response.data && response.data.success) {
+                console.log('✅ Backend confirmed success');
+                
+                // Update local state with new avatar URL
+                setAvatarUrl(url);
+                
+                // Update userData state so it persists
+                setUserData(prev => ({
+                    ...prev,
+                    profile_picture_url: url
+                }));
 
-            toast.success('Profile picture updated successfully!');
+                // Optionally reload from backend to ensure sync
+                setTimeout(() => reloadUserData(), 500);
+
+                toast.success('Profile picture updated successfully!');
+            } else {
+                throw new Error(response.data?.message || 'Backend returned failure');
+            }
 
         } catch (error) {
-            console.error('Avatar upload error:', error);
-            console.error('Error details:', error.response?.data);
-            const errorMsg = error.response?.data?.message || error.message || 'Failed to upload avatar';
+            console.error('❌ AVATAR UPLOAD ERROR');
+            console.error('Error object:', error);
+            console.error('Error message:', error.message);
+            console.error('Error response:', error.response);
+            console.error('Error response data:', error.response?.data);
+            console.error('Error response status:', error.response?.status);
+            
+            let errorMsg = 'Failed to upload avatar';
+            
+            if (error.response?.data?.message) {
+                errorMsg = error.response.data.message;
+            } else if (error.response?.data?.error) {
+                errorMsg = error.response.data.error;
+            } else if (error.message) {
+                errorMsg = error.message;
+            }
+            
+            if (error.response?.data?.error_details) {
+                errorMsg += ': ' + error.response.data.error_details;
+            }
+            
             setUploadError(errorMsg);
-            toast.error('Failed to upload profile picture: ' + errorMsg);
+            toast.error('Failed to upload: ' + errorMsg);
         } finally {
             setUploadingAvatar(false);
+            console.log('=== AVATAR UPLOAD END ===');
         }
     };
 

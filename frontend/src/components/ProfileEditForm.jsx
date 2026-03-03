@@ -61,18 +61,21 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
             // If user selected a new photo, upload it first
             if (selectedPhoto) {
                 setUploadingPhoto(true);
+                console.log('=== EDIT FORM PHOTO UPLOAD ===');
                 console.log('Uploading photo from edit form...');
                 
                 const currentUser = auth.currentUser;
+                console.log('User UID:', currentUser?.uid);
+                
                 const storageRef = ref(storage, `avatars/${currentUser.uid}/profile.jpg`);
                 
                 // Upload file to Firebase Storage
                 await uploadBytes(storageRef, selectedPhoto);
-                console.log('Photo uploaded to storage');
+                console.log('✅ Photo uploaded to storage');
                 
                 // Get download URL
                 profilePictureUrl = await getDownloadURL(storageRef);
-                console.log('Got download URL:', profilePictureUrl);
+                console.log('✅ Got download URL:', profilePictureUrl);
                 setUploadingPhoto(false);
             }
 
@@ -87,18 +90,45 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                 updateData.profile_picture_url = profilePictureUrl;
             }
 
-            console.log('Sending update to backend:', updateData);
+            console.log('=== SENDING TO BACKEND ===');
+            console.log('API URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000');
+            console.log('Update data:', updateData);
 
             // Send update to backend
             const response = await api.put('/api/auth/user/profile', updateData);
-            console.log('Backend response:', response.data);
+            
+            console.log('✅ Backend response:', response);
+            console.log('Response status:', response.status);
+            console.log('Response data:', response.data);
 
-            // Call onSave with updated user data
-            onSave(response.data.data);
+            // Check response structure
+            if (response.data && response.data.success && response.data.data) {
+                console.log('✅ Profile updated successfully');
+                onSave(response.data.data);
+            } else {
+                throw new Error('Invalid response structure from backend');
+            }
         } catch (err) {
-            console.error('Failed to update profile:', err);
-            console.error('Error details:', err.response?.data);
-            const errorMsg = err.response?.data?.message || err.message || 'Failed to update profile. Please try again.';
+            console.error('❌ PROFILE UPDATE ERROR');
+            console.error('Error object:', err);
+            console.error('Error message:', err.message);
+            console.error('Error response:', err.response);
+            console.error('Error response data:', err.response?.data);
+            
+            let errorMsg = 'Failed to update profile';
+            
+            if (err.response?.data?.message) {
+                errorMsg = err.response.data.message;
+            } else if (err.response?.data?.error) {
+                errorMsg = err.response.data.error;
+            } else if (err.message) {
+                errorMsg = err.message;
+            }
+            
+            if (err.response?.data?.error_details) {
+                errorMsg += ': ' + err.response.data.error_details;
+            }
+            
             setError(errorMsg);
         } finally {
             setLoading(false);

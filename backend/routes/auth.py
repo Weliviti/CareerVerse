@@ -167,16 +167,24 @@ async def update_profile(profile_data: UpdateProfileRequest, authorization: str 
     Update the current user's profile in Firestore.
     Accepts name, career_path, and profile_picture_url.
     """
+    print("=== UPDATE PROFILE REQUEST ===")
+    print(f"Authorization header present: {authorization is not None}")
+    
     if not authorization or not authorization.startswith("Bearer "):
+        print("❌ Missing or invalid Authorization header")
         return error_response(
             message="Missing or invalid Authorization header", code=401
         )
 
     token = authorization.split("Bearer ")[1]
+    print(f"Token extracted (first 20 chars): {token[:20]}...")
+    
     try:
         # Verify token and get UID
+        print("Verifying Firebase token...")
         decoded_token = auth.verify_id_token(token)
         uid = decoded_token["uid"]
+        print(f"✅ Token verified. UID: {uid}")
 
         # Build updates dictionary (only include non-None fields)
         updates = {}
@@ -187,25 +195,36 @@ async def update_profile(profile_data: UpdateProfileRequest, authorization: str 
         if profile_data.profile_picture_url is not None:
             updates["profile_picture_url"] = profile_data.profile_picture_url
 
+        print(f"Updates to apply: {updates}")
+
         # Check if there are any updates to make
         if not updates:
+            print("❌ No fields to update")
             return error_response(
                 message="No fields to update", code=400
             )
 
         # Update user profile
+        print(f"Calling update_user service...")
         updated_user = update_user(uid, updates)
+        print(f"✅ User updated successfully: {updated_user}")
 
         return success_response(
             data=updated_user,
             message="Profile updated successfully",
         )
 
-    except auth.InvalidIdTokenError:
+    except auth.InvalidIdTokenError as e:
+        print(f"❌ Invalid token error: {str(e)}")
         return error_response(message="Invalid token", code=401)
-    except auth.ExpiredIdTokenError:
+    except auth.ExpiredIdTokenError as e:
+        print(f"❌ Expired token error: {str(e)}")
         return error_response(message="Token expired", code=401)
     except Exception as e:
+        print(f"❌ Unexpected error: {str(e)}")
+        print(f"Error type: {type(e).__name__}")
+        import traceback
+        print(f"Traceback: {traceback.format_exc()}")
         return error_response(
             message="Failed to update profile", code=500, error_details=str(e)
         )
