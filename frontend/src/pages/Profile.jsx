@@ -71,6 +71,8 @@ const Profile = () => {
                     if (data.profile_picture_url) {
                         setAvatarUrl(data.profile_picture_url);
                     }
+                } else {
+                    console.warn('User document does not exist in Firestore');
                 }
             } catch (error) {
                 console.error('Error loading user data:', error);
@@ -82,6 +84,27 @@ const Profile = () => {
 
         loadUserData();
     }, [currentUser]);
+
+    // Function to reload user data from Firestore
+    const reloadUserData = async () => {
+        if (!currentUser) return;
+        
+        try {
+            const userDocRef = doc(db, 'users', currentUser.uid);
+            const userDoc = await getDoc(userDocRef);
+            
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                setUserData(data);
+                if (data.profile_picture_url) {
+                    setAvatarUrl(data.profile_picture_url);
+                }
+                console.log('User data reloaded:', data);
+            }
+        } catch (error) {
+            console.error('Error reloading user data:', error);
+        }
+    };
 
     const confirmDeleteAccount = async () => {
         try {
@@ -157,12 +180,14 @@ const Profile = () => {
         // Validate file type
         if (!file.type.startsWith('image/')) {
             setUploadError('Please select an image file');
+            toast.error('Please select an image file');
             return;
         }
 
         // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             setUploadError('File size must be less than 5MB');
+            toast.error('File size must be less than 5MB');
             return;
         }
 
@@ -170,39 +195,64 @@ const Profile = () => {
             setUploadingAvatar(true);
             setUploadError(null);
 
+            console.log('Starting avatar upload...');
+
             // Create reference to Firebase Storage
             const storageRef = ref(storage, `avatars/${currentUser.uid}/profile.jpg`);
 
             // Upload file
             await uploadBytes(storageRef, file);
+            console.log('File uploaded to storage');
 
             // Get download URL
             const url = await getDownloadURL(storageRef);
-            setAvatarUrl(url);
+            console.log('Got download URL:', url);
 
             // Update user profile in backend
-            await api.put('/api/auth/user/profile', {
+            const response = await api.put('/api/auth/user/profile', {
                 profile_picture_url: url
             });
+            console.log('Backend updated:', response.data);
 
-            toast.success('Profile picture updated!');
+            // Update local state with new avatar URL
+            setAvatarUrl(url);
+            
+            // Update userData state so it persists
+            setUserData(prev => ({
+                ...prev,
+                profile_picture_url: url
+            }));
+
+            // Optionally reload from backend to ensure sync
+            setTimeout(() => reloadUserData(), 500);
+
+            toast.success('Profile picture updated successfully!');
 
         } catch (error) {
             console.error('Avatar upload error:', error);
-            setUploadError('Failed to upload avatar. Please try again.');
-            toast.error('Failed to upload profile picture');
+            console.error('Error details:', error.response?.data);
+            const errorMsg = error.response?.data?.message || error.message || 'Failed to upload avatar';
+            setUploadError(errorMsg);
+            toast.error('Failed to upload profile picture: ' + errorMsg);
         } finally {
             setUploadingAvatar(false);
         }
     };
 
     const handleProfileSave = (updatedUser) => {
-        // Update local state
-        setUserData(updatedUser);
+        console.log('Profile saved, updating local state:', updatedUser);
+        
+        // Update local state with all user data
+        setUserData(prevData => ({
+            ...prevData,
+            ...updatedUser
+        }));
+        
         // Update avatar if changed
         if (updatedUser.profile_picture_url) {
             setAvatarUrl(updatedUser.profile_picture_url);
         }
+        
         setEditModal(false);
         toast.success('Profile updated successfully!');
     };

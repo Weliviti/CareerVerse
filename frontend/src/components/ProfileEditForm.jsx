@@ -61,14 +61,18 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
             // If user selected a new photo, upload it first
             if (selectedPhoto) {
                 setUploadingPhoto(true);
+                console.log('Uploading photo from edit form...');
+                
                 const currentUser = auth.currentUser;
                 const storageRef = ref(storage, `avatars/${currentUser.uid}/profile.jpg`);
                 
                 // Upload file to Firebase Storage
                 await uploadBytes(storageRef, selectedPhoto);
+                console.log('Photo uploaded to storage');
                 
                 // Get download URL
                 profilePictureUrl = await getDownloadURL(storageRef);
+                console.log('Got download URL:', profilePictureUrl);
                 setUploadingPhoto(false);
             }
 
@@ -83,13 +87,19 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                 updateData.profile_picture_url = profilePictureUrl;
             }
 
+            console.log('Sending update to backend:', updateData);
+
             // Send update to backend
             const response = await api.put('/api/auth/user/profile', updateData);
+            console.log('Backend response:', response.data);
 
+            // Call onSave with updated user data
             onSave(response.data.data);
         } catch (err) {
             console.error('Failed to update profile:', err);
-            setError(err.response?.data?.message || 'Failed to update profile. Please try again.');
+            console.error('Error details:', err.response?.data);
+            const errorMsg = err.response?.data?.message || err.message || 'Failed to update profile. Please try again.';
+            setError(errorMsg);
         } finally {
             setLoading(false);
             setUploadingPhoto(false);
