@@ -55,16 +55,10 @@ const Navbar = () => {
                     <span className="navbar-link-text">Dashboard</span>
                   </button>
                   <button
-                    onClick={() => navigate('/about')}
-                    className={`navbar-link ${isActive('/about') ? 'navbar-link-active' : ''}`}
+                    onClick={() => navigate('/community')}
+                    className={`navbar-link ${isActive('/community') ? 'navbar-link-active' : ''}`}
                   >
-                    <span className="navbar-link-text">About</span>
-                  </button>
-                  <button
-                    onClick={() => navigate('/our-team')}
-                    className={`navbar-link ${isActive('/our-team') ? 'navbar-link-active' : ''}`}
-                  >
-                    <span className="navbar-link-text">Our Team</span>
+                    <span className="navbar-link-text">Community</span>
                   </button>
                 </>
               ) : (
@@ -82,10 +76,10 @@ const Navbar = () => {
                     <span className="navbar-link-text">About</span>
                   </button>
                   <button
-                    onClick={() => navigate('/our-team')}
-                    className={`navbar-link ${isActive('/our-team') ? 'navbar-link-active' : ''}`}
+                    onClick={() => navigate('/community')}
+                    className={`navbar-link ${isActive('/community') ? 'navbar-link-active' : ''}`}
                   >
-                    <span className="navbar-link-text">Our Team</span>
+                    <span className="navbar-link-text">Community</span>
                   </button>
                 </>
               )}
@@ -161,11 +155,8 @@ const Navbar = () => {
               <button onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 Dashboard
               </button>
-              <button onClick={() => { navigate('/about'); setIsMenuOpen(false); }} className="navbar-mobile-link">
-                About
-              </button>
-              <button onClick={() => { navigate('/our-team'); setIsMenuOpen(false); }} className="navbar-mobile-link">
-                Our Team
+              <button onClick={() => { navigate('/community'); setIsMenuOpen(false); }} className="navbar-mobile-link">
+                Community
               </button>
               <button onClick={() => { navigate('/profile'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 Profile
@@ -184,8 +175,8 @@ const Navbar = () => {
               <button onClick={() => { navigate('/about'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 About
               </button>
-              <button onClick={() => { navigate('/our-team'); setIsMenuOpen(false); }} className="navbar-mobile-link">
-                Our Team
+              <button onClick={() => { navigate('/community'); setIsMenuOpen(false); }} className="navbar-mobile-link">
+                Community
               </button>
               <div className="pt-3 space-y-2 border-t border-gray-100 mt-2">
                 <button onClick={() => { navigate('/login'); setIsMenuOpen(false); }} className="navbar-mobile-link">

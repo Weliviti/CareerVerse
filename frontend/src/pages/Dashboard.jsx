@@ -4,6 +4,7 @@ import BackToTop from '../components/ui/BackToTop';
 import Footer from '../components/Footer'; // Assuming Footer component exists based on SimulationHub
 import { useAuth } from '../context/AuthContext';
 import { useScore } from '../hooks/useScore';
+import { useSession } from '../hooks/useSession';
 import { useState, useEffect } from 'react';
 import SkillRadarChart from '../components/RadarChart';
 import CareerCard from '../components/CareerCard';
@@ -11,26 +12,21 @@ import SessionHistoryItem from '../components/SessionHistoryItem';
 
 function Dashboard() {
     const { currentUser } = useAuth();
-    const { scores, loading } = useScore(currentUser?.uid);
+    const { scores, loading: scoresLoading } = useScore(currentUser?.uid);
+    const { sessions, loading: sessionsLoading } = useSession(currentUser?.uid);
     const navigate = useNavigate();
 
-    // Mock aggregate data for now (stats logic would typically be in a hook or service)
+    // Calculate stats from real Firebase data
     const [stats, setStats] = useState({
-        totalSimulations: 3,
-        averageScore: 86,
-        timeInvested: '57m',
-        completion: 100
+        totalSimulations: 0,
+        averageScore: 0,
+        timeInvested: '0m',
+        completion: 0
     });
 
-    // Mock data for Radar Chart
-    const radarData = [
-        { subject: 'Empathy', A: 85, fullMark: 100 },
-        { subject: 'Logic', A: 72, fullMark: 100 },
-        { subject: 'Persuasion', A: 70, fullMark: 100 },
-        { subject: 'Clarity', A: 82, fullMark: 100 },
-        { subject: 'Problem Solving', A: 78, fullMark: 100 },
-        { subject: 'Stress Handling', A: 65, fullMark: 100 },
-    ];
+    // State for dynamic data
+    const [radarData, setRadarData] = useState([]);
+    const [sessionHistory, setSessionHistory] = useState([]);
 
     // Mock data for Career Recommendations
     const recommendations = [
@@ -60,62 +56,134 @@ function Dashboard() {
         }
     ];
 
-    // Mock data for Session History
-    const sessionHistory = [
-        {
-            id: 1,
-            title: 'The Advocate',
-            rating: 'Excellent',
-            date: 'Feb 10, 2025',
-            duration: '18 minutes',
-            themeColor: 'teal', // or green/emerald
-            skills: [
-                { name: 'Persuasion', score: 92 },
-                { name: 'Logic', score: 85 },
-                { name: 'Negotiation', score: 89 }
-            ]
-        },
-        {
-            id: 2,
-            title: 'The Diagnostician',
-            rating: 'Very Good',
-            date: 'Feb 8, 2025',
-            duration: '19 minutes',
-            themeColor: 'blue',
-            skills: [
-                { name: 'Empathy', score: 88 },
-                { name: 'Problem Solving', score: 86 },
-                { name: 'Stress Handling', score: 75 }
-            ]
-        },
-        {
-            id: 3,
-            title: 'The Educator',
-            rating: 'Very Good',
-            date: 'Feb 5, 2025',
-            duration: '20 minutes',
-            themeColor: 'indigo', // or purple
-            skills: [
-                { name: 'Empathy', score: 85 },
-                { name: 'Clarity', score: 87 },
-                { name: 'Communication', score: 82 }
-            ]
-        }
-    ];
-
     useEffect(() => {
-        if (scores && scores.length > 0) {
-            // Basic calculation logic if scores are available
-            const total = scores.length;
-            const avg = Math.round(scores.reduce((acc, curr) => acc + (curr.totalScore || 0), 0) / total);
-            // Mock for time and completion for now as they aren't in score object explicitly yet
-            setStats(prev => ({
-                ...prev,
-                totalSimulations: total,
-                averageScore: avg
-            }));
+        // Calculate stats and update charts from real Firebase data
+        if (sessions && scores) {
+            // Total completed sessions
+            const completedSessions = sessions.filter(s => s.status === 'completed');
+            const totalSimulations = completedSessions.length;
+
+            // Calculate average score (only if user has played at least once)
+            let averageScore = 0;
+            if (scores.length > 0) {
+                const totalScore = scores.reduce((acc, curr) => acc + (curr.totalScore || 0), 0);
+                averageScore = Math.round(totalScore / scores.length);
+            }
+
+            // Calculate total time invested (in minutes)
+            let totalMinutes = 0;
+            completedSessions.forEach(session => {
+                if (session.start_time && session.end_time) {
+                    // Convert Firestore timestamps to Date objects if needed
+                    const startTime = session.start_time.toDate ? session.start_time.toDate() : new Date(session.start_time);
+                    const endTime = session.end_time.toDate ? session.end_time.toDate() : new Date(session.end_time);
+                    const duration = (endTime - startTime) / (1000 * 60); // Convert milliseconds to minutes
+                    totalMinutes += duration;
+                }
+            });
+
+            // Format time invested
+            let timeInvested = '0m';
+            if (totalMinutes >= 60) {
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = Math.round(totalMinutes % 60);
+                timeInvested = minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+            } else if (totalMinutes > 0) {
+                timeInvested = `${Math.round(totalMinutes)}m`;
+            }
+
+            // Calculate completion rate (assume 2 simulations available: teacher and doctor)
+            const availableSimulations = 2;
+            const uniqueSimulations = new Set(completedSessions.map(s => s.simulation_type)).size;
+            const completion = Math.round((uniqueSimulations / availableSimulations) * 100);
+
+            setStats({
+                totalSimulations,
+                averageScore,
+                timeInvested,
+                completion
+            });
+
+            // Calculate radar chart data (aggregate skills across all scores)
+            if (scores.length > 0) {
+                const skillsMap = {};
+                scores.forEach(score => {
+                    if (score.skills) {
+                        Object.entries(score.skills).forEach(([skill, value]) => {
+                            if (!skillsMap[skill]) {
+                                skillsMap[skill] = { total: 0, count: 0 };
+                            }
+                            skillsMap[skill].total += value;
+                            skillsMap[skill].count += 1;
+                        });
+                    }
+                });
+
+                const radarChartData = Object.entries(skillsMap).map(([skill, data]) => ({
+                    subject: skill,
+                    A: Math.round(data.total / data.count),
+                    fullMark: 100
+                }));
+                setRadarData(radarChartData);
+            } else {
+                setRadarData([]);
+            }
+
+            // Build session history (combine sessions with their scores)
+            const history = completedSessions
+                .map(session => {
+                    const sessionScore = scores.find(s => s.sessionId === session.session_id);
+                    if (!sessionScore) return null;
+
+                    // Format date
+                    const startTime = session.start_time.toDate ? session.start_time.toDate() : new Date(session.start_time);
+                    const dateStr = startTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                    // Calculate duration
+                    const endTime = session.end_time.toDate ? session.end_time.toDate() : new Date(session.end_time);
+                    const durationMinutes = Math.round((endTime - startTime) / (1000 * 60));
+                    const duration = `${durationMinutes} minute${durationMinutes !== 1 ? 's' : ''}`;
+
+                    // Get rating based on total score
+                    let rating = 'Good';
+                    if (sessionScore.totalScore >= 90) rating = 'Excellent';
+                    else if (sessionScore.totalScore >= 80) rating = 'Very Good';
+                    else if (sessionScore.totalScore >= 70) rating = 'Good';
+                    else if (sessionScore.totalScore >= 60) rating = 'Fair';
+                    else rating = 'Needs Improvement';
+
+                    // Select theme color based on simulation type
+                    let themeColor = 'blue';
+                    let title = session.simulation_type;
+                    if (session.simulation_type === 'teacher') {
+                        themeColor = 'indigo';
+                        title = 'The Educator';
+                    } else if (session.simulation_type === 'doctor') {
+                        themeColor = 'blue';
+                        title = 'The Diagnostician';
+                    }
+
+                    // Map skills from score
+                    const skills = sessionScore.skills 
+                        ? Object.entries(sessionScore.skills).map(([name, score]) => ({ name, score }))
+                        : [];
+
+                    return {
+                        id: session.session_id,
+                        title,
+                        rating,
+                        date: dateStr,
+                        duration,
+                        themeColor,
+                        skills
+                    };
+                })
+                .filter(item => item !== null)
+                .sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
+
+            setSessionHistory(history);
         }
-    }, [scores]);
+    }, [sessions, scores]);
 
 
     return (
@@ -123,15 +191,25 @@ function Dashboard() {
             <Navbar />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                {/* Header Section */}
-                <div className="mb-10">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                        Your Career <span className="text-teal-500">Dashboard</span>
-                    </h1>
-                    <p className="text-gray-600 text-lg">
-                        Track your progress and discover your ideal career path
-                    </p>
-                </div>
+                {/* Loading State */}
+                {(scoresLoading || sessionsLoading) && (
+                    <div className="flex justify-center items-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+                    </div>
+                )}
+
+                {/* Main Content */}
+                {!scoresLoading && !sessionsLoading && (
+                    <>
+                        {/* Header Section */}
+                        <div className="mb-10">
+                            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                                Your Career <span className="text-teal-500">Dashboard</span>
+                            </h1>
+                            <p className="text-gray-600 text-lg">
+                                Track your progress and discover your ideal career path
+                            </p>
+                        </div>
 
                 {/* Stats Cards Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -282,6 +360,8 @@ function Dashboard() {
                         </svg>
                     </button>
                 </div>
+                    </>
+                )}
 
             </main>
 
