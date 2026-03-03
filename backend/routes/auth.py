@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Request, Header, HTTPException
 from pydantic import BaseModel
+from typing import Optional
 from firebase_admin import auth
 from slowapi import Limiter
 from slowapi.util import get_remote_address
-from services.user_service import get_user_by_uid, create_user_profile
+from services.user_service import get_user_by_uid, create_user_profile, update_user
 from services.firebase_admin_service import get_db_client
 from utils.responses import success_response, error_response
 
@@ -25,6 +26,12 @@ class LoginRequest(BaseModel):
 
 class VerifyTokenRequest(BaseModel):
     token: str
+
+
+class UpdateProfileRequest(BaseModel):
+    name: Optional[str] = None
+    career_path: Optional[str] = None
+    profile_picture_url: Optional[str] = None
 
 
 @router.post("/register")
@@ -151,6 +158,56 @@ async def verify_token(request: VerifyTokenRequest):
             message="Token verification failed",
             code=401,
             error_details=f"An error occurred: {str(e)}",
+        )
+
+
+@router.put("/user/profile")
+async def update_profile(profile_data: UpdateProfileRequest, authorization: str = Header(None)):
+    """
+    Update the current user's profile in Firestore.
+    Accepts name, career_path, and profile_picture_url.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        return error_response(
+            message="Missing or invalid Authorization header", code=401
+        )
+
+    token = authorization.split("Bearer ")[1]
+    try:
+        # Verify token and get UID
+        decoded_token = auth.verify_id_token(token)
+        uid = decoded_token["uid"]
+
+        # Build updates dictionary (only include non-None fields)
+        updates = {}
+        if profile_data.name is not None:
+            updates["name"] = profile_data.name
+        if profile_data.career_path is not None:
+            updates["career_path"] = profile_data.career_path
+        if profile_data.profile_picture_url is not None:
+            updates["profile_picture_url"] = profile_data.profile_picture_url
+
+        # Check if there are any updates to make
+        if not updates:
+            return error_response(
+                message="No fields to update", code=400
+            )
+
+        # Update user profile
+        updated_user = update_user(uid, updates)
+
+        return success_response(
+            data=updated_user,
+            message="Profile updated successfully",
+        )
+
+    except auth.InvalidIdTokenError:
+        return error_response(message="Invalid token", code=401)
+    except auth.ExpiredIdTokenError:
+        return error_response(message="Token expired", code=401)
+    except Exception as e:
+        return error_response(
+            message="Failed to update profile", code=500, error_details=str(e)
         )
 
 
