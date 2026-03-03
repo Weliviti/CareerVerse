@@ -12,6 +12,7 @@ from routes.sessions import router as sessions_router
 from routes.scores import router as scores_router
 from routes.simulations import router as simulations_router
 from routes.admin import router as admin_router
+from services.firebase_admin_service import get_db_client
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -22,6 +23,17 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Setup global exception handlers
 setup_exception_handlers(app)
+
+# Initialize Firebase Admin SDK on startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize Firebase Admin SDK when the app starts."""
+    try:
+        get_db_client()
+        print("🔥 Firebase Admin SDK initialized on startup")
+    except Exception as e:
+        print(f"❌ Failed to initialize Firebase Admin SDK: {e}")
+        print("The app will continue running, but Firebase features may not work.")
 
 # --- UPDATED CORS SETTINGS FOR PRODUCTION ---
 app.add_middleware(
