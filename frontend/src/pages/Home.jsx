@@ -8,7 +8,7 @@ function Home() {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary-50">
+        <div className="home-dark min-h-screen">
             <Navbar />
 
             {/* Hero Section */}
