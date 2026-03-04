@@ -24,6 +24,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Setup global exception handlers
 setup_exception_handlers(app)
 
+
 # Initialize Firebase Admin SDK on startup
 @app.on_event("startup")
 async def startup_event():
@@ -34,6 +35,7 @@ async def startup_event():
     except Exception as e:
         print(f"❌ Failed to initialize Firebase Admin SDK: {e}")
         print("The app will continue running, but Firebase features may not work.")
+
 
 # --- UPDATED CORS SETTINGS FOR PRODUCTION ---
 app.add_middleware(

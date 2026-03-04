@@ -66,7 +66,7 @@ def update_user(uid: str, updates: dict):
     print(f"=== UPDATE_USER SERVICE ===")
     print(f"UID: {uid}")
     print(f"Updates: {updates}")
-    
+
     db = get_db_client()
 
     # Get the user document reference
@@ -78,7 +78,9 @@ def update_user(uid: str, updates: dict):
     # Check if user exists
     if not user_doc.exists:
         print(f"❌ User with UID {uid} does not exist in Firestore!")
-        print("This usually means the user registered in Firebase Auth but profile wasn't created in Firestore")
+        print(
+            "This usually means the user registered in Firebase Auth but profile wasn't created in Firestore"
+        )
         raise Exception(f"User with UID {uid} does not exist")
 
     print(f"Current user data: {user_doc.to_dict()}")

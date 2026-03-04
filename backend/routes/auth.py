@@ -162,14 +162,16 @@ async def verify_token(request: VerifyTokenRequest):
 
 
 @router.put("/user/profile")
-async def update_profile(profile_data: UpdateProfileRequest, authorization: str = Header(None)):
+async def update_profile(
+    profile_data: UpdateProfileRequest, authorization: str = Header(None)
+):
     """
     Update the current user's profile in Firestore.
     Accepts name, career_path, and profile_picture_url.
     """
     print("=== UPDATE PROFILE REQUEST ===")
     print(f"Authorization header present: {authorization is not None}")
-    
+
     if not authorization or not authorization.startswith("Bearer "):
         print("❌ Missing or invalid Authorization header")
         return error_response(
@@ -178,7 +180,7 @@ async def update_profile(profile_data: UpdateProfileRequest, authorization: str 
 
     token = authorization.split("Bearer ")[1]
     print(f"Token extracted (first 20 chars): {token[:20]}...")
-    
+
     try:
         # Verify token and get UID
         print("Verifying Firebase token...")
@@ -200,9 +202,7 @@ async def update_profile(profile_data: UpdateProfileRequest, authorization: str 
         # Check if there are any updates to make
         if not updates:
             print("❌ No fields to update")
-            return error_response(
-                message="No fields to update", code=400
-            )
+            return error_response(message="No fields to update", code=400)
 
         # Update user profile
         print(f"Calling update_user service...")
@@ -224,6 +224,7 @@ async def update_profile(profile_data: UpdateProfileRequest, authorization: str 
         print(f"❌ Unexpected error: {str(e)}")
         print(f"Error type: {type(e).__name__}")
         import traceback
+
         print(f"Traceback: {traceback.format_exc()}")
         return error_response(
             message="Failed to update profile", code=500, error_details=str(e)
