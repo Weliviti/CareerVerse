@@ -139,113 +139,119 @@ function Home() {
                 </div>
             </section>
 
-            {/* Career Paths Section */}
-            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f5f3ff 0%, #f0fdfa 50%, #ffffff 100%)' }}>
-                <div className="absolute top-10 right-20 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
-                <div className="absolute bottom-20 left-20 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 4s ease-in-out infinite 1.5s' }}></div>
-                <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 0.5s' }}></div>
+            {/* Immersive Simulations Section — slightly deeper background for contrast */}
+            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.5) 30%, rgba(5,15,10,0.5) 70%, transparent 100%)' }}>
+                {/* Glows positioned differently from the Features section */}
+                <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-emerald-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite' }}></div>
+                <div className="absolute top-10 right-10 w-72 h-72 bg-teal-900/10 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite 2s' }}></div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600 mb-5 shadow-sm">
-                            Simulations
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                            Experience Careers
                         </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
-                            Experience three <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500 italic">Career Paths</span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Immersive</span>
+                            <span className="text-white"> Simulations</span>
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-                            Immerse yourself in hyper-realistic simulations designed to measure your natural aptitudes.
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+                            Try before you commit - experience real career scenarios
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         {/* The Educator */}
-                        <div className="feature-card group" style={{ '--card-glow': 'rgba(37,99,235,0.08)' }}>
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #2563eb, #93c5fd, #2563eb)' }}></div>
-                            <div className="p-8 pt-10">
-                                <div className="relative mb-6 feature-icon-float">
-                                    <div className="absolute inset-0 w-16 h-16 bg-blue-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
-                                    <div className="relative w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
-                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 12v5c3 3 9 3 12 0v-5" />
-                                        </svg>
-                                    </div>
+                        <div className="home-dark-card group flex flex-col">
+                            <div className="p-7 flex-1 flex flex-col">
+                                <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
+                                    <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">The Educator</h3>
-                                <p className="text-gray-500 mb-4">Teach a 10th-grade English class and manage diverse student personalities.</p>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-full">Empathy</span>
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-full">Clarity</span>
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-full">Control</span>
+                                <h3 className="text-xl font-bold text-white mb-2">The Educator</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
+                                    Step into a virtual classroom. Teach students, manage lessons, and inspire the next generation.
+                                </p>
+                                <div className="flex flex-wrap gap-2 mb-5">
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Communication</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Empathy</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Leadership</span>
                                 </div>
-                                <div className="flex items-center gap-4 text-xs text-gray-400">
-                                    <span>20 min</span>
-                                    <span>Medium</span>
+                                <div className="flex items-center justify-between text-xs text-slate-500 mb-5">
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        20 min
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold">Medium</span>
                                 </div>
+                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                    Try Simulation
+                                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                </button>
                             </div>
                         </div>
 
-                        {/* The Diagnostician */}
-                        <div className="feature-card group" style={{ '--card-glow': 'rgba(13,148,136,0.08)' }}>
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #0d9488, #5eead4, #0d9488)' }}></div>
-                            <div className="p-8 pt-10">
-                                <div className="relative mb-6 feature-icon-float">
-                                    <div className="absolute inset-0 w-16 h-16 bg-teal-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
-                                    <div className="relative w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-200">
-                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                        </svg>
-                                    </div>
+                        {/* The Tech Innovator */}
+                        <div className="home-dark-card group flex flex-col">
+                            <div className="p-7 flex-1 flex flex-col">
+                                <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
+                                    <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                    </svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">The Diagnostician</h3>
-                                <p className="text-gray-500 mb-4">Diagnose a complex medical case and communicate with anxious patients.</p>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-teal-50 text-teal-700 rounded-full">Logic</span>
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-teal-50 text-teal-700 rounded-full">Empathy</span>
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-teal-50 text-teal-700 rounded-full">Stress</span>
+                                <h3 className="text-xl font-bold text-white mb-2">The Tech Innovator</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
+                                    Build the future in a high-tech lab. Code, debug, and create innovative solutions.
+                                </p>
+                                <div className="flex flex-wrap gap-2 mb-5">
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Problem-Solving</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Creativity</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Logic</span>
                                 </div>
-                                <div className="flex items-center gap-4 text-xs text-gray-400">
-                                    <span>20 min</span>
-                                    <span>Hard</span>
+                                <div className="flex items-center justify-between text-xs text-slate-500 mb-5">
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        25 min
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-400 font-semibold">Hard</span>
                                 </div>
+                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                    Try Simulation
+                                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                </button>
                             </div>
                         </div>
 
-                        {/* The Advocate */}
-                        <div className="feature-card group" style={{ '--card-glow': 'rgba(217,119,6,0.08)' }}>
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #d97706, #fde68a, #d97706)' }}></div>
-                            <div className="p-8 pt-10">
-                                <div className="relative mb-6 feature-icon-float">
-                                    <div className="absolute inset-0 w-16 h-16 bg-amber-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
-                                    <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-200">
-                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                                        </svg>
-                                    </div>
+                        {/* The Healthcare Hero */}
+                        <div className="home-dark-card group flex flex-col">
+                            <div className="p-7 flex-1 flex flex-col">
+                                <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
+                                    <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">The Advocate</h3>
-                                <p className="text-gray-500 mb-4">Defend a client in court and navigate high-stakes legal negotiations.</p>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-700 rounded-full">Persuasion</span>
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-700 rounded-full">Logic</span>
-                                    <span className="px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-700 rounded-full">Ethics</span>
+                                <h3 className="text-xl font-bold text-white mb-2">The Healthcare Hero</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
+                                    Save lives in a realistic medical environment. Diagnose, treat, and care for patients.
+                                </p>
+                                <div className="flex flex-wrap gap-2 mb-5">
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Analysis</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Precision</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Compassion</span>
                                 </div>
-                                <div className="flex items-center gap-4 text-xs text-gray-400">
-                                    <span>20 min</span>
-                                    <span>Hard</span>
+                                <div className="flex items-center justify-between text-xs text-slate-500 mb-5">
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        30 min
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold">Expert</span>
                                 </div>
+                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                    Try Simulation
+                                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                </button>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="text-center">
-                        <button className="hero-btn-primary">
-                            Try All Simulations
-                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </section>
