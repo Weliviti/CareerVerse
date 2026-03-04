@@ -9,6 +9,25 @@ function Home() {
 
     return (
         <div className="home-dark min-h-screen">
+            {/* ── Parallax glow orbs (fixed, scroll depth) ── */}
+            <div className="home-parallax-orbs">
+                <div className="parallax-orb parallax-orb-1"></div>
+                <div className="parallax-orb parallax-orb-2"></div>
+                <div className="parallax-orb parallax-orb-3"></div>
+            </div>
+
+            {/* ── Floating particles ── */}
+            <div className="home-particles">
+                <div className="particle particle-1"></div>
+                <div className="particle particle-2"></div>
+                <div className="particle particle-3"></div>
+                <div className="particle particle-4"></div>
+                <div className="particle particle-5"></div>
+                <div className="particle particle-6"></div>
+                <div className="particle particle-7"></div>
+                <div className="particle particle-8"></div>
+            </div>
+
             <Navbar />
 
             {/* Hero Section */}

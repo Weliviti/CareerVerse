@@ -845,6 +845,20 @@ button {
 /* ── Footer overrides on Home dark ── */
 .home-dark footer {
   background: #050f09;
+  position: relative;
+}
+
+/* Curved top edge on footer (mirrors navbar curve) */
+.home-dark footer::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -10%;
+  width: 120%;
+  height: 22px;
+  background: #050f09;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  z-index: 1;
 }
 
 .home-dark .footer-gradient-border {
@@ -865,4 +879,183 @@ button {
 .home-dark .footer-email-input:focus {
   border-color: #00e5a0;
   box-shadow: 0 0 0 2px rgba(0, 229, 160, 0.15);
+}
+
+/* ══════════════════════════════════════════════════
+   Flowing background: Parallax Orbs + Particles
+   ══════════════════════════════════════════════════ */
+
+/* ── Parallax glow orbs (fixed, depth effect on scroll) ── */
+.home-parallax-orbs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.parallax-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orb-breathe 8s ease-in-out infinite;
+}
+
+.parallax-orb-1 {
+  width: 500px;
+  height: 500px;
+  top: 10%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(0, 229, 160, 0.08) 0%, transparent 70%);
+  animation-duration: 10s;
+}
+
+.parallax-orb-2 {
+  width: 400px;
+  height: 400px;
+  top: 50%;
+  right: -8%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.07) 0%, transparent 70%);
+  animation-duration: 12s;
+  animation-delay: 3s;
+}
+
+.parallax-orb-3 {
+  width: 350px;
+  height: 350px;
+  bottom: 5%;
+  left: 30%;
+  background: radial-gradient(circle, rgba(0, 229, 160, 0.06) 0%, transparent 70%);
+  animation-duration: 14s;
+  animation-delay: 6s;
+}
+
+@keyframes orb-breathe {
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+/* ── Floating particle dots ── */
+.home-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 229, 160, 0.35);
+  animation: particle-float linear infinite;
+}
+
+.particle-1 {
+  width: 3px;
+  height: 3px;
+  left: 8%;
+  bottom: -5%;
+  animation-duration: 18s;
+  animation-delay: 0s;
+  opacity: 0.5;
+}
+
+.particle-2 {
+  width: 2px;
+  height: 2px;
+  left: 22%;
+  bottom: -5%;
+  animation-duration: 22s;
+  animation-delay: 2s;
+  opacity: 0.4;
+}
+
+.particle-3 {
+  width: 4px;
+  height: 4px;
+  left: 38%;
+  bottom: -5%;
+  animation-duration: 16s;
+  animation-delay: 4s;
+  opacity: 0.6;
+}
+
+.particle-4 {
+  width: 2px;
+  height: 2px;
+  left: 55%;
+  bottom: -5%;
+  animation-duration: 20s;
+  animation-delay: 1s;
+  opacity: 0.35;
+}
+
+.particle-5 {
+  width: 3px;
+  height: 3px;
+  left: 70%;
+  bottom: -5%;
+  animation-duration: 24s;
+  animation-delay: 3s;
+  opacity: 0.45;
+}
+
+.particle-6 {
+  width: 2px;
+  height: 2px;
+  left: 85%;
+  bottom: -5%;
+  animation-duration: 19s;
+  animation-delay: 5s;
+  opacity: 0.3;
+}
+
+.particle-7 {
+  width: 3px;
+  height: 3px;
+  left: 45%;
+  bottom: -5%;
+  animation-duration: 21s;
+  animation-delay: 7s;
+  opacity: 0.5;
+}
+
+.particle-8 {
+  width: 2px;
+  height: 2px;
+  left: 15%;
+  bottom: -5%;
+  animation-duration: 25s;
+  animation-delay: 9s;
+  opacity: 0.4;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-110vh) translateX(30px);
+    opacity: 0;
+  }
 }
