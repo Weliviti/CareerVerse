@@ -13,32 +13,32 @@ function Home() {
 
             {/* Hero Section */}
             <section className="relative overflow-hidden">
-                {/* Background decoration — soft side gradients */}
+                {/* Background decoration — dark radial glows */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute top-0 left-0 w-[40%] h-full bg-gradient-to-r from-primary-50/60 to-transparent"></div>
-                    <div className="absolute top-0 right-0 w-[40%] h-full bg-gradient-to-l from-primary-50/60 to-transparent"></div>
-                    <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-                    <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+                    <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(0,229,160,0.12)_0%,transparent_70%)]"></div>
+                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-teal-900/30 rounded-full filter blur-3xl animate-blob"></div>
+                    <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-900/20 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
                 </div>
 
                 <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-20 sm:pb-28">
                     <div className="text-center">
                         {/* Badge Pill */}
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-primary-200 shadow-sm mb-10">
-                            <span className="text-sm font-semibold text-primary-700 tracking-wide">Next-Gen Career Intelligence</span>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-emerald-700/40 bg-emerald-950/40 backdrop-blur-sm mb-10">
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span className="text-sm font-semibold text-emerald-300 tracking-wide">AI-Powered Career Intelligence</span>
                         </div>
 
-                        {/* Main Heading — big, bold, with italic accent */}
+                        {/* Main Heading */}
                         <h1 className="hero-heading mb-6">
-                            <span className="block text-gray-900">Discover Your</span>
-                            <span className="block hero-heading-accent">True Career Path</span>
+                            <span className="block text-white">Discover Your</span>
+                            <span className="block hero-heading-accent">Dream Career</span>
                         </h1>
 
-                        {/* Description — clean, centered */}
-                        <p className="max-w-2xl mx-auto text-base sm:text-lg text-gray-500 mb-12 leading-relaxed">
-                            Step into AI-powered career universes. Experience real work, not
-                            guesswork. Get precision-matched to your perfect path through
-                            machine learning magic.
+                        {/* Description */}
+                        <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-400 mb-12 leading-relaxed">
+                            Experience the future of career exploration with immersive 3D
+                            simulations, AI-powered matching, and real-world scenarios that help
+                            you find your perfect path.
                         </p>
 
                         {/* CTA Buttons */}
@@ -46,12 +46,13 @@ function Home() {
                             <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="hero-btn-primary">
                                 Launch Experience
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                 </svg>
                             </button>
                             <button className="hero-btn-outline">
                                 <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z" />
+                                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
+                                    <path d="M10 8l6 4-6 4V8z" />
                                 </svg>
                                 Watch Demo
                             </button>

@@ -763,3 +763,37 @@ button {
   color: #00e5a0;
   background-color: rgba(0, 229, 160, 0.08);
 }
+
+/* ── Hero section overrides ── */
+.home-dark .hero-heading-accent {
+  color: transparent;
+  background: linear-gradient(135deg, #00e5a0, #14b8a6, #00e5a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.home-dark .hero-btn-primary {
+  background: linear-gradient(135deg, #00c98d, #0d9488);
+  box-shadow: 0 4px 20px rgba(0, 229, 160, 0.3);
+}
+
+.home-dark .hero-btn-primary:hover {
+  box-shadow: 0 6px 28px rgba(0, 229, 160, 0.45);
+}
+
+.home-dark .hero-btn-outline {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.home-dark .hero-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 229, 160, 0.3);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 229, 160, 0.15);
+}
