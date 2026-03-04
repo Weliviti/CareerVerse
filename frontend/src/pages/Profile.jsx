@@ -1,9 +1,11 @@
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
-import { storage, auth } from '../services/firebase';
+import ProfileEditForm from '../components/ProfileEditForm';
+import { storage, auth, db } from '../services/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { doc, getDoc } from 'firebase/firestore';
 import { reauthenticateWithCredential, updatePassword, EmailAuthProvider, signOut } from 'firebase/auth';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -36,6 +38,11 @@ const Profile = () => {
     const [avatarUrl, setAvatarUrl] = useState(null);
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
     const [uploadError, setUploadError] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [loadingUserData, setLoadingUserData] = useState(true);
+
+    // Edit Profile state
+    const [editModal, setEditModal] = useState(false);
 
     // Change Password state
     const [passwordModal, setPasswordModal] = useState(false);
@@ -46,6 +53,58 @@ const Profile = () => {
     // Delete Account state
     const [deleteModal, setDeleteModal] = useState(false);
     const [deletingAccount, setDeletingAccount] = useState(false);
+
+    // Load user data from Firestore
+    useEffect(() => {
+        const loadUserData = async () => {
+            if (!currentUser) return;
+            
+            try {
+                setLoadingUserData(true);
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    setUserData(data);
+                    // Set avatar if exists
+                    if (data.profile_picture_url) {
+                        setAvatarUrl(data.profile_picture_url);
+                    }
+                } else {
+                    console.warn('User document does not exist in Firestore');
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                toast.error('Failed to load user profile');
+            } finally {
+                setLoadingUserData(false);
+            }
+        };
+
+        loadUserData();
+    }, [currentUser]);
+
+    // Function to reload user data from Firestore
+    const reloadUserData = async () => {
+        if (!currentUser) return;
+        
+        try {
+            const userDocRef = doc(db, 'users', currentUser.uid);
+            const userDoc = await getDoc(userDocRef);
+            
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                setUserData(data);
+                if (data.profile_picture_url) {
+                    setAvatarUrl(data.profile_picture_url);
+                }
+                console.log('User data reloaded:', data);
+            }
+        } catch (error) {
+            console.error('Error reloading user data:', error);
+        }
+    };
 
     const confirmDeleteAccount = async () => {
         try {
@@ -121,12 +180,14 @@ const Profile = () => {
         // Validate file type
         if (!file.type.startsWith('image/')) {
             setUploadError('Please select an image file');
+            toast.error('Please select an image file');
             return;
         }
 
         // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             setUploadError('File size must be less than 5MB');
+            toast.error('File size must be less than 5MB');
             return;
         }
 
@@ -134,25 +195,102 @@ const Profile = () => {
             setUploadingAvatar(true);
             setUploadError(null);
 
+            console.log('=== AVATAR UPLOAD START ===');
+            console.log('User UID:', currentUser?.uid);
+            console.log('File:', file.name, 'Size:', (file.size / 1024).toFixed(2), 'KB');
+
             // Create reference to Firebase Storage
-            const storageRef = ref(storage, `avatars/${currentUser.uid}/${file.name}`);
+            const storageRef = ref(storage, `avatars/${currentUser.uid}/profile.jpg`);
 
             // Upload file
+            console.log('Uploading to storage...');
             await uploadBytes(storageRef, file);
+            console.log('✅ File uploaded to storage');
 
             // Get download URL
             const url = await getDownloadURL(storageRef);
-            setAvatarUrl(url);
+            console.log('✅ Got download URL:', url);
 
-            // TODO: Update user profile in Firestore with avatar URL
-            // This can be done in a future task
+            // Update user profile in backend
+            console.log('Calling backend API...');
+            console.log('API URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000');
+            console.log('Request data:', { profile_picture_url: url });
+            
+            const response = await api.put('/api/auth/user/profile', {
+                profile_picture_url: url
+            });
+            
+            console.log('✅ Backend response:', response);
+            console.log('Response status:', response.status);
+            console.log('Response data:', response.data);
+
+            // If we got here without an exception and status is 2xx, it's a success
+            if (response.status >= 200 && response.status < 300) {
+                console.log('✅ Backend confirmed success (status 2xx)');
+                
+                // Update local state with new avatar URL
+                setAvatarUrl(url);
+                
+                // Update userData state so it persists
+                setUserData(prev => ({
+                    ...prev,
+                    profile_picture_url: url
+                }));
+
+                // Optionally reload from backend to ensure sync
+                setTimeout(() => reloadUserData(), 500);
+
+                toast.success('Profile picture updated successfully!');
+            } else {
+                throw new Error(response.data?.message || 'Backend returned failure');
+            }
 
         } catch (error) {
-            console.error('Avatar upload error:', error);
-            setUploadError('Failed to upload avatar. Please try again.');
+            console.error('❌ AVATAR UPLOAD ERROR');
+            console.error('Error object:', error);
+            console.error('Error message:', error.message);
+            console.error('Error response:', error.response);
+            console.error('Error response data:', error.response?.data);
+            console.error('Error response status:', error.response?.status);
+            
+            let errorMsg = 'Failed to upload avatar';
+            
+            if (error.response?.data?.message) {
+                errorMsg = error.response.data.message;
+            } else if (error.response?.data?.error) {
+                errorMsg = error.response.data.error;
+            } else if (error.message) {
+                errorMsg = error.message;
+            }
+            
+            if (error.response?.data?.error_details) {
+                errorMsg += ': ' + error.response.data.error_details;
+            }
+            
+            setUploadError(errorMsg);
+            toast.error('Failed to upload: ' + errorMsg);
         } finally {
             setUploadingAvatar(false);
+            console.log('=== AVATAR UPLOAD END ===');
         }
+    };
+
+    const handleProfileSave = (updatedUser) => {
+        console.log('Profile saved, updating local state:', updatedUser);
+        
+        // Update local state with all user data
+        setUserData(prevData => ({
+            ...prevData,
+            ...updatedUser
+        }));
+        
+        // Update avatar if changed
+        if (updatedUser.profile_picture_url) {
+            setAvatarUrl(updatedUser.profile_picture_url);
+        }
+        
+        setEditModal(false);
+        toast.success('Profile updated successfully!');
     };
 
     return (
@@ -226,7 +364,7 @@ const Profile = () => {
                                     </div>
                                 )}
                                 <h2 className="text-xl font-semibold text-gray-900">
-                                    {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
+                                    {userData?.name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                 </h2>
                                 <div className="flex items-center mt-1 text-gray-600">
                                     <svg
@@ -243,14 +381,17 @@ const Profile = () => {
                                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                                         />
                                     </svg>
-                                    <span className="text-sm">{currentUser?.email || 'email@example.com'}</span>
+                                    <span className="text-sm">{userData?.email || currentUser?.email || 'email@example.com'}</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Right Side: Edit Profile Button */}
                         <div>
-                            <button className="flex items-center px-4 py-2 border-2 border-primary-500 text-primary-600 rounded-md hover:bg-primary-50 transition-colors">
+                            <button 
+                                onClick={() => setEditModal(true)}
+                                className="flex items-center px-4 py-2 border-2 border-primary-500 text-primary-600 rounded-md hover:bg-primary-50 transition-colors"
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4 mr-2"
@@ -299,7 +440,7 @@ const Profile = () => {
                                 <div className="flex-1">
                                     <p className="text-sm text-gray-500">Name</p>
                                     <p className="text-base font-medium text-gray-900">
-                                        {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
+                                        {userData?.name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                     </p>
                                 </div>
                             </div>
@@ -325,7 +466,7 @@ const Profile = () => {
                                 <div className="flex-1">
                                     <p className="text-sm text-gray-500">Email</p>
                                     <p className="text-base font-medium text-gray-900">
-                                        {currentUser?.email || 'sarah.johnson@email.com'}
+                                        {userData?.email || currentUser?.email || 'sarah.johnson@email.com'}
                                     </p>
                                 </div>
                             </div>
@@ -503,6 +644,24 @@ const Profile = () => {
                                 )}
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Profile Modal */}
+            {editModal && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setEditModal(false)}>
+                    <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                        <ProfileEditForm
+                            user={{
+                                name: userData?.name || currentUser?.displayName || '',
+                                email: userData?.email || currentUser?.email || '',
+                                career_path: userData?.career_path || 'Doctor',
+                                profile_picture_url: userData?.profile_picture_url || avatarUrl || ''
+                            }}
+                            onSave={handleProfileSave}
+                            onCancel={() => setEditModal(false)}
+                        />
                     </div>
                 </div>
             )}
