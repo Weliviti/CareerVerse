@@ -61,81 +61,78 @@ function Home() {
                 </div>
             </section>
 
-            {/* Why Choose CareerVerse Section */}
-            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f0fdfa 50%, #f5f3ff 100%)' }}>
-                {/* Animated background decorations */}
-                <div className="absolute top-20 left-10 w-72 h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 4s ease-in-out infinite' }}></div>
-                <div className="absolute bottom-10 right-10 w-72 h-72 bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite 1s' }}></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 2s' }}></div>
+            {/* Intelligent Features Section */}
+            <section className="py-24 relative overflow-hidden">
+                {/* Subtle background glows */}
+                <div className="absolute top-20 left-10 w-72 h-72 bg-teal-900/20 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 4s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 right-10 w-72 h-72 bg-emerald-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite 1s' }}></div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-sm font-semibold text-teal-700 mb-5">
-                            Why CareerVerse?
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                            Why Choose Us
                         </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
-                            A smarter way to <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">discover careers</span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
+                            Intelligent <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Features</span>
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-                            Move beyond traditional career quizzes with AI-powered simulations that reveal your true potential.
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+                            Cutting-edge technology meets career discovery
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Feature 1: AI-Powered Analysis */}
-                        <div className="feature-card group" style={{ '--card-glow': 'rgba(13,148,136,0.08)' }}>
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #0d9488, #5eead4, #0d9488)' }}></div>
-                            <div className="p-8 pt-10">
-                                <div className="relative mb-6 feature-icon-float">
-                                    <div className="absolute inset-0 w-16 h-16 bg-teal-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
-                                    <div className="relative w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-200">
-                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                                        </svg>
-                                    </div>
+                    {/* Asymmetric grid: large left card + 2 stacked right cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                        {/* Large Feature Card: AI-Powered Career Matching */}
+                        <div className="md:col-span-3 home-dark-card group">
+                            <div className="p-8 sm:p-10">
+                                <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-6">
+                                    <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3">AI-Powered Analysis</h3>
-                                <p className="text-gray-500 leading-relaxed">
-                                    Advanced AI evaluates your natural skills through hyper-realistic career simulations.
+                                <h3 className="text-2xl font-bold text-white mb-4">AI-Powered Career Matching</h3>
+                                <p className="text-slate-400 leading-relaxed mb-6">
+                                    Advanced machine learning algorithms analyze thousands of data points including your skills,
+                                    interests, personality traits, and market trends to find your perfect career match with 95% accuracy.
                                 </p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="px-3 py-1.5 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Machine Learning</span>
+                                    <span className="px-3 py-1.5 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Big Data</span>
+                                    <span className="px-3 py-1.5 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Predictive Analytics</span>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Feature 2: Precise Recommendations */}
-                        <div className="feature-card group" style={{ '--card-glow': 'rgba(124,58,237,0.08)' }}>
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #7c3aed, #c4b5fd, #7c3aed)' }}></div>
-                            <div className="p-8 pt-10">
-                                <div className="relative mb-6 feature-icon-float">
-                                    <div className="absolute inset-0 w-16 h-16 bg-violet-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
-                                    <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
-                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        {/* Right column: 2 stacked cards */}
+                        <div className="md:col-span-2 flex flex-col gap-6">
+                            {/* 3D Simulations Card */}
+                            <div className="home-dark-card group flex-1">
+                                <div className="p-8">
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
+                                        <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                                         </svg>
                                     </div>
+                                    <h3 className="text-xl font-bold text-white mb-2">3D Simulations</h3>
+                                    <p className="text-slate-400 leading-relaxed text-sm">
+                                        Experience careers through immersive Unity-powered 3D environments.
+                                    </p>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3">Precise Recommendations</h3>
-                                <p className="text-gray-500 leading-relaxed">
-                                    Get data-driven career matches with percentage scores based on your actual performance.
-                                </p>
                             </div>
-                        </div>
 
-                        {/* Feature 3: Track Your Growth */}
-                        <div className="feature-card group" style={{ '--card-glow': 'rgba(217,119,6,0.08)' }}>
-                            <div className="feature-card-border" style={{ background: 'linear-gradient(135deg, #d97706, #fde68a, #d97706)' }}></div>
-                            <div className="p-8 pt-10">
-                                <div className="relative mb-6 feature-icon-float">
-                                    <div className="absolute inset-0 w-16 h-16 bg-amber-100 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
-                                    <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-200">
-                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            {/* Real-Time Analytics Card */}
+                            <div className="home-dark-card group flex-1">
+                                <div className="p-8">
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
+                                        <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                         </svg>
                                     </div>
+                                    <h3 className="text-xl font-bold text-white mb-2">Real-Time Analytics</h3>
+                                    <p className="text-slate-400 leading-relaxed text-sm">
+                                        Track your progress with detailed insights and personalized recommendations.
+                                    </p>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3">Track Your Growth</h3>
-                                <p className="text-gray-500 leading-relaxed">
-                                    Monitor your skill development with visual charts across multiple simulation sessions.
-                                </p>
                             </div>
                         </div>
                     </div>
