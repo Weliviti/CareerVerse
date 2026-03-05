@@ -96,17 +96,17 @@ function Community() {
             </section>
 
             {/* Team Members Section */}
-            <section className="py-20 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' }}>
-                <div className="absolute top-10 right-20 w-96 h-96 bg-purple-600/10 rounded-full filter blur-3xl pointer-events-none"></div>
-                <div className="absolute bottom-20 left-20 w-96 h-96 bg-teal-600/10 rounded-full filter blur-3xl pointer-events-none"></div>
+            <section className="py-20 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.4) 30%, rgba(5,15,10,0.4) 70%, transparent 100%)' }}>
+                <div className="absolute top-10 right-20 w-96 h-96 bg-emerald-900/15 rounded-full filter blur-3xl pointer-events-none" style={{ animation: 'pulse-glow 6s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-20 left-20 w-96 h-96 bg-teal-900/15 rounded-full filter blur-3xl pointer-events-none" style={{ animation: 'pulse-glow 5s ease-in-out infinite 1s' }}></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-white/5 backdrop-blur border border-white/10 text-sm font-semibold text-emerald-400 mb-5">
-                            🌟 The Innovators
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                            The Innovators
                         </span>
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
-                            Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Minds</span> Behind CareerVerse
+                            Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Minds</span> Behind CareerVerse
                         </h2>
                         <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto">
                             A talented team of six developers pushing the boundaries of career exploration.
