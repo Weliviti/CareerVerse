@@ -648,7 +648,7 @@ function Home() {
                             </svg>
                         </button>
                         <button
-                            onClick={() => { window.scrollTo(0, 0); navigate('/about'); }}
+                            onClick={() => { window.scrollTo(0, 0); navigate('/community'); }}
                             className="hero-btn-outline"
                             style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', borderColor: 'rgba(255,255,255,0.25)' }}
                         >
