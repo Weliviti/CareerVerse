@@ -4,69 +4,91 @@ import Footer from '../components/Footer';
 
 function Community() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary-50 scroll-smooth">
+        <div className="home-dark min-h-screen">
+            {/* ── Parallax glow orbs (fixed, scroll depth) ── */}
+            <div className="home-parallax-orbs">
+                <div className="parallax-orb parallax-orb-1"></div>
+                <div className="parallax-orb parallax-orb-2"></div>
+                <div className="parallax-orb parallax-orb-3"></div>
+            </div>
+
+            {/* ── Floating particles ── */}
+            <div className="home-particles">
+                <div className="particle particle-1"></div>
+                <div className="particle particle-2"></div>
+                <div className="particle particle-3"></div>
+                <div className="particle particle-4"></div>
+                <div className="particle particle-5"></div>
+                <div className="particle particle-6"></div>
+                <div className="particle particle-7"></div>
+                <div className="particle particle-8"></div>
+            </div>
+
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f0fdfa 0%, #ffffff 60%, #f8fafc 100%)' }}>
-                {/* Background decorations */}
+            <section className="relative overflow-hidden">
+                {/* Background decoration — dark radial glows */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-25 animate-blob"></div>
-                    <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-violet-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-50 rounded-full mix-blend-multiply filter blur-3xl opacity-15"></div>
+                    <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(0,229,160,0.12)_0%,transparent_70%)]"></div>
+                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-teal-900/30 rounded-full filter blur-3xl animate-blob"></div>
+                    <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-900/20 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
                 </div>
 
-                {/* Soft side gradients */}
-                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-teal-50/40 to-transparent pointer-events-none"></div>
-                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-violet-50/30 to-transparent pointer-events-none"></div>
-
-                <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 sm:pt-36 sm:pb-28">
+                <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-20 sm:pb-28">
                     <div className="text-center">
-                        {/* Decorative sparkle elements */}
-                        <div className="absolute top-24 left-12 w-2 h-2 bg-teal-400 rounded-full animate-pulse hidden sm:block"></div>
-                        <div className="absolute top-32 right-16 w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse animation-delay-300 hidden sm:block"></div>
-                        <div className="absolute bottom-24 left-20 w-1 h-1 bg-violet-400 rounded-full animate-pulse animation-delay-600 hidden sm:block"></div>
-
-                        {/* Pill badge */}
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-white/80 backdrop-blur border border-teal-200 text-sm font-semibold text-teal-700 mb-6 shadow-sm animate-fade-in animation-delay-100">
-                            👥 Meet the Creators
-                        </span>
+                        {/* Badge Pill */}
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-emerald-700/40 bg-emerald-950/40 backdrop-blur-sm mb-10">
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span className="text-sm font-semibold text-emerald-300 tracking-wide">Meet the CareerVerse Team</span>
+                        </div>
 
                         {/* Main Heading */}
-                        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 tracking-tight mb-6 leading-[1.1] animate-fade-in-up animation-delay-200">
-                            Our{' '}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500 italic">
-                                Community
-                            </span>
+                        <h1 className="hero-heading mb-6">
+                            <span className="block text-white">Our</span>
+                            <span className="block hero-heading-accent">Community</span>
                         </h1>
 
                         {/* Description */}
-                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-500 mb-8 leading-relaxed animate-fade-in-up animation-delay-300">
+                        <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-400 mb-12 leading-relaxed">
                             Meet the passionate team of innovators behind CareerVerse, dedicated to
                             revolutionizing career discovery through cutting-edge AI and immersive technology.
                         </p>
 
                         {/* Stats/Quick Info */}
-                        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400 animate-fade-in animation-delay-400">
-                            <div className="flex items-center gap-2">
-                                <svg className="w-4 h-4 text-teal-500" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                <span className="font-medium">6 Developers</span>
+                        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                    <svg className="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                </div>
+                                <div className="text-left">
+                                    <div className="text-xl font-bold text-white">6</div>
+                                    <div className="text-xs text-slate-500">Developers</div>
+                                </div>
                             </div>
-                            <span className="hidden sm:inline text-gray-300">•</span>
-                            <div className="flex items-center gap-2">
-                                <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                                <span className="font-medium">Multiple Specializations</span>
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                    <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <div className="text-left">
+                                    <div className="text-xl font-bold text-white">AI-Powered</div>
+                                    <div className="text-xs text-slate-500">Simulations</div>
+                                </div>
                             </div>
-                            <span className="hidden sm:inline text-gray-300">•</span>
-                            <div className="flex items-center gap-2">
-                                <svg className="w-4 h-4 text-violet-500" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                                </svg>
-                                <span className="font-medium">Award Winning</span>
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                    <svg className="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                                    </svg>
+                                </div>
+                                <div className="text-left">
+                                    <div className="text-xl font-bold text-white">Award</div>
+                                    <div className="text-xs text-slate-500">Winning Team</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,7 +119,7 @@ function Community() {
                         <div className="group relative overflow-hidden rounded-3xl">
                             {/* Card Background with Glassmorphism */}
                             <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20">
-                                
+
                                 {/* Role Badge - Top Left */}
                                 <div className="absolute top-6 left-6 z-20">
                                     <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
@@ -108,9 +130,9 @@ function Community() {
                                 {/* Large Profile Photo Area */}
                                 <div className="relative h-80 overflow-hidden">
                                     {/* Replace src with your actual photo path */}
-                                    <img 
-                                        src="/team/sandesh.jpg" 
-                                        alt="Sandesh" 
+                                    <img
+                                        src="/team/sandesh.jpg"
+                                        alt="Sandesh"
                                         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
@@ -118,7 +140,7 @@ function Community() {
                                         }}
                                     />
                                     {/* Fallback gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center" style={{display: 'none'}}>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center" style={{ display: 'none' }}>
                                         <svg className="w-32 h-32 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
@@ -141,10 +163,10 @@ function Community() {
                                         <h3 className="text-2xl font-bold mb-1">
                                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">Sandesh</span>
                                         </h3>
-                                        
+
                                         {/* Job Title */}
                                         <p className="text-slate-400 text-sm mb-4">— Backend Developer</p>
-                                        
+
                                         {/* Description */}
                                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                                             Leads NextAttend's direction and develops real-time face recognition using DeepFace and MTCNN.
@@ -172,7 +194,7 @@ function Community() {
                         <div className="group relative overflow-hidden rounded-3xl">
                             {/* Card Background with Glassmorphism */}
                             <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-orange-500/20">
-                                
+
                                 {/* Role Badge - Top Left */}
                                 <div className="absolute top-6 left-6 z-20">
                                     <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
@@ -182,9 +204,9 @@ function Community() {
 
                                 {/* Large Profile Photo Area */}
                                 <div className="relative h-80 overflow-hidden">
-                                    <img 
-                                        src="/team/nishantha.jpg" 
-                                        alt="Nishantha" 
+                                    <img
+                                        src="/team/nishantha.jpg"
+                                        alt="Nishantha"
                                         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
@@ -192,7 +214,7 @@ function Community() {
                                         }}
                                     />
                                     {/* Fallback gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-orange-600/30 to-red-600/30 flex items-center justify-center" style={{display: 'none'}}>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-orange-600/30 to-red-600/30 flex items-center justify-center" style={{ display: 'none' }}>
                                         <svg className="w-32 h-32 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
@@ -215,10 +237,10 @@ function Community() {
                                         <h3 className="text-2xl font-bold mb-1">
                                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-300">Nishantha</span>
                                         </h3>
-                                        
+
                                         {/* Job Title */}
                                         <p className="text-slate-400 text-sm mb-4">— AI Integration and Backend Developer</p>
-                                        
+
                                         {/* Description */}
                                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                                             Integrates advanced AI models and builds scalable backend architecture for CareerVerse simulations.
@@ -246,7 +268,7 @@ function Community() {
                         <div className="group relative overflow-hidden rounded-3xl">
                             {/* Card Background with Glassmorphism */}
                             <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/20">
-                                
+
                                 {/* Role Badge - Top Left */}
                                 <div className="absolute top-6 left-6 z-20">
                                     <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
@@ -256,9 +278,9 @@ function Community() {
 
                                 {/* Large Profile Photo Area */}
                                 <div className="relative h-80 overflow-hidden">
-                                    <img 
-                                        src="/team/crishal.jpg" 
-                                        alt="Crishal" 
+                                    <img
+                                        src="/team/crishal.jpg"
+                                        alt="Crishal"
                                         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
@@ -266,7 +288,7 @@ function Community() {
                                         }}
                                     />
                                     {/* Fallback gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/30 to-blue-600/30 flex items-center justify-center" style={{display: 'none'}}>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/30 to-blue-600/30 flex items-center justify-center" style={{ display: 'none' }}>
                                         <svg className="w-32 h-32 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
@@ -289,10 +311,10 @@ function Community() {
                                         <h3 className="text-2xl font-bold mb-1">
                                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">Crishal</span>
                                         </h3>
-                                        
+
                                         {/* Job Title */}
                                         <p className="text-slate-400 text-sm mb-4">— Frontend Developer</p>
-                                        
+
                                         {/* Description */}
                                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                                             Crafts beautiful user interfaces with React and ensures seamless user experiences across all devices.
@@ -320,7 +342,7 @@ function Community() {
                         <div className="group relative overflow-hidden rounded-3xl">
                             {/* Card Background with Glassmorphism */}
                             <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-amber-500/20">
-                                
+
                                 {/* Role Badge - Top Left */}
                                 <div className="absolute top-6 left-6 z-20">
                                     <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
@@ -330,9 +352,9 @@ function Community() {
 
                                 {/* Large Profile Photo Area */}
                                 <div className="relative h-80 overflow-hidden">
-                                    <img 
-                                        src="/team/kavindu.jpg" 
-                                        alt="Kavindu" 
+                                    <img
+                                        src="/team/kavindu.jpg"
+                                        alt="Kavindu"
                                         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
@@ -340,7 +362,7 @@ function Community() {
                                         }}
                                     />
                                     {/* Fallback gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-amber-600/30 to-orange-600/30 flex items-center justify-center" style={{display: 'none'}}>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-amber-600/30 to-orange-600/30 flex items-center justify-center" style={{ display: 'none' }}>
                                         <svg className="w-32 h-32 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
@@ -363,10 +385,10 @@ function Community() {
                                         <h3 className="text-2xl font-bold mb-1">
                                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-300">Kavindu</span>
                                         </h3>
-                                        
+
                                         {/* Job Title */}
                                         <p className="text-slate-400 text-sm mb-4">— Game Developer</p>
-                                        
+
                                         {/* Description */}
                                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                                             Designs immersive Unity 3D experiences that bring career scenarios to life with stunning visuals.
@@ -394,7 +416,7 @@ function Community() {
                         <div className="group relative overflow-hidden rounded-3xl">
                             {/* Card Background with Glassmorphism */}
                             <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-pink-500/20">
-                                
+
                                 {/* Role Badge - Top Left */}
                                 <div className="absolute top-6 left-6 z-20">
                                     <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
@@ -404,9 +426,9 @@ function Community() {
 
                                 {/* Large Profile Photo Area */}
                                 <div className="relative h-80 overflow-hidden">
-                                    <img 
-                                        src="/team/pramudi.jpg" 
-                                        alt="Pramudi" 
+                                    <img
+                                        src="/team/pramudi.jpg"
+                                        alt="Pramudi"
                                         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
@@ -414,7 +436,7 @@ function Community() {
                                         }}
                                     />
                                     {/* Fallback gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-pink-600/30 to-rose-600/30 flex items-center justify-center" style={{display: 'none'}}>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-pink-600/30 to-rose-600/30 flex items-center justify-center" style={{ display: 'none' }}>
                                         <svg className="w-32 h-32 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
@@ -437,10 +459,10 @@ function Community() {
                                         <h3 className="text-2xl font-bold mb-1">
                                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-300">Pramudi</span>
                                         </h3>
-                                        
+
                                         {/* Job Title */}
                                         <p className="text-slate-400 text-sm mb-4">— Game Developer</p>
-                                        
+
                                         {/* Description */}
                                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                                             Creates interactive gameplay mechanics and polishes game elements for optimal user engagement.
@@ -468,7 +490,7 @@ function Community() {
                         <div className="group relative overflow-hidden rounded-3xl">
                             {/* Card Background with Glassmorphism */}
                             <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-500/20">
-                                
+
                                 {/* Role Badge - Top Left */}
                                 <div className="absolute top-6 left-6 z-20">
                                     <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
@@ -478,9 +500,9 @@ function Community() {
 
                                 {/* Large Profile Photo Area */}
                                 <div className="relative h-80 overflow-hidden">
-                                    <img 
-                                        src="/team/chamindu.jpg" 
-                                        alt="Chamindu" 
+                                    <img
+                                        src="/team/chamindu.jpg"
+                                        alt="Chamindu"
                                         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
@@ -488,7 +510,7 @@ function Community() {
                                         }}
                                     />
                                     {/* Fallback gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 to-violet-600/30 flex items-center justify-center" style={{display: 'none'}}>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 to-violet-600/30 flex items-center justify-center" style={{ display: 'none' }}>
                                         <svg className="w-32 h-32 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
@@ -511,10 +533,10 @@ function Community() {
                                         <h3 className="text-2xl font-bold mb-1">
                                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-300">Chamindu</span>
                                         </h3>
-                                        
+
                                         {/* Job Title */}
                                         <p className="text-slate-400 text-sm mb-4">— UI/UX Designer and DevOps</p>
-                                        
+
                                         {/* Description */}
                                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                                             Designs intuitive interfaces and maintains reliable deployment pipelines for seamless operations.
