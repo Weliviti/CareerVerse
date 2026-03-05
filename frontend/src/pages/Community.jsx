@@ -564,19 +564,19 @@ function Community() {
             </section>
 
             {/* Project Updates Section */}
-            <section className="py-20 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%)' }}>
-                <div className="absolute top-20 left-10 w-64 h-64 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-15 pointer-events-none"></div>
-                <div className="absolute bottom-10 right-10 w-64 h-64 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-15 pointer-events-none"></div>
+            <section className="py-20 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.3) 50%, transparent 100%)' }}>
+                <div className="absolute top-20 left-10 w-64 h-64 bg-teal-900/15 rounded-full filter blur-3xl pointer-events-none" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 right-10 w-64 h-64 bg-emerald-900/15 rounded-full filter blur-3xl pointer-events-none" style={{ animation: 'pulse-glow 6s ease-in-out infinite 1s' }}></div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12 sm:mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600 mb-5 shadow-sm animate-fade-in">
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
                             Latest Updates
                         </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight animate-fade-in-up animation-delay-100">
-                            Project <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">Journey</span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
+                            Project <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Journey</span>
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                             Track our progress as we build the future of career discovery.
                         </p>
                     </div>
@@ -584,55 +584,55 @@ function Community() {
                     {/* Timeline */}
                     <div className="space-y-8 relative">
                         {/* Vertical line */}
-                        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-teal-200 via-emerald-200 to-teal-200 transform md:-translate-x-1/2 hidden sm:block"></div>
+                        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-700/40 via-teal-600/40 to-emerald-700/40 transform md:-translate-x-1/2 hidden sm:block"></div>
 
                         {/* Update 1 */}
-                        <div className="relative flex flex-col md:flex-row gap-8 items-center animate-fade-in-up animation-delay-100">
+                        <div className="relative flex flex-col md:flex-row gap-8 items-center">
                             <div className="md:w-1/2 md:text-right md:pr-12">
-                                <div className="inline-block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6 text-left">
+                                <div className="home-dark-card group inline-block p-6 text-left">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-teal-200">
+                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-teal-900/50">
                                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <h3 className="text-lg font-bold text-gray-900">Project Launch</h3>
-                                            <p className="text-sm text-gray-400">February 2026</p>
+                                            <h3 className="text-lg font-bold text-white">Project Launch</h3>
+                                            <p className="text-sm text-emerald-400/80">February 2026</p>
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-slate-400 leading-relaxed">
                                         CareerVerse officially launched with AI-powered simulations for teaching and medical careers. The platform uses Google's Gemini AI for realistic persona interactions.
                                     </p>
                                 </div>
                             </div>
-                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-teal-500 to-emerald-500 items-center justify-center shadow-xl shadow-teal-200 relative z-10">
+                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-teal-500 to-emerald-500 items-center justify-center shadow-xl shadow-teal-900/50 relative z-10">
                                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                             </div>
                             <div className="md:w-1/2"></div>
                         </div>
 
                         {/* Update 2 */}
-                        <div className="relative flex flex-col md:flex-row-reverse gap-8 items-center animate-fade-in-up animation-delay-200">
+                        <div className="relative flex flex-col md:flex-row-reverse gap-8 items-center">
                             <div className="md:w-1/2"></div>
-                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 items-center justify-center shadow-xl shadow-violet-200 relative z-10">
+                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 items-center justify-center shadow-xl shadow-violet-900/50 relative z-10">
                                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             </div>
                             <div className="md:w-1/2 md:pl-12">
-                                <div className="inline-block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6">
+                                <div className="home-dark-card group inline-block p-6">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center shadow-lg shadow-violet-200">
+                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center shadow-lg shadow-violet-900/50">
                                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <h3 className="text-lg font-bold text-gray-900">Unity 3D Integration</h3>
-                                            <p className="text-sm text-gray-400">January 2026</p>
+                                            <h3 className="text-lg font-bold text-white">Unity 3D Integration</h3>
+                                            <p className="text-sm text-violet-400/80">January 2026</p>
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-slate-400 leading-relaxed">
                                         Successfully integrated Unity WebGL for immersive 3D career environments. Users can now experience realistic classroom and hospital scenarios.
                                     </p>
                                 </div>
@@ -640,51 +640,51 @@ function Community() {
                         </div>
 
                         {/* Update 3 */}
-                        <div className="relative flex flex-col md:flex-row gap-8 items-center animate-fade-in-up animation-delay-300">
+                        <div className="relative flex flex-col md:flex-row gap-8 items-center">
                             <div className="md:w-1/2 md:text-right md:pr-12">
-                                <div className="inline-block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6 text-left">
+                                <div className="home-dark-card group inline-block p-6 text-left">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-200">
+                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-900/50">
                                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <h3 className="text-lg font-bold text-gray-900">AI Evaluation System</h3>
-                                            <p className="text-sm text-gray-400">December 2025</p>
+                                            <h3 className="text-lg font-bold text-white">AI Evaluation System</h3>
+                                            <p className="text-sm text-amber-400/80">December 2025</p>
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-slate-400 leading-relaxed">
                                         Deployed advanced AI evaluation system that analyzes communication skills, problem-solving abilities, and emotional intelligence in real-time.
                                     </p>
                                 </div>
                             </div>
-                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 items-center justify-center shadow-xl shadow-amber-200 relative z-10">
+                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 items-center justify-center shadow-xl shadow-amber-900/50 relative z-10">
                                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                             </div>
                             <div className="md:w-1/2"></div>
                         </div>
 
                         {/* Update 4 */}
-                        <div className="relative flex flex-col md:flex-row-reverse gap-8 items-center animate-fade-in-up animation-delay-400">
+                        <div className="relative flex flex-col md:flex-row-reverse gap-8 items-center">
                             <div className="md:w-1/2"></div>
-                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 items-center justify-center shadow-xl shadow-blue-200 relative z-10">
+                            <div className="hidden md:flex w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 items-center justify-center shadow-xl shadow-blue-900/50 relative z-10">
                                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                             </div>
                             <div className="md:w-1/2 md:pl-12">
-                                <div className="inline-block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6">
+                                <div className="home-dark-card group inline-block p-6">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-200">
+                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-900/50">
                                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <h3 className="text-lg font-bold text-gray-900">Beta Testing Phase</h3>
-                                            <p className="text-sm text-gray-400">November 2025</p>
+                                            <h3 className="text-lg font-bold text-white">Beta Testing Phase</h3>
+                                            <p className="text-sm text-blue-400/80">November 2025</p>
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-slate-400 leading-relaxed">
                                         Conducted extensive beta testing with 100+ students, gathering valuable feedback to refine the simulation experience and AI accuracy.
                                     </p>
                                 </div>
