@@ -527,9 +527,13 @@ function Home() {
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
                             Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Success</span>
                         </h2>
+                        <p className="text-slate-400 max-w-2xl mx-auto">
+                            Trusted by thousands, powered by cutting-edge AI technology
+                        </p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                    {/* Success Metrics */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8">
                         {/* Stat 1 */}
                         <div className="home-dark-card p-6 text-center sm:text-left">
                             <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-3 mx-auto sm:mx-0">
@@ -569,6 +573,50 @@ function Home() {
                             </div>
                             <div className="text-2xl sm:text-3xl font-bold text-emerald-400 mb-1">4.9/5</div>
                             <div className="text-xs sm:text-sm text-slate-500">Average Rating</div>
+                        </div>
+                    </div>
+
+                    {/* AI-Powered Stats */}
+                    <div className="text-center mt-16 mb-8">
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-violet-700/40 bg-violet-950/40 text-sm font-semibold text-violet-300 mb-5">
+                            AI Technology
+                        </span>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                            Powered by <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-300 italic">Advanced AI</span>
+                        </h3>
+                        <p className="text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                            Our platform leverages cutting-edge Large Language Models to create AI agents that
+                            respond naturally and evaluate your performance with precision.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="home-dark-card p-10 text-center group">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                </svg>
+                            </div>
+                            <div className="text-4xl sm:text-5xl font-bold text-emerald-400 mb-2">100%</div>
+                            <div className="text-slate-400 font-medium italic">AI-Powered Analysis</div>
+                        </div>
+                        <div className="home-dark-card p-10 text-center group">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <div className="text-4xl sm:text-5xl font-bold text-blue-400 mb-2">20+</div>
+                            <div className="text-slate-400 font-medium italic">Skill Dimensions</div>
+                        </div>
+                        <div className="home-dark-card p-10 text-center group">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                <svg className="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                                </svg>
+                            </div>
+                            <div className="text-4xl sm:text-5xl font-bold text-purple-400 mb-2">3D</div>
+                            <div className="text-slate-400 font-medium italic">WebGL Simulations</div>
                         </div>
                     </div>
                 </div>
