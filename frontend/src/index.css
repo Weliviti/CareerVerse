@@ -671,3 +671,391 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 14px;
 }
+
+/* ─── Home Dark Theme Overrides ──────────────────── */
+
+/* Dark page background */
+.home-dark {
+  background: linear-gradient(180deg, #07130a 0%, #0a1e1a 30%, #091a12 60%, #07130a 100%);
+}
+
+/* ── Navbar overrides ── */
+.home-dark .navbar-glass {
+  background: rgba(10, 22, 16, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.home-dark .navbar-curve {
+  background: rgba(10, 22, 16, 0.82);
+  box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.3);
+}
+
+.home-dark .navbar-logo {
+  color: #ffffff;
+}
+
+.home-dark .navbar-logo-accent {
+  background: linear-gradient(135deg, #00e5a0, #14b8a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.home-dark .navbar-link {
+  color: #cbd5e1;
+}
+
+.home-dark .navbar-link:hover {
+  color: #00e5a0;
+  background-color: rgba(0, 229, 160, 0.08);
+}
+
+.home-dark .navbar-link-active {
+  color: #00e5a0 !important;
+  background-color: rgba(0, 229, 160, 0.1);
+}
+
+.home-dark .navbar-link-active::after {
+  background: linear-gradient(90deg, #00e5a0, #14b8a6);
+}
+
+.home-dark .navbar-icon-btn {
+  color: #94a3b8;
+}
+
+.home-dark .navbar-icon-btn:hover {
+  color: #e2e8f0;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.home-dark .navbar-login-btn {
+  color: #e2e8f0;
+}
+
+.home-dark .navbar-login-btn:hover {
+  color: #00e5a0;
+  background-color: rgba(0, 229, 160, 0.08);
+}
+
+.home-dark .navbar-signup-btn {
+  background: linear-gradient(135deg, #00c98d, #0d9488);
+  box-shadow: 0 2px 12px rgba(0, 229, 160, 0.25);
+}
+
+.home-dark .navbar-signup-btn:hover {
+  background: linear-gradient(135deg, #00e5a0, #0f9d8e);
+  box-shadow: 0 4px 18px rgba(0, 229, 160, 0.35);
+}
+
+/* Mobile menu dark */
+.home-dark .md\:hidden.bg-white\/95 {
+  background: rgba(10, 22, 16, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.home-dark .navbar-mobile-link {
+  color: #cbd5e1;
+}
+
+.home-dark .navbar-mobile-link:hover {
+  color: #00e5a0;
+  background-color: rgba(0, 229, 160, 0.08);
+}
+
+/* ── Hero section overrides ── */
+.home-dark .hero-heading-accent {
+  color: transparent;
+  background: linear-gradient(135deg, #00e5a0, #14b8a6, #00e5a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.home-dark .hero-btn-primary {
+  background: linear-gradient(135deg, #00c98d, #0d9488);
+  box-shadow: 0 4px 20px rgba(0, 229, 160, 0.3);
+}
+
+.home-dark .hero-btn-primary:hover {
+  box-shadow: 0 6px 28px rgba(0, 229, 160, 0.45);
+}
+
+.home-dark .hero-btn-outline {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.home-dark .hero-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 229, 160, 0.3);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 229, 160, 0.15);
+}
+
+/* ── Dark glass card (reusable) ── */
+.home-dark-card {
+  background: rgba(13, 30, 22, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+}
+
+.home-dark-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(0, 229, 160, 0.2);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(0, 229, 160, 0.06);
+}
+
+/* ── Simulation "Try" button ── */
+.home-dark-sim-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: linear-gradient(135deg, #00c98d, #0d9488);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.7rem 1.2rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 10px rgba(0, 229, 160, 0.2);
+}
+
+.home-dark-sim-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(0, 229, 160, 0.35);
+}
+
+/* ── Footer overrides on Home dark ── */
+.home-dark footer {
+  background: #050f09;
+  position: relative;
+}
+
+/* Curved top edge on footer (mirrors navbar curve) */
+.home-dark footer::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -10%;
+  width: 120%;
+  height: 22px;
+  background: #050f09;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  z-index: 1;
+}
+
+.home-dark .footer-gradient-border {
+  background: linear-gradient(90deg, #00e5a0, #0d9488, #065f46, #00e5a0);
+  background-size: 300% 100%;
+}
+
+.home-dark .footer-social-icon:hover {
+  background: rgba(0, 229, 160, 0.15);
+  border-color: rgba(0, 229, 160, 0.3);
+  box-shadow: 0 0 16px rgba(0, 229, 160, 0.2);
+}
+
+.home-dark .footer-subscribe-btn {
+  background: linear-gradient(135deg, #00c98d, #0d9488);
+}
+
+.home-dark .footer-email-input:focus {
+  border-color: #00e5a0;
+  box-shadow: 0 0 0 2px rgba(0, 229, 160, 0.15);
+}
+
+/* ══════════════════════════════════════════════════
+   Flowing background: Parallax Orbs + Particles
+   ══════════════════════════════════════════════════ */
+
+/* ── Parallax glow orbs (fixed, depth effect on scroll) ── */
+.home-parallax-orbs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.parallax-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orb-breathe 8s ease-in-out infinite;
+}
+
+.parallax-orb-1 {
+  width: 500px;
+  height: 500px;
+  top: 10%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(0, 229, 160, 0.08) 0%, transparent 70%);
+  animation-duration: 10s;
+}
+
+.parallax-orb-2 {
+  width: 400px;
+  height: 400px;
+  top: 50%;
+  right: -8%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.07) 0%, transparent 70%);
+  animation-duration: 12s;
+  animation-delay: 3s;
+}
+
+.parallax-orb-3 {
+  width: 350px;
+  height: 350px;
+  bottom: 5%;
+  left: 30%;
+  background: radial-gradient(circle, rgba(0, 229, 160, 0.06) 0%, transparent 70%);
+  animation-duration: 14s;
+  animation-delay: 6s;
+}
+
+@keyframes orb-breathe {
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+/* ── Floating particle dots ── */
+.home-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 229, 160, 0.35);
+  animation: particle-float linear infinite;
+}
+
+.particle-1 {
+  width: 3px;
+  height: 3px;
+  left: 8%;
+  bottom: -5%;
+  animation-duration: 18s;
+  animation-delay: 0s;
+  opacity: 0.5;
+}
+
+.particle-2 {
+  width: 2px;
+  height: 2px;
+  left: 22%;
+  bottom: -5%;
+  animation-duration: 22s;
+  animation-delay: 2s;
+  opacity: 0.4;
+}
+
+.particle-3 {
+  width: 4px;
+  height: 4px;
+  left: 38%;
+  bottom: -5%;
+  animation-duration: 16s;
+  animation-delay: 4s;
+  opacity: 0.6;
+}
+
+.particle-4 {
+  width: 2px;
+  height: 2px;
+  left: 55%;
+  bottom: -5%;
+  animation-duration: 20s;
+  animation-delay: 1s;
+  opacity: 0.35;
+}
+
+.particle-5 {
+  width: 3px;
+  height: 3px;
+  left: 70%;
+  bottom: -5%;
+  animation-duration: 24s;
+  animation-delay: 3s;
+  opacity: 0.45;
+}
+
+.particle-6 {
+  width: 2px;
+  height: 2px;
+  left: 85%;
+  bottom: -5%;
+  animation-duration: 19s;
+  animation-delay: 5s;
+  opacity: 0.3;
+}
+
+.particle-7 {
+  width: 3px;
+  height: 3px;
+  left: 45%;
+  bottom: -5%;
+  animation-duration: 21s;
+  animation-delay: 7s;
+  opacity: 0.5;
+}
+
+.particle-8 {
+  width: 2px;
+  height: 2px;
+  left: 15%;
+  bottom: -5%;
+  animation-duration: 25s;
+  animation-delay: 9s;
+  opacity: 0.4;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-110vh) translateX(30px);
+    opacity: 0;
+  }
+}

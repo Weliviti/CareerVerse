@@ -39,7 +39,7 @@ const Profile = () => {
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
     const [uploadError, setUploadError] = useState(null);
     const [userData, setUserData] = useState(null);
-    const [loadingUserData, setLoadingUserData] = useState(true);
+    const [_loadingUserData, setLoadingUserData] = useState(true);
 
     // Edit Profile state
     const [editModal, setEditModal] = useState(false);
@@ -58,12 +58,12 @@ const Profile = () => {
     useEffect(() => {
         const loadUserData = async () => {
             if (!currentUser) return;
-            
+
             try {
                 setLoadingUserData(true);
                 const userDocRef = doc(db, 'users', currentUser.uid);
                 const userDoc = await getDoc(userDocRef);
-                
+
                 if (userDoc.exists()) {
                     const data = userDoc.data();
                     setUserData(data);
@@ -88,11 +88,11 @@ const Profile = () => {
     // Function to reload user data from Firestore
     const reloadUserData = async () => {
         if (!currentUser) return;
-        
+
         try {
             const userDocRef = doc(db, 'users', currentUser.uid);
             const userDoc = await getDoc(userDocRef);
-            
+
             if (userDoc.exists()) {
                 const data = userDoc.data();
                 setUserData(data);
@@ -109,9 +109,9 @@ const Profile = () => {
     const confirmDeleteAccount = async () => {
         try {
             setDeletingAccount(true);
-            const response = await api.delete('/api/auth/account');
+            await api.delete('/api/auth/account');
             // Sign out locally (may fail if auth already invalidated, that's ok)
-            try { await signOut(auth); } catch (e) { /* expected */ }
+            try { await signOut(auth); } catch { /* expected */ }
             toast.success('Your account has been deleted');
             navigate('/');
         } catch (error) {
@@ -215,11 +215,11 @@ const Profile = () => {
             console.log('Calling backend API...');
             console.log('API URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000');
             console.log('Request data:', { profile_picture_url: url });
-            
+
             const response = await api.put('/api/auth/user/profile', {
                 profile_picture_url: url
             });
-            
+
             console.log('✅ Backend response:', response);
             console.log('Response status:', response.status);
             console.log('Response data:', response.data);
@@ -227,10 +227,10 @@ const Profile = () => {
             // If we got here without an exception and status is 2xx, it's a success
             if (response.status >= 200 && response.status < 300) {
                 console.log('✅ Backend confirmed success (status 2xx)');
-                
+
                 // Update local state with new avatar URL
                 setAvatarUrl(url);
-                
+
                 // Update userData state so it persists
                 setUserData(prev => ({
                     ...prev,
@@ -252,9 +252,9 @@ const Profile = () => {
             console.error('Error response:', error.response);
             console.error('Error response data:', error.response?.data);
             console.error('Error response status:', error.response?.status);
-            
+
             let errorMsg = 'Failed to upload avatar';
-            
+
             if (error.response?.data?.message) {
                 errorMsg = error.response.data.message;
             } else if (error.response?.data?.error) {
@@ -262,11 +262,11 @@ const Profile = () => {
             } else if (error.message) {
                 errorMsg = error.message;
             }
-            
+
             if (error.response?.data?.error_details) {
                 errorMsg += ': ' + error.response.data.error_details;
             }
-            
+
             setUploadError(errorMsg);
             toast.error('Failed to upload: ' + errorMsg);
         } finally {
@@ -277,18 +277,18 @@ const Profile = () => {
 
     const handleProfileSave = (updatedUser) => {
         console.log('Profile saved, updating local state:', updatedUser);
-        
+
         // Update local state with all user data
         setUserData(prevData => ({
             ...prevData,
             ...updatedUser
         }));
-        
+
         // Update avatar if changed
         if (updatedUser.profile_picture_url) {
             setAvatarUrl(updatedUser.profile_picture_url);
         }
-        
+
         setEditModal(false);
         toast.success('Profile updated successfully!');
     };
@@ -388,7 +388,7 @@ const Profile = () => {
 
                         {/* Right Side: Edit Profile Button */}
                         <div>
-                            <button 
+                            <button
                                 onClick={() => setEditModal(true)}
                                 className="flex items-center px-4 py-2 border-2 border-primary-500 text-primary-600 rounded-md hover:bg-primary-50 transition-colors"
                             >
