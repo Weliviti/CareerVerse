@@ -226,6 +226,103 @@ function Home() {
                 </div>
             </section>
 
+            {/* How It Works Section */}
+            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.3) 50%, transparent 100%)' }}>
+                <div className="absolute top-20 right-10 w-64 h-64 bg-teal-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 left-10 w-64 h-64 bg-emerald-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 1s' }}></div>
+
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                        The Process
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
+                        <span className="text-white">How it </span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">works</span>
+                    </h2>
+                    <p className="text-lg text-slate-400 mb-16 max-w-2xl mx-auto">
+                        From simulation to career recommendation in four simple steps.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Step 1 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-emerald-950/50 select-none pointer-events-none">01</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-emerald-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">Choose Your Simulation</h3>
+                                <p className="text-sm text-slate-400">
+                                    Select from career paths like Teacher or Doctor
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 2 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-blue-950/50 select-none pointer-events-none">02</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-blue-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">Immerse in Scenarios</h3>
+                                <p className="text-sm text-slate-400">
+                                    Interact with AI agents in realistic 3D environments
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 3 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-violet-950/50 select-none pointer-events-none">03</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-violet-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">AI Analyzes Performance</h3>
+                                <p className="text-sm text-slate-400">
+                                    Your skills are evaluated across multiple dimensions
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 4 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-amber-950/50 select-none pointer-events-none">04</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-amber-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">Get Recommendations</h3>
+                                <p className="text-sm text-slate-400">
+                                    Receive data-driven insights about your ideal career
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Immersive Simulations Section — slightly deeper background for contrast */}
             <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.5) 30%, rgba(5,15,10,0.5) 70%, transparent 100%)' }}>
                 {/* Glows positioned differently from the Features section */}
