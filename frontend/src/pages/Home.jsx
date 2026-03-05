@@ -440,6 +440,84 @@ function Home() {
                 </div>
             </section>
 
+            {/* What Makes Us Different Section */}
+            <section className="py-24 relative overflow-hidden">
+                <div className="absolute top-10 left-20 w-72 h-72 bg-violet-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 right-20 w-72 h-72 bg-teal-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 1s' }}></div>
+
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                        Our Edge
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
+                        <span className="text-white">What makes us </span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">different</span>
+                    </h2>
+                    <p className="text-lg text-slate-400 mb-16 max-w-2xl mx-auto">
+                        We combine cutting-edge technology with human-centric design.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Feature 1 - Hands-On Technology */}
+                        <div className="home-dark-card group text-left">
+                            <div className="p-8 pt-10">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-emerald-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3">Hands-On Technology</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Powered by advanced language models, our AI agents respond authentically
+                                    in character, creating truly immersive experiences.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Feature 2 - Adaptive Engine */}
+                        <div className="home-dark-card group text-left">
+                            <div className="p-8 pt-10">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-violet-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3">Adaptive Engine</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Every decision is analyzed. Get precise skill scores and career matches based
+                                    on actual performance, not just answers to questions.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Feature 3 - Instant Feedback */}
+                        <div className="home-dark-card group text-left">
+                            <div className="p-8 pt-10">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-amber-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3">Instant Feedback</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Experience what it really feels like in different careers through interactive
+                                    scenario-based challenges that mirror real professional situations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Built for Success — Stats Section */}
             <section className="py-20 relative overflow-hidden">
                 <div className="absolute top-0 right-1/4 w-80 h-80 bg-emerald-900/10 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite 1s' }}></div>
