@@ -70,12 +70,6 @@ const Navbar = () => {
                     <span className="navbar-link-text">Home</span>
                   </button>
                   <button
-                    onClick={() => navigate('/about')}
-                    className={`navbar-link ${isActive('/about') ? 'navbar-link-active' : ''}`}
-                  >
-                    <span className="navbar-link-text">About</span>
-                  </button>
-                  <button
                     onClick={() => navigate('/community')}
                     className={`navbar-link ${isActive('/community') ? 'navbar-link-active' : ''}`}
                   >
@@ -171,9 +165,6 @@ const Navbar = () => {
             <>
               <button onClick={() => { navigate('/'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 Home
-              </button>
-              <button onClick={() => { navigate('/about'); setIsMenuOpen(false); }} className="navbar-mobile-link">
-                About
               </button>
               <button onClick={() => { navigate('/community'); setIsMenuOpen(false); }} className="navbar-mobile-link">
                 Community
