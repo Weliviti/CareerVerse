@@ -80,6 +80,74 @@ function Home() {
                 </div>
             </section>
 
+            {/* Our Mission Section */}
+            <section className="py-24 relative overflow-hidden">
+                {/* Background glows */}
+                <div className="absolute top-10 left-20 w-80 h-80 bg-teal-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-900/10 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 2s' }}></div>
+
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col lg:flex-row items-center gap-16">
+                        {/* Text Content */}
+                        <div className="flex-1">
+                            <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-6">
+                                Our Purpose
+                            </span>
+                            <h2 className="text-3xl sm:text-4xl font-extrabold mb-8 tracking-tight">
+                                <span className="text-white">Our </span>
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Mission</span>
+                            </h2>
+                            <div className="space-y-6 text-slate-400 text-base sm:text-lg leading-relaxed">
+                                <p>
+                                    Traditional career assessments rely on self-reported answers to hypothetical
+                                    questions. But knowing what you would do and actually doing it are two different
+                                    things.
+                                </p>
+                                <p>
+                                    CareerVerse puts you in realistic, AI-powered simulations where your natural
+                                    skills shine through. Our advanced AI analyzes how you communicate, solve
+                                    problems, and handle stress in real-time scenarios.
+                                </p>
+                                <p className="text-emerald-400 font-semibold">
+                                    The result? Career recommendations based on demonstrated aptitude, not just
+                                    preferences.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Visual Element */}
+                        <div className="flex-1 w-full max-w-lg">
+                            <div className="home-dark-card group">
+                                <div className="aspect-square p-12 flex flex-col items-center justify-center text-center">
+                                    <div className="w-48 h-48 mb-8 text-emerald-400">
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M9.5 2C7.84315 2 6.5 3.34315 6.5 5C6.5 6.65685 7.84315 8 9.5 8" />
+                                            <path d="M9.5 8V16" />
+                                            <path d="M9.5 16C7.84315 16 6.5 17.3431 6.5 19C6.5 20.6569 7.84315 22 9.5 22" />
+                                            <path d="M14.5 2C16.1569 2 17.5 3.34315 17.5 5C17.5 6.65685 16.1569 8 14.5 8" />
+                                            <path d="M14.5 8V16" />
+                                            <path d="M14.5 16C16.1569 16 17.5 17.3431 17.5 19C17.5 20.6569 16.1569 22 14.5 22" />
+                                            <path d="M9.5 12H14.5" />
+                                            <path d="M6.5 5H4.5C3.39543 5 2.5 5.89543 2.5 7V17C2.5 18.1046 3.39543 19 4.5 19H6.5" />
+                                            <path d="M17.5 5H19.5C20.6046 5 21.5 5.89543 21.5 7V17C21.5 18.1046 20.6046 19 19.5 19H17.5" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-2">AI Powered</h3>
+                                    <p className="text-emerald-400 font-semibold text-xl">Career Discovery</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Intelligent Features Section */}
             <section className="py-24 relative overflow-hidden">
                 {/* Subtle background glows */}
