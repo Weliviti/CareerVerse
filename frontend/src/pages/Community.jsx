@@ -695,27 +695,98 @@ function Community() {
             </section>
 
             {/* Achievements & Competitions Section */}
-            <section className="py-20 sm:py-24 relative overflow-hidden bg-white">
-                <div className="absolute top-20 right-10 w-80 h-80 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
-                <div className="absolute bottom-10 left-10 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 pointer-events-none"></div>
+            <section className="py-20 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.3) 50%, transparent 100%)' }}>
+                <div className="absolute top-20 right-10 w-80 h-80 bg-amber-900/10 rounded-full filter blur-3xl pointer-events-none" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 left-10 w-80 h-80 bg-teal-900/15 rounded-full filter blur-3xl pointer-events-none" style={{ animation: 'pulse-glow 6s ease-in-out infinite 1s' }}></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-700 mb-5 animate-fade-in">
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-amber-700/40 bg-amber-950/40 text-sm font-semibold text-amber-300 mb-5">
                             Achievements
                         </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight animate-fade-in-up animation-delay-100">
-                            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">Victories</span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
+                            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-300 italic">Victories</span>
                         </h2>
-                        <p className="text-lg text-gray-500 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                             Recognition and achievements from competitions and showcases.
                         </p>
                     </div>
 
-                    {/* Achievement Cards Grid - Rest of the content remains the same */}
+                    {/* Achievement Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {/* All achievement cards exactly as they were in OurTeam.jsx */}
-                        {/* I'll keep this part exactly the same to maintain consistency */}
+
+                        {/* Achievement 1 */}
+                        <div className="home-dark-card group">
+                            <div className="p-8">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-amber-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    <span className="px-2.5 py-1 text-xs font-bold bg-amber-500/15 border border-amber-500/20 text-amber-300 rounded-full uppercase tracking-wider">
+                                        1st Place
+                                    </span>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">SLIIT SDGP Competition</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                                    Awarded 1st place at SLIIT's Software Development Group Project competition for innovative use of AI in career exploration.
+                                </p>
+                                <p className="text-xs text-amber-400/70 font-semibold">February 2026</p>
+                            </div>
+                        </div>
+
+                        {/* Achievement 2 */}
+                        <div className="home-dark-card group">
+                            <div className="p-8">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-emerald-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    <span className="px-2.5 py-1 text-xs font-bold bg-emerald-500/15 border border-emerald-500/20 text-emerald-300 rounded-full uppercase tracking-wider">
+                                        Best Innovation
+                                    </span>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">AI Innovation Award</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                                    Recognized for breakthrough AI integration combining Gemini LLM with Unity 3D WebGL to create an unprecedented career simulation experience.
+                                </p>
+                                <p className="text-xs text-emerald-400/70 font-semibold">January 2026</p>
+                            </div>
+                        </div>
+
+                        {/* Achievement 3 */}
+                        <div className="home-dark-card group">
+                            <div className="p-8">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-violet-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-violet-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    <span className="px-2.5 py-1 text-xs font-bold bg-violet-500/15 border border-violet-500/20 text-violet-300 rounded-full uppercase tracking-wider">
+                                        Top Rated
+                                    </span>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">Best User Experience</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                                    Received top ratings for user experience design, with beta testers praising the seamless blend of immersive 3D environments and intelligent AI interactions.
+                                </p>
+                                <p className="text-xs text-violet-400/70 font-semibold">December 2025</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
