@@ -80,6 +80,74 @@ function Home() {
                 </div>
             </section>
 
+            {/* Our Mission Section */}
+            <section className="py-24 relative overflow-hidden">
+                {/* Background glows */}
+                <div className="absolute top-10 left-20 w-80 h-80 bg-teal-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-900/10 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 2s' }}></div>
+
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col lg:flex-row items-center gap-16">
+                        {/* Text Content */}
+                        <div className="flex-1">
+                            <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-6">
+                                Our Purpose
+                            </span>
+                            <h2 className="text-3xl sm:text-4xl font-extrabold mb-8 tracking-tight">
+                                <span className="text-white">Our </span>
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Mission</span>
+                            </h2>
+                            <div className="space-y-6 text-slate-400 text-base sm:text-lg leading-relaxed">
+                                <p>
+                                    Traditional career assessments rely on self-reported answers to hypothetical
+                                    questions. But knowing what you would do and actually doing it are two different
+                                    things.
+                                </p>
+                                <p>
+                                    CareerVerse puts you in realistic, AI-powered simulations where your natural
+                                    skills shine through. Our advanced AI analyzes how you communicate, solve
+                                    problems, and handle stress in real-time scenarios.
+                                </p>
+                                <p className="text-emerald-400 font-semibold">
+                                    The result? Career recommendations based on demonstrated aptitude, not just
+                                    preferences.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Visual Element */}
+                        <div className="flex-1 w-full max-w-lg">
+                            <div className="home-dark-card group">
+                                <div className="aspect-square p-12 flex flex-col items-center justify-center text-center">
+                                    <div className="w-48 h-48 mb-8 text-emerald-400">
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M9.5 2C7.84315 2 6.5 3.34315 6.5 5C6.5 6.65685 7.84315 8 9.5 8" />
+                                            <path d="M9.5 8V16" />
+                                            <path d="M9.5 16C7.84315 16 6.5 17.3431 6.5 19C6.5 20.6569 7.84315 22 9.5 22" />
+                                            <path d="M14.5 2C16.1569 2 17.5 3.34315 17.5 5C17.5 6.65685 16.1569 8 14.5 8" />
+                                            <path d="M14.5 8V16" />
+                                            <path d="M14.5 16C16.1569 16 17.5 17.3431 17.5 19C17.5 20.6569 16.1569 22 14.5 22" />
+                                            <path d="M9.5 12H14.5" />
+                                            <path d="M6.5 5H4.5C3.39543 5 2.5 5.89543 2.5 7V17C2.5 18.1046 3.39543 19 4.5 19H6.5" />
+                                            <path d="M17.5 5H19.5C20.6046 5 21.5 5.89543 21.5 7V17C21.5 18.1046 20.6046 19 19.5 19H17.5" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-2">AI Powered</h3>
+                                    <p className="text-emerald-400 font-semibold text-xl">Career Discovery</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Intelligent Features Section */}
             <section className="py-24 relative overflow-hidden">
                 {/* Subtle background glows */}
@@ -152,6 +220,103 @@ function Home() {
                                         Track your progress with detailed insights and personalized recommendations.
                                     </p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* How It Works Section */}
+            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.3) 50%, transparent 100%)' }}>
+                <div className="absolute top-20 right-10 w-64 h-64 bg-teal-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 left-10 w-64 h-64 bg-emerald-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 1s' }}></div>
+
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                        The Process
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
+                        <span className="text-white">How it </span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">works</span>
+                    </h2>
+                    <p className="text-lg text-slate-400 mb-16 max-w-2xl mx-auto">
+                        From simulation to career recommendation in four simple steps.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Step 1 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-emerald-950/50 select-none pointer-events-none">01</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-emerald-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">Choose Your Simulation</h3>
+                                <p className="text-sm text-slate-400">
+                                    Select from career paths like Teacher or Doctor
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 2 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-blue-950/50 select-none pointer-events-none">02</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-blue-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">Immerse in Scenarios</h3>
+                                <p className="text-sm text-slate-400">
+                                    Interact with AI agents in realistic 3D environments
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 3 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-violet-950/50 select-none pointer-events-none">03</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-violet-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">AI Analyzes Performance</h3>
+                                <p className="text-sm text-slate-400">
+                                    Your skills are evaluated across multiple dimensions
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 4 */}
+                        <div className="home-dark-card group relative">
+                            <div className="absolute top-4 right-4 text-6xl font-black text-amber-950/50 select-none pointer-events-none">04</div>
+                            <div className="p-8 pt-10 text-center relative">
+                                <div className="relative mb-5 mx-auto w-fit">
+                                    <div className="absolute inset-0 w-16 h-16 bg-amber-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 mx-auto"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/50 mx-auto">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">Get Recommendations</h3>
+                                <p className="text-sm text-slate-400">
+                                    Receive data-driven insights about your ideal career
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -275,6 +440,84 @@ function Home() {
                 </div>
             </section>
 
+            {/* What Makes Us Different Section */}
+            <section className="py-24 relative overflow-hidden">
+                <div className="absolute top-10 left-20 w-72 h-72 bg-violet-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 right-20 w-72 h-72 bg-teal-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 1s' }}></div>
+
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                        Our Edge
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
+                        <span className="text-white">What makes us </span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">different</span>
+                    </h2>
+                    <p className="text-lg text-slate-400 mb-16 max-w-2xl mx-auto">
+                        We combine cutting-edge technology with human-centric design.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Feature 1 - Hands-On Technology */}
+                        <div className="home-dark-card group text-left">
+                            <div className="p-8 pt-10">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-emerald-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3">Hands-On Technology</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Powered by advanced language models, our AI agents respond authentically
+                                    in character, creating truly immersive experiences.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Feature 2 - Adaptive Engine */}
+                        <div className="home-dark-card group text-left">
+                            <div className="p-8 pt-10">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-violet-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3">Adaptive Engine</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Every decision is analyzed. Get precise skill scores and career matches based
+                                    on actual performance, not just answers to questions.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Feature 3 - Instant Feedback */}
+                        <div className="home-dark-card group text-left">
+                            <div className="p-8 pt-10">
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 w-16 h-16 bg-amber-900/30 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+                                    <div className="relative w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/50">
+                                        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3">Instant Feedback</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    Experience what it really feels like in different careers through interactive
+                                    scenario-based challenges that mirror real professional situations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Built for Success — Stats Section */}
             <section className="py-20 relative overflow-hidden">
                 <div className="absolute top-0 right-1/4 w-80 h-80 bg-emerald-900/10 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite 1s' }}></div>
@@ -284,9 +527,13 @@ function Home() {
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
                             Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Success</span>
                         </h2>
+                        <p className="text-slate-400 max-w-2xl mx-auto">
+                            Trusted by thousands, powered by cutting-edge AI technology
+                        </p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                    {/* Success Metrics */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8">
                         {/* Stat 1 */}
                         <div className="home-dark-card p-6 text-center sm:text-left">
                             <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-3 mx-auto sm:mx-0">
@@ -328,6 +575,50 @@ function Home() {
                             <div className="text-xs sm:text-sm text-slate-500">Average Rating</div>
                         </div>
                     </div>
+
+                    {/* AI-Powered Stats */}
+                    <div className="text-center mt-16 mb-8">
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-violet-700/40 bg-violet-950/40 text-sm font-semibold text-violet-300 mb-5">
+                            AI Technology
+                        </span>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                            Powered by <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-300 italic">Advanced AI</span>
+                        </h3>
+                        <p className="text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                            Our platform leverages cutting-edge Large Language Models to create AI agents that
+                            respond naturally and evaluate your performance with precision.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="home-dark-card p-10 text-center group">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                </svg>
+                            </div>
+                            <div className="text-4xl sm:text-5xl font-bold text-emerald-400 mb-2">100%</div>
+                            <div className="text-slate-400 font-medium italic">AI-Powered Analysis</div>
+                        </div>
+                        <div className="home-dark-card p-10 text-center group">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <div className="text-4xl sm:text-5xl font-bold text-blue-400 mb-2">20+</div>
+                            <div className="text-slate-400 font-medium italic">Skill Dimensions</div>
+                        </div>
+                        <div className="home-dark-card p-10 text-center group">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                <svg className="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                                </svg>
+                            </div>
+                            <div className="text-4xl sm:text-5xl font-bold text-purple-400 mb-2">3D</div>
+                            <div className="text-slate-400 font-medium italic">WebGL Simulations</div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -357,7 +648,7 @@ function Home() {
                             </svg>
                         </button>
                         <button
-                            onClick={() => { window.scrollTo(0, 0); navigate('/about'); }}
+                            onClick={() => { window.scrollTo(0, 0); navigate('/community'); }}
                             className="hero-btn-outline"
                             style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', borderColor: 'rgba(255,255,255,0.25)' }}
                         >
