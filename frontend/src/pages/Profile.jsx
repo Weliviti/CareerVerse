@@ -294,10 +294,27 @@ const Profile = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="home-dark min-h-screen">
+            {/* ── Parallax glow orbs ── */}
+            <div className="home-parallax-orbs">
+                <div className="parallax-orb parallax-orb-1"></div>
+                <div className="parallax-orb parallax-orb-2"></div>
+                <div className="parallax-orb parallax-orb-3"></div>
+            </div>
+
+            {/* ── Floating particles ── */}
+            <div className="home-particles">
+                <div className="particle particle-1"></div>
+                <div className="particle particle-2"></div>
+                <div className="particle particle-3"></div>
+                <div className="particle particle-4"></div>
+                <div className="particle particle-5"></div>
+                <div className="particle particle-6"></div>
+            </div>
+
             <Navbar />
             {/* Main Container */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Profile Header Card */}
                 <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                     <div className="flex items-center justify-between">
