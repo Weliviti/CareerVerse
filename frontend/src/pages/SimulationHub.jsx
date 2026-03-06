@@ -150,6 +150,106 @@ const SimulationHub = () => {
                 </div>
             </section>
 
+            {/* Available Simulations Section */}
+            <section className="py-16 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(5,15,10,0.3) 50%, transparent 100%)' }}>
+                <div className="absolute top-20 right-10 w-64 h-64 bg-teal-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}></div>
+                <div className="absolute bottom-10 left-10 w-64 h-64 bg-emerald-900/15 rounded-full filter blur-3xl" style={{ animation: 'pulse-glow 6s ease-in-out infinite 1s' }}></div>
+
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12">
+                        <span className="inline-block px-4 py-1.5 rounded-full border border-emerald-700/40 bg-emerald-950/40 text-sm font-semibold text-emerald-300 mb-5">
+                            Choose Your Path
+                        </span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
+                            <span className="text-white">Available </span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 italic">Simulations</span>
+                        </h2>
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+                            Step into realistic career scenarios and discover where your skills shine
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* The Educator */}
+                        <div className="home-dark-card group flex flex-col">
+                            <div className="p-8 flex-1 flex flex-col">
+                                <div className="w-14 h-14 rounded-2xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center mb-6">
+                                    <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" />
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">The Educator</h3>
+                                <p className="text-emerald-400 font-medium text-sm mb-3">Teach a 10th Grade English Class</p>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-1">
+                                    Guide students through a lesson on Shakespeare's Romeo and Juliet. Handle classroom dynamics, answer questions, and inspire learning.
+                                </p>
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Empathy</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Clarity</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Classroom Control</span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs text-slate-500 mb-6">
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        20 minutes
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold">Medium</span>
+                                </div>
+                                <button
+                                    onClick={() => handleLaunch('educator')}
+                                    disabled={launching}
+                                    className={`home-dark-sim-btn ${launching ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                >
+                                    <svg className="w-5 h-5 fill-current mr-2" viewBox="0 0 20 20">
+                                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                    </svg>
+                                    {launching ? 'Launching...' : 'Launch Simulation'}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* The Diagnostician */}
+                        <div className="home-dark-card group flex flex-col">
+                            <div className="p-8 flex-1 flex flex-col">
+                                <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-6">
+                                    <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">The Diagnostician</h3>
+                                <p className="text-emerald-400 font-medium text-sm mb-3">Diagnose a Complex Medical Case</p>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-1">
+                                    Interview a patient, analyze symptoms, order tests, and reach a diagnosis. Balance empathy with analytical thinking under pressure.
+                                </p>
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Diagnostic Logic</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Empathy</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Communication</span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs text-slate-500 mb-6">
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        20 minutes
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold">Hard</span>
+                                </div>
+                                <button
+                                    onClick={() => handleLaunch('diagnostician')}
+                                    disabled={launching}
+                                    className={`home-dark-sim-btn ${launching ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                >
+                                    <svg className="w-5 h-5 fill-current mr-2" viewBox="0 0 20 20">
+                                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                    </svg>
+                                    {launching ? 'Launching...' : 'Launch Simulation'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <BackToTop />
             <Footer />
         </div>
