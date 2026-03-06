@@ -63,16 +63,16 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                 setUploadingPhoto(true);
                 console.log('=== EDIT FORM PHOTO UPLOAD ===');
                 console.log('Uploading photo from edit form...');
-                
+
                 const currentUser = auth.currentUser;
                 console.log('User UID:', currentUser?.uid);
-                
+
                 const storageRef = ref(storage, `avatars/${currentUser.uid}/profile.jpg`);
-                
+
                 // Upload file to Firebase Storage
                 await uploadBytes(storageRef, selectedPhoto);
                 console.log('✅ Photo uploaded to storage');
-                
+
                 // Get download URL
                 profilePictureUrl = await getDownloadURL(storageRef);
                 console.log('✅ Got download URL:', profilePictureUrl);
@@ -96,7 +96,7 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
 
             // Send update to backend
             const response = await api.put('/api/auth/user/profile', updateData);
-            
+
             console.log('✅ Backend response:', response);
             console.log('Response status:', response.status);
             console.log('Response data:', response.data);
@@ -114,9 +114,9 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
             console.error('Error message:', err.message);
             console.error('Error response:', err.response);
             console.error('Error response data:', err.response?.data);
-            
+
             let errorMsg = 'Failed to update profile';
-            
+
             if (err.response?.data?.message) {
                 errorMsg = err.response.data.message;
             } else if (err.response?.data?.error) {
@@ -124,11 +124,11 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
             } else if (err.message) {
                 errorMsg = err.message;
             }
-            
+
             if (err.response?.data?.error_details) {
                 errorMsg += ': ' + err.response.data.error_details;
             }
-            
+
             setError(errorMsg);
         } finally {
             setLoading(false);
@@ -137,11 +137,11 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
     };
 
     return (
-        <div className="bg-white shadow sm:rounded-lg">
+        <div className="home-dark-card border-none bg-transparent">
             <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Edit Profile</h3>
+                <h3 className="text-lg font-bold text-white">Edit Profile</h3>
 
-                <div className="mt-2 max-w-xl text-sm text-gray-500">
+                <div className="mt-2 max-w-xl text-sm text-slate-400">
                     <p>Update your personal information and career preferences.</p>
                 </div>
 
@@ -150,7 +150,7 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
 
                     {/* Profile Picture Upload */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
                             Profile Picture
                         </label>
                         <div className="flex items-center space-x-4">
@@ -160,13 +160,13 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                                     <img
                                         src={photoPreview}
                                         alt="Profile preview"
-                                        className="h-20 w-20 rounded-full object-cover border-2 border-gray-300"
+                                        className="h-20 w-20 rounded-full object-cover border-2 border-emerald-500/30"
                                     />
                                 ) : (
-                                    <div className="h-20 w-20 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <div className="h-20 w-20 rounded-full bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="h-10 w-10 text-gray-400"
+                                            className="h-10 w-10 text-emerald-400"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
@@ -192,7 +192,7 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                                 />
                                 <label
                                     htmlFor="photo-upload"
-                                    className="cursor-pointer inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+                                    className="cursor-pointer inline-flex items-center px-4 py-2 border border-white/10 shadow-sm text-sm font-medium rounded-xl text-white bg-white/[0.04] hover:bg-white/5 focus:outline-none transition-colors"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -210,14 +210,14 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                                     </svg>
                                     Choose Photo
                                 </label>
-                                <p className="mt-1 text-xs text-gray-500">Max 5MB, JPG/PNG</p>
+                                <p className="mt-2 text-xs text-slate-500">Max 5MB, JPG/PNG</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Name Field */}
                     <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="name" className="block text-sm font-medium text-slate-300">
                             Name
                         </label>
                         <div className="mt-1">
@@ -227,7 +227,7 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                                 id="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                className="shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
                                 required
                             />
                         </div>
@@ -235,7 +235,7 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
 
                     {/* Email Field (Read-only for now) */}
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="email" className="block text-sm font-medium text-slate-300">
                             Email
                         </label>
                         <div className="mt-1">
@@ -246,15 +246,15 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 disabled
-                                className="shadow-sm bg-gray-50 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-500 cursor-not-allowed"
+                                className="w-full px-4 py-2.5 bg-white/[0.01] border border-white/5 rounded-xl text-sm text-slate-500 cursor-not-allowed"
                             />
                         </div>
-                        <p className="mt-1 text-xs text-gray-500">Email cannot be changed</p>
+                        <p className="mt-2 text-xs text-slate-500">Email cannot be changed</p>
                     </div>
 
                     {/* Preferred Career Dropdown */}
                     <div>
-                        <label htmlFor="career_path" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="career_path" className="block text-sm font-medium text-slate-300">
                             Preferred Career Track
                         </label>
                         <div className="mt-1">
@@ -263,10 +263,10 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                                 name="career_path"
                                 value={formData.career_path}
                                 onChange={handleChange}
-                                className="shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="w-full px-4 py-2.5 bg-[#0f241a] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white appearance-none cursor-pointer"
                             >
                                 {careerOptions.map((option) => (
-                                    <option key={option} value={option}>
+                                    <option key={option} value={option} className="bg-[#0f241a] text-white">
                                         {option}
                                     </option>
                                 ))}
@@ -275,22 +275,22 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-                        <button
-                            type="submit"
-                            disabled={loading || uploadingPhoto}
-                            className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-teal-600 text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:col-start-2 sm:text-sm ${(loading || uploadingPhoto) ? 'opacity-75 cursor-not-allowed' : ''
-                                }`}
-                        >
-                            {uploadingPhoto ? 'Uploading Photo...' : loading ? 'Saving...' : 'Save Changes'}
-                        </button>
+                    <div className="mt-8 flex gap-3">
                         <button
                             type="button"
                             onClick={onCancel}
                             disabled={loading || uploadingPhoto}
-                            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 px-4 py-2.5 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-colors font-medium text-sm disabled:opacity-50"
                         >
                             Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading || uploadingPhoto}
+                            className={`flex-1 px-4 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 rounded-xl transition-colors font-medium text-sm flex items-center justify-center gap-2 ${(loading || uploadingPhoto) ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                        >
+                            {uploadingPhoto ? 'Uploading Photo...' : loading ? 'Saving...' : 'Save Changes'}
                         </button>
                     </div>
                 </form>

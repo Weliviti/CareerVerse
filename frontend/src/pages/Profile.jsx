@@ -624,15 +624,15 @@ const Profile = () => {
 
             {/* Delete Account Modal */}
             {deleteModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => !deletingAccount && setDeleteModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
-                        <div className="mx-auto w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => !deletingAccount && setDeleteModal(false)}>
+                    <div className="home-dark-card max-w-md w-full p-6 border border-white/10" onClick={(e) => e.stopPropagation()}>
+                        <div className="mx-auto w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 text-center">Delete Account</h3>
-                        <p className="text-gray-500 text-center text-sm mt-2">
+                        <h3 className="text-lg font-bold text-white text-center">Delete Account</h3>
+                        <p className="text-slate-400 text-center text-sm mt-2">
                             Are you sure you want to delete your account? This will permanently remove your data from both Authentication and Database.
                         </p>
                         <p className="text-red-500 text-center text-xs mt-2 font-medium">
@@ -642,14 +642,14 @@ const Profile = () => {
                             <button
                                 onClick={() => setDeleteModal(false)}
                                 disabled={deletingAccount}
-                                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium text-sm disabled:opacity-50"
+                                className="flex-1 px-4 py-2.5 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-colors font-medium text-sm disabled:opacity-50"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={confirmDeleteAccount}
                                 disabled={deletingAccount}
-                                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                                className="flex-1 px-4 py-2.5 bg-red-600/80 hover:bg-red-600 text-white border border-red-500/50 rounded-xl transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
                             >
                                 {deletingAccount ? (
                                     <>
@@ -667,8 +667,8 @@ const Profile = () => {
 
             {/* Edit Profile Modal */}
             {editModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setEditModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => setEditModal(false)}>
+                    <div className="home-dark-card border border-white/10 max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                         <ProfileEditForm
                             user={{
                                 name: userData?.name || currentUser?.displayName || '',
@@ -685,17 +685,17 @@ const Profile = () => {
 
             {/* Change Password Modal */}
             {passwordModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => !changingPassword && setPasswordModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => !changingPassword && setPasswordModal(false)}>
+                    <div className="home-dark-card border border-white/10 max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
                         {/* Lock Icon */}
-                        <div className="mx-auto w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        <div className="mx-auto w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
 
-                        <h3 className="text-lg font-bold text-gray-900 text-center">Change Password</h3>
-                        <p className="text-gray-500 text-center text-sm mt-1 mb-6">Enter your current password and choose a new one</p>
+                        <h3 className="text-lg font-bold text-white text-center">Change Password</h3>
+                        <p className="text-slate-400 text-center text-sm mt-1 mb-6">Enter your current password and choose a new one</p>
 
                         {passwordError && (
                             <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">
@@ -705,39 +705,39 @@ const Profile = () => {
 
                         <form onSubmit={handleChangePassword} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">Current Password</label>
                                 <input
                                     type="password"
                                     name="current"
                                     value={passwords.current}
                                     onChange={handlePasswordChange}
                                     placeholder="Enter current password"
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm text-gray-900"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">New Password</label>
                                 <input
                                     type="password"
                                     name="new"
                                     value={passwords.new}
                                     onChange={handlePasswordChange}
                                     placeholder="Enter new password (min 6 characters)"
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm text-gray-900"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
                                     required
                                     minLength={6}
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">Confirm New Password</label>
                                 <input
                                     type="password"
                                     name="confirm"
                                     value={passwords.confirm}
                                     onChange={handlePasswordChange}
                                     placeholder="Confirm new password"
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm text-gray-900"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
                                     required
                                 />
                             </div>
@@ -747,14 +747,14 @@ const Profile = () => {
                                     type="button"
                                     onClick={() => { setPasswordModal(false); setPasswords({ current: '', new: '', confirm: '' }); setPasswordError(''); }}
                                     disabled={changingPassword}
-                                    className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium text-sm disabled:opacity-50"
+                                    className="flex-1 px-4 py-2.5 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-colors font-medium text-sm disabled:opacity-50"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={changingPassword}
-                                    className="flex-1 px-4 py-2.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="flex-1 px-4 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 rounded-xl transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
                                     {changingPassword ? (
                                         <>
