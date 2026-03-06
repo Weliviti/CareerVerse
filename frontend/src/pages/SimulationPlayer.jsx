@@ -1,7 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Loading from '../components/ui/Loading';
-import ErrorDisplay from '../components/ui/ErrorDisplay';
 
 const SimulationPlayer = () => {
     const { type } = useParams();
@@ -12,6 +10,32 @@ const SimulationPlayer = () => {
     // Validate simulation type
     const isValidType = ['educator', 'diagnostician', 'advocate'].includes(type?.toLowerCase());
 
+    // --- NEW: Unity-to-React Communication Listener ---
+    useEffect(() => {
+        // 1. Create the global listener for Unity to talk to
+        window.ReceiveEvaluationScores = (scoreJsonString) => {
+            console.log("React received score from Unity:", scoreJsonString);
+            
+            try {
+                const parsedData = JSON.parse(scoreJsonString);
+                
+                // 2. Save the score to LocalStorage so the Results page can find it
+                localStorage.setItem("latestSimulationScore", JSON.stringify(parsedData));
+                
+                // 3. Navigate to the Results page gracefully
+                navigate("/simulation/results");
+            } catch (error) {
+                console.error("Failed to parse score JSON from Unity", error);
+            }
+        };
+
+        // Cleanup listener when component unmounts
+        return () => {
+            delete window.ReceiveEvaluationScores;
+        };
+    }, [navigate]);
+
+    // Existing Loading Timer
     useEffect(() => {
         // Simulate initialization delay
         const timer = setTimeout(() => {
@@ -39,10 +63,21 @@ const SimulationPlayer = () => {
     if (!isValidType) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-                <ErrorDisplay
-                    error={{ message: 'Invalid simulation type. Please choose a valid simulation from the hub.' }}
-                    onRetry={() => navigate('/simulation-hub')}
-                />
+                <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md w-full border border-red-100">
+                    <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4">
+                        <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Invalid Simulation</h2>
+                    <p className="text-gray-600 mb-6">Invalid simulation type. Please choose a valid simulation from the hub.</p>
+                    <button 
+                        onClick={() => navigate('/simulation-hub')}
+                        className="bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 px-6 rounded-lg transition-colors w-full"
+                    >
+                        Return to Hub
+                    </button>
+                </div>
             </div>
         );
     }
@@ -84,9 +119,9 @@ const SimulationPlayer = () => {
             <div className="flex-1 relative bg-gray-900 flex items-center justify-center overflow-hidden">
                 {loading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-20">
-                        <div className="text-center">
-                            <Loading size="large" color="white" />
-                            <p className="mt-4 text-gray-300 animate-pulse">Initializing Simulation Environment...</p>
+                        <div className="text-center flex flex-col items-center">
+                            <div className="w-12 h-12 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
+                            <p className="mt-4 text-gray-300 animate-pulse font-medium">Initializing Simulation Environment...</p>
                         </div>
                     </div>
                 )}
