@@ -316,7 +316,7 @@ const Profile = () => {
             {/* Main Container */}
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Profile Header Card */}
-                <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div className="home-dark-card p-6 mb-6">
                     <div className="flex items-center justify-between">
                         {/* Left Side: Avatar and User Info */}
                         <div className="flex items-center space-x-4">
@@ -333,7 +333,7 @@ const Profile = () => {
                                     htmlFor="avatar-upload"
                                     className="cursor-pointer block relative"
                                 >
-                                    <div className="w-20 h-20 rounded-full bg-primary-500 flex items-center justify-center text-white overflow-hidden hover:opacity-90 transition-opacity">
+                                    <div className="w-20 h-20 rounded-full bg-emerald-600 flex items-center justify-center text-white overflow-hidden hover:opacity-90 transition-opacity ring-2 ring-emerald-500/30">
                                         {uploadingAvatar ? (
                                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
                                         ) : avatarUrl ? (
@@ -347,10 +347,10 @@ const Profile = () => {
                                         )}
                                     </div>
                                     {!uploadingAvatar && (
-                                        <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-lg">
+                                        <div className="absolute bottom-0 right-0 bg-[rgba(13,30,22,0.85)] border border-white/10 rounded-full p-1 shadow-lg">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="h-4 w-4 text-primary-600"
+                                                className="h-4 w-4 text-emerald-400"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -376,14 +376,14 @@ const Profile = () => {
                             {/* User Name and Email */}
                             <div className="flex-1">
                                 {uploadError && (
-                                    <div className="mb-2 text-sm text-red-600">
+                                    <div className="mb-2 text-sm text-red-400">
                                         {uploadError}
                                     </div>
                                 )}
-                                <h2 className="text-xl font-semibold text-gray-900">
+                                <h2 className="text-xl font-semibold text-white">
                                     {userData?.name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                 </h2>
-                                <div className="flex items-center mt-1 text-gray-600">
+                                <div className="flex items-center mt-1 text-slate-400">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         className="h-4 w-4 mr-1"
@@ -407,7 +407,7 @@ const Profile = () => {
                         <div>
                             <button
                                 onClick={() => setEditModal(true)}
-                                className="flex items-center px-4 py-2 border-2 border-primary-500 text-primary-600 rounded-md hover:bg-primary-50 transition-colors"
+                                className="flex items-center px-4 py-2 border border-emerald-500/30 text-emerald-400 rounded-lg hover:bg-emerald-500/10 transition-colors bg-white/[0.04]"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
