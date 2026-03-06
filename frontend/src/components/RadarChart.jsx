@@ -11,9 +11,9 @@ import {
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white p-3 border border-gray-100 shadow-lg rounded-xl">
-                <p className="font-bold text-gray-900">{label}</p>
-                <p className="text-teal-600 font-medium">
+            <div className="bg-[rgba(13,30,22,0.85)] backdrop-blur-md p-3 border border-white/10 shadow-lg rounded-xl">
+                <p className="font-bold text-white">{label}</p>
+                <p className="text-emerald-400 font-medium">
                     Score: {payload[0].value}%
                 </p>
             </div>
@@ -39,19 +39,19 @@ const SkillRadarChart = ({ data }) => {
         <div className="w-full h-[300px] flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-                    <PolarGrid gridType="polygon" stroke="#e5e7eb" />
+                    <PolarGrid gridType="polygon" stroke="rgba(255,255,255,0.1)" />
                     <PolarAngleAxis
                         dataKey="subject"
-                        tick={{ fill: '#6b7280', fontSize: 12, fontWeight: 500 }}
+                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 500 }}
                     />
                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                     <Radar
                         name="Skills"
                         dataKey="A"
-                        stroke="#14b8a6"
+                        stroke="#00e5a0"
                         strokeWidth={2}
-                        fill="#2dd4bf"
-                        fillOpacity={0.3}
+                        fill="#00e5a0"
+                        fillOpacity={0.2}
                     />
                     <Tooltip content={<CustomTooltip />} />
                 </RadarChart>
