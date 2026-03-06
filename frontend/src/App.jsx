@@ -20,6 +20,7 @@ import TermsOfService from './pages/TermsOfService';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 import TeacherSimulation from './pages/TeacherSimulation';
+import SimulationResults from './pages/SimulationResults';
 
 function App() {
   return (
@@ -48,6 +49,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <SimulationPlayer />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/simulation/results"
+            element={
+              <ProtectedRoute>
+                <SimulationResults />
               </ProtectedRoute>
             }
           />
