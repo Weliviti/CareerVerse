@@ -432,16 +432,16 @@ const Profile = () => {
                 {/* Grid Layout for Personal Info and Account Settings */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Personal Information Section */}
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+                    <div className="home-dark-card p-6">
+                        <h3 className="text-lg font-semibold text-white mb-4">Personal Information</h3>
 
                         <div className="space-y-4">
                             {/* Name Field */}
                             <div className="flex items-center space-x-3">
-                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-primary-600"
+                                        className="h-5 w-5 text-emerald-400"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -455,8 +455,8 @@ const Profile = () => {
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-500">Name</p>
-                                    <p className="text-base font-medium text-gray-900">
+                                    <p className="text-sm text-slate-500">Name</p>
+                                    <p className="text-base font-medium text-white">
                                         {userData?.name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                     </p>
                                 </div>
@@ -481,8 +481,8 @@ const Profile = () => {
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-500">Email</p>
-                                    <p className="text-base font-medium text-gray-900">
+                                    <p className="text-sm text-slate-500">Email</p>
+                                    <p className="text-base font-medium text-white">
                                         {userData?.email || currentUser?.email || 'sarah.johnson@email.com'}
                                     </p>
                                 </div>
@@ -507,8 +507,8 @@ const Profile = () => {
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-500">Joined Date</p>
-                                    <p className="text-base font-medium text-gray-900">
+                                    <p className="text-sm text-slate-500">Joined Date</p>
+                                    <p className="text-base font-medium text-white">
                                         {currentUser?.metadata?.creationTime
                                             ? new Date(currentUser.metadata.creationTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                                             : 'N/A'}
