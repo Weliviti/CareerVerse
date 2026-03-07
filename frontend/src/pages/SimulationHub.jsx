@@ -30,7 +30,14 @@ const SimulationHub = () => {
 
             if (response.data.success) {
                 toast.success('Simulation ready!', { id: toastId });
-                navigate(`/simulation/play/${simulationType}`);
+
+                // Educator simulation opens in a new tab via SimulationPlayer (handles auth token)
+                if (simulationType === 'educator') {
+                    window.open('/simulation/play/educator', '_blank');
+                    setLaunching(false);
+                } else {
+                    navigate(`/simulation/play/${simulationType}`);
+                }
             } else {
                 throw new Error(response.data.message || 'Failed to launch simulation');
             }

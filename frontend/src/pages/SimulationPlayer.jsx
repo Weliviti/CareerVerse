@@ -1,49 +1,84 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const SimulationPlayer = () => {
+// =========================================================================
+// 🛑 ACTION REQUIRED WHEN YOU COPY THIS TO YOUR PROJECT 🛑
+// =========================================================================
+// 1. UNCOMMENT the next two lines so your app uses your REAL Firebase:
+import { auth } from '../services/firebase'; 
+import { onAuthStateChanged } from 'firebase/auth';
+
+// 2. DELETE these two mock lines (they are only here so this preview doesn't crash):
+// const auth = { currentUser: null }; 
+// const onAuthStateChanged = (a, cb) => { return () => {}; }; 
+// =========================================================================
+
+
+const SimulationPlayerInner = () => {
     const { type } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    const [iframeUrl, setIframeUrl] = useState(""); 
     const iframeRef = useRef(null);
 
     // Validate simulation type
     const isValidType = ['educator', 'diagnostician', 'advocate'].includes(type?.toLowerCase());
 
-    // --- NEW: Unity-to-React Communication Listener ---
+    // Unity-to-React Communication Listener
     useEffect(() => {
-        // 1. Create the global listener for Unity to talk to
         window.ReceiveEvaluationScores = (scoreJsonString) => {
             console.log("React received score from Unity:", scoreJsonString);
-            
             try {
                 const parsedData = JSON.parse(scoreJsonString);
-                
-                // 2. Save the score to LocalStorage so the Results page can find it
                 localStorage.setItem("latestSimulationScore", JSON.stringify(parsedData));
-                
-                // 3. Navigate to the Results page gracefully
                 navigate("/simulation/results");
             } catch (error) {
                 console.error("Failed to parse score JSON from Unity", error);
             }
         };
 
-        // Cleanup listener when component unmounts
         return () => {
             delete window.ReceiveEvaluationScores;
         };
     }, [navigate]);
 
-    // Existing Loading Timer
+    // Setup the Secure URL with the REAL Firebase Token
     useEffect(() => {
-        // Simulate initialization delay
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 1500);
+        if (!isValidType) return;
 
-        return () => clearTimeout(timer);
-    }, []);
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Get the REAL secure token from Google
+                    const token = await user.getIdToken(true);
+                    
+                    // Generate a unique Session ID
+                    const uniqueSessionId = "sess_" + Date.now();
+
+                    // Map the route 'type' to your actual Unity build folders
+                    let gameFolder = type.toLowerCase();
+                    if (gameFolder === 'educator') gameFolder = 'teacher';
+                    if (gameFolder === 'diagnostician') gameFolder = 'doctor';
+                    if (gameFolder === 'advocate') gameFolder = 'lawyer';
+
+                    // Construct the final secure URL for the iframe
+                    const securePath = `/games/${gameFolder}-sim/index.html?token=${token}&session=${uniqueSessionId}`;
+                    setIframeUrl(securePath);
+                    
+                    setTimeout(() => setLoading(false), 1500);
+                } catch (error) {
+                    console.error("Error getting Firebase token:", error);
+                    setLoading(false);
+                }
+            } else {
+                console.error("User is not logged in! Redirecting to login...");
+                navigate('/login');
+            }
+        });
+
+        // Cleanup listener
+        return () => unsubscribe();
+    }, [type, isValidType, navigate]);
 
     const handleExit = () => {
         if (window.confirm('Are you sure you want to exit? Your progress may not be saved.')) {
@@ -82,14 +117,8 @@ const SimulationPlayer = () => {
         );
     }
 
-    // Path to the Unity WebGL build's index.html
-    // Assuming the build is located at /public/simulation/{type}/index.html
-    // and served at root /simulation/{type}/index.html
-    const simulationPath = `/simulation/${type}/index.html`;
-
     return (
         <div className="fixed inset-0 bg-black z-50 flex flex-col">
-            {/* Top Bar - Minimalist to keep focus on game */}
             <div className="bg-gray-900 text-white px-6 py-3 flex items-center justify-between shadow-md z-10">
                 <div className="flex items-center gap-4">
                     <h1 className="font-bold text-lg tracking-wide text-gray-200">
@@ -101,8 +130,6 @@ const SimulationPlayer = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    {/* Future: Timer / Score could go here */}
-
                     <button
                         onClick={handleExit}
                         className="bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors flex items-center gap-2"
@@ -115,7 +142,6 @@ const SimulationPlayer = () => {
                 </div>
             </div>
 
-            {/* Game Container */}
             <div className="flex-1 relative bg-gray-900 flex items-center justify-center overflow-hidden">
                 {loading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-20">
@@ -126,23 +152,34 @@ const SimulationPlayer = () => {
                     </div>
                 )}
 
-                <iframe
-                    ref={iframeRef}
-                    src={simulationPath}
-                    title={`${getSimulationTitle()} WebGL`}
-                    className="w-full h-full border-0"
-                    allow="autoplay; fullscreen; microphone; camera"
-                    onLoad={() => setLoading(false)}
-                />
-
-                {/* Placeholder if iframe fails to load or for development testing without build files */}
-                <div className="absolute inset-0 -z-10 flex flex-col items-center justify-center text-gray-500">
-                    <p className="mb-2">If simulation doesn't load, check if build files exist at:</p>
-                    <code className="bg-gray-800 px-3 py-1 rounded text-sm font-mono">{simulationPath}</code>
-                </div>
+                {/* Only render iframe if the URL is ready with the token! */}
+                {iframeUrl && (
+                    <iframe
+                        ref={iframeRef}
+                        src={iframeUrl}
+                        title={`${getSimulationTitle()} WebGL`}
+                        className="w-full h-full border-0"
+                        allow="autoplay; fullscreen; microphone; camera"
+                        onLoad={() => setLoading(false)}
+                    />
+                )}
             </div>
         </div>
     );
+};
+
+// Fallback wrapper for the standalone preview environment
+const SimulationPlayer = () => {
+    if (typeof window !== 'undefined' && !window.location.pathname.includes('/simulation/play/')) {
+       return (
+           <BrowserRouter>
+               <Routes>
+                   <Route path="*" element={<SimulationPlayerInner />} />
+               </Routes>
+           </BrowserRouter>
+       );
+    }
+    return <SimulationPlayerInner />;
 };
 
 export default SimulationPlayer;

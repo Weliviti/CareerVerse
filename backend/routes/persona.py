@@ -75,8 +75,12 @@ async def persona_chat(request: ChatRequest, user=Depends(verify_token)):
 
         # Step 1: Load persona prompt template
         try:
+            template_path = f"personas/{request.persona_type}"
+            print(f"DEBUG - Incoming persona_type from Unity: '{request.persona_type}'")
+            print(f"DEBUG - Trying to load template: '{template_path}'")
+            
             persona_prompt = prompt_manager.load_template(
-                template_name=f"personas/{request.persona_type}",
+                template_name=template_path,
                 variables={"user_message": request.message},
             )
         except FileNotFoundError:
