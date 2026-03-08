@@ -66,16 +66,6 @@ async def unity_session_end(request: dict, user: dict = Depends(verify_token)):
     return success_response(message="Session successfully closed")
 
 
-@app.post("/api/evaluate/session", tags=["Unity Compatibility"])
-async def unity_evaluate_session(request: dict, user: dict = Depends(verify_token)):
-    """Explicitly handles the EvaluateSessionUrl from Unity."""
-    # This acts as a bridge to your evaluation service
-    # You can also import and call evaluation_service.evaluate_session here
-    return success_response(
-        data={"status": "processing", "session_id": request.get("session_id")},
-        message="Evaluation triggered from Unity",
-    )
-
 
 # --- REGISTER ROUTERS ---
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
