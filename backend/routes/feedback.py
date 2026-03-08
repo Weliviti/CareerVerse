@@ -11,7 +11,6 @@ from middleware.auth import verify_token
 from utils.responses import success_response, error_response
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
-db = get_db_client()
 
 
 class FeedbackRequest(BaseModel):
@@ -38,6 +37,7 @@ async def submit_feedback(
         Success response confirming feedback submission
     """
     try:
+        db = get_db_client()
         uid = token_data.get("uid")
         user_email = token_data.get("email", "unknown")
 
