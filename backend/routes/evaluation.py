@@ -5,8 +5,10 @@ from utils.responses import success_response, error_response
 
 router = APIRouter()
 
+
 class EvaluationRequest(BaseModel):
     session_id: str
+
 
 @router.post("/evaluate")
 async def evaluate_session(request: EvaluationRequest):
@@ -22,17 +24,19 @@ async def evaluate_session(request: EvaluationRequest):
     except ValueError as ve:
         # --- THE FIX 1: DUMMY FALLBACK FOR TESTING ---
         # If the session isn't in the DB yet, return dummy scores so React can show the Results Page!
-        print(f"Session not found in DB, returning dummy scores for: {request.session_id}")
+        print(
+            f"Session not found in DB, returning dummy scores for: {request.session_id}"
+        )
         dummy_data = {
             "scores": {
                 "communication": 85,
                 "empathy": 90,
                 "problem_solving": 70,
-                "classroom_management": 80, 
-                "total_score": 81
+                "classroom_management": 80,
+                "total_score": 81,
             },
             "feedback": "You handled the situation well, but try to ask more direct questions next time.",
-            "summary": "Strong performance in empathy."
+            "summary": "Strong performance in empathy.",
         }
         return success_response(data=dummy_data, message="Dummy evaluation generated")
 

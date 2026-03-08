@@ -4,12 +4,13 @@ from services.firebase_admin_service import get_db_client
 from services.gemini_service import GeminiService
 from config import settings
 
+
 class EvaluationService:
     def __init__(self):
         self._db = None
         self.gemini = GeminiService(purpose="evaluator")
         # Global appId for Firestore paths (Rule 1)
-        self.app_id = "default-app-id" 
+        self.app_id = "default-app-id"
 
     @property
     def db(self):
@@ -24,14 +25,21 @@ class EvaluationService:
         """
         try:
             # 1. Fetch the transcript using Mandatory Path (Rule 1)
-            doc_ref = self.db.collection("artifacts").document(self.app_id) \
-                             .collection("public").document("data") \
-                             .collection("sessions").document(session_id)
-            
+            doc_ref = (
+                self.db.collection("artifacts")
+                .document(self.app_id)
+                .collection("public")
+                .document("data")
+                .collection("sessions")
+                .document(session_id)
+            )
+
             doc = doc_ref.get()
 
             if not doc.exists:
-                raise ValueError(f"Session {session_id} not found in database. Transcript must be saved during chat.")
+                raise ValueError(
+                    f"Session {session_id} not found in database. Transcript must be saved during chat."
+                )
 
             session_data = doc.to_dict()
             transcript = session_data.get("transcript", [])
@@ -51,13 +59,18 @@ class EvaluationService:
 
             # 3. Call Gemini to Judge
             evaluation_json = await self.gemini.evaluate_transcript(transcript, rubric)
-            
+
             # 4. Save the score to the mandatory scores collection
             # Path Rule 1: /artifacts/{appId}/public/data/scores/{sessionId}
-            score_ref = self.db.collection("artifacts").document(self.app_id) \
-                               .collection("public").document("data") \
-                               .collection("scores").document(session_id)
-            
+            score_ref = (
+                self.db.collection("artifacts")
+                .document(self.app_id)
+                .collection("public")
+                .document("data")
+                .collection("scores")
+                .document(session_id)
+            )
+
             score_data = {
                 "session_id": session_id,
                 "user_id": session_data.get("user_id", "anonymous"),
@@ -65,15 +78,16 @@ class EvaluationService:
                 "scores": evaluation_json["scores"],
                 "total_score": evaluation_json["total_score"],
                 "feedback": evaluation_json["feedback"],
-                "created_at": firestore.SERVER_TIMESTAMP
+                "created_at": firestore.SERVER_TIMESTAMP,
             }
-            
+
             score_ref.set(score_data)
 
             return evaluation_json
-            
+
         except Exception as e:
             print(f"Evaluation Error: {str(e)}")
             raise e
+
 
 evaluation_service = EvaluationService()
