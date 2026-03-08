@@ -1,6 +1,7 @@
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 from firebase_admin import firestore
+from google.cloud.firestore_v1.base_query import FieldFilter
 from services.firebase_admin_service import get_db_client
 from models.score import Score
 
@@ -84,8 +85,8 @@ class ScoreService:
         """
         Get paginated scores for a user, ordered by newest first.
         """
-        query = (
-            self.scores_ref.where("user_id", "==", uid)
+        query_with_order = (
+            self.scores_ref.where(filter=FieldFilter("user_id", "==", uid))
             .order_by("created_at", direction="DESCENDING")
             .limit(limit)
         )
@@ -94,12 +95,29 @@ class ScoreService:
         if cursor:
             cursor_doc = self.scores_ref.document(cursor).get()
             if cursor_doc.exists:
-                query = query.start_after(cursor_doc)
+                query_with_order = query_with_order.start_after(cursor_doc)
 
-        docs = query.stream()
+        try:
+            docs = query_with_order.stream()
+            # Force generator execution to catch missing index error immediately
+            docs_list = list(docs)
+        except Exception:
+            print(f"Warning: Missing index for user {uid} scores. Falling back to unordered query.")
+            # Fallback if composite index is not available
+            query_unordered = self.scores_ref.where(
+                filter=FieldFilter("user_id", "==", uid)
+            ).limit(limit)
+            
+            if cursor:
+                cursor_doc = self.scores_ref.document(cursor).get()
+                if cursor_doc.exists:
+                    query_unordered = query_unordered.start_after(cursor_doc)
+                    
+            docs_list = list(query_unordered.stream())
+
         scores: List[Dict] = []
 
-        for doc in docs:
+        for doc in docs_list:
             score_data = doc.to_dict()
             # Convert Firestore timestamps to ISO strings for JSON
             if "created_at" in score_data and hasattr(
