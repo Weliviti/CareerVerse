@@ -5,12 +5,12 @@ Handles user feedback submission and storage
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from datetime import datetime
-from firebase_admin import firestore
+from services.firebase_admin_service import get_db_client
 from middleware.auth import verify_token
 from utils.responses import success_response, error_response
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
-db = firestore.client()
+db = get_db_client()
 
 
 class FeedbackRequest(BaseModel):
