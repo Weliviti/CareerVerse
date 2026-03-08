@@ -41,7 +41,7 @@ class GeminiService:
         """
         try:
             model = genai.GenerativeModel("gemini-2.5-flash")
-            
+
             # Disable safety settings that might block the "disruptive" persona
             safety_settings = [
                 {
@@ -61,7 +61,7 @@ class GeminiService:
                     "threshold": "BLOCK_NONE",
                 },
             ]
-            
+
             response = await model.generate_content_async(
                 prompt, safety_settings=safety_settings
             )
