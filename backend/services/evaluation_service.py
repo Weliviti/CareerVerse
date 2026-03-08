@@ -24,7 +24,6 @@ class EvaluationService:
             self._gemini = GeminiService(purpose="evaluator")
         return self._gemini
 
-
     async def evaluate_session(self, session_id: str):
         """
         Fetches the transcript from the mandatory Firestore path and evaluates it.
