@@ -1,62 +1,102 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SimulationResults = () => {
-  const [resultData, setResultData] = useState(null);
+    const [evalData, setEvalData] = useState(null);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    // Read the score that SimulationPlayer just saved!
-    const savedData = localStorage.getItem("latestSimulationScore");
-    if (savedData) {
-      setResultData(JSON.parse(savedData));
+    useEffect(() => {
+        const saved = localStorage.getItem("latestSimulationScore");
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                // Structure: { success: true, data: { scores: {...}, feedback: "..." } }
+                setEvalData(parsed.data);
+            } catch (e) {
+                console.error("Failed to parse stored results", e);
+            }
+        }
+    }, []);
+
+    if (!evalData) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+                <p className="text-gray-500 mb-4">Waiting for simulation data...</p>
+                <button onClick={() => navigate('/dashboard')} className="text-teal-600 underline">Return to Dashboard</button>
+            </div>
+        );
     }
-  }, []);
 
-  if (!resultData) {
-    return <div className="min-h-screen flex items-center justify-center">Loading Results...</div>;
-  }
+    const { scores, feedback, summary } = evalData;
 
-  // Extract the score from your specific JSON structure
-  const finalScore = resultData.data?.score || 0;
+    return (
+        <div className="min-h-screen bg-slate-50 py-12 px-4 flex items-center justify-center">
+            <div className="max-w-3xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+                {/* Header Score Circle */}
+                <div className="bg-teal-600 p-10 text-center text-white relative">
+                    <h1 className="text-3xl font-black mb-4">Simulation Results</h1>
+                    <div className="inline-flex items-center justify-center p-8 bg-white/10 rounded-full border-4 border-white/20">
+                        <span className="text-7xl font-bold">{scores.total_score}</span>
+                        <span className="text-2xl font-medium opacity-70 ml-1">%</span>
+                    </div>
+                    <p className="mt-4 text-teal-100 uppercase tracking-widest text-sm font-bold">Aptitude Score</p>
+                </div>
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden text-center p-10">
-        
-        <div className="mb-6">
-          <h1 className="text-4xl font-extrabold text-gray-900">Simulation Complete!</h1>
-          <p className="text-gray-500 mt-2">The AI has evaluated your performance.</p>
+                <div className="p-8 space-y-8">
+                    {/* Skills Grid */}
+                    <div>
+                        <h3 className="text-lg font-bold text-slate-800 mb-4">Core Competencies</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <SkillBar label="Communication" score={scores.communication} color="bg-blue-500" />
+                            <SkillBar label="Empathy" score={scores.empathy} color="bg-pink-500" />
+                            <SkillBar label="Problem Solving" score={scores.problem_solving} color="bg-orange-500" />
+                            <SkillBar label="Management" score={scores.classroom_management} color="bg-teal-500" />
+                        </div>
+                    </div>
+
+                    {/* AI Feedback */}
+                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <div className="flex items-center gap-2 mb-3">
+                            <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
+                            <h3 className="font-bold text-slate-800">AI Mentor Feedback</h3>
+                        </div>
+                        <p className="text-slate-600 leading-relaxed italic">"{feedback}"</p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-4">
+                        <button 
+                            onClick={() => navigate('/dashboard')}
+                            className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all shadow-lg"
+                        >
+                            View Dashboard
+                        </button>
+                        <button 
+                            onClick={() => navigate('/simulation-hub')}
+                            className="px-8 bg-white border-2 border-slate-200 text-slate-600 py-4 rounded-xl font-bold hover:bg-slate-50 transition-all"
+                        >
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div className="my-8 relative inline-flex items-center justify-center">
-          <svg className="w-48 h-48 transform -rotate-90">
-            <circle cx="96" cy="96" r="88" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-gray-200" />
-            <circle 
-              cx="96" cy="96" r="88" 
-              stroke="currentColor" strokeWidth="12" fill="transparent" 
-              className={finalScore >= 80 ? "text-green-500" : finalScore >= 50 ? "text-yellow-500" : "text-red-500"}
-              strokeDasharray={88 * 2 * Math.PI}
-              strokeDashoffset={(88 * 2 * Math.PI) - ((finalScore / 100) * (88 * 2 * Math.PI))}
-            />
-          </svg>
-          <div className="absolute flex flex-col items-center justify-center">
-            <span className="text-5xl font-black text-gray-800">{finalScore}</span>
-            <span className="text-sm text-gray-500 font-bold">/ 100</span>
-          </div>
-        </div>
-
-        <div className="mt-8 flex justify-center gap-4">
-          <Link to="/dashboard" className="px-6 py-3 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 transition">
-            Go to Dashboard
-          </Link>
-          <Link to="/simulation-hub" className="px-6 py-3 bg-gray-200 text-gray-800 font-bold rounded-lg hover:bg-gray-300 transition">
-            Try Another Simulation
-          </Link>
-        </div>
-
-      </div>
-    </div>
-  );
+    );
 };
+
+const SkillBar = ({ label, score, color }) => (
+    <div className="bg-white border border-slate-100 p-4 rounded-xl">
+        <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-bold text-slate-500 uppercase tracking-tight">{label}</span>
+            <span className="text-sm font-black text-slate-800">{score}%</span>
+        </div>
+        <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+            <div 
+                className={`${color} h-full transition-all duration-1000 ease-out`} 
+                style={{ width: `${score}%` }}
+            ></div>
+        </div>
+    </div>
+);
 
 export default SimulationResults;

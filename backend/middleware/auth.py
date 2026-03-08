@@ -2,71 +2,71 @@
 Authentication middleware for CareerVerse backend.
 
 This module provides authentication middleware to verify Firebase ID tokens
-for protected endpoints.
+for protected endpoints, with a bypass for Unity Editor local testing.
 """
 
-from fastapi import Header, HTTPException
+from fastapi import Header, HTTPException, status
 from firebase_admin import auth
 
 
-def verify_token(authorization: str = Header(...)):
+async def verify_token(authorization: str = Header(...)):
     """
     Verify Firebase ID token from Authorization header.
-
-    This middleware function extracts and verifies the Firebase ID token
-    from the Authorization header. It should be used as a dependency
-    for protected endpoints.
+    Includes a bypass for Unity Editor local testing using a hardcoded token.
 
     Args:
         authorization (str): Authorization header value in format "Bearer <token>"
 
     Returns:
         dict: Decoded token payload containing user information (uid, email, etc.)
-
-    Raises:
-        HTTPException: 401 if token is missing, invalid, or expired
-
-    Example:
-        ```python
-        @app.get("/protected")
-        async def protected_route(user=Depends(verify_token)):
-            return {"user_id": user["uid"]}
-        ```
     """
-    # Check if authorization header is present and properly formatted
-    if not authorization:
-        raise HTTPException(status_code=401, detail="Authorization header missing")
-
-    # Extract token from "Bearer <token>" format
-    parts = authorization.split()
-
-    if len(parts) != 2 or parts[0].lower() != "bearer":
+    # 1. Check if authorization header is present and properly formatted
+    if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authorization header format. Expected: Bearer <token>",
+        )
+
+    # 2. Extract the token
+    parts = authorization.split()
+    if len(parts) != 2:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authorization header format. Expected: Bearer <token>",
         )
 
     token = parts[1]
 
+    # 3. --- UNITY EDITOR BYPASS ---
+    # This allows you to test in Unity Editor without needing a real Firebase login.
+    # When running the real WebGL build on your site, this will be ignored.
+    if token == "test_editor_token":
+        return {
+            "uid": "test_user_editor",
+            "email": "test@editor.com",
+            "name": "Editor Tester",
+        }
+
+    # 4. Real Firebase Verification
     try:
-        # Verify the Firebase ID token
         decoded_token = auth.verify_id_token(token)
         return decoded_token
 
     except auth.InvalidIdTokenError:
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token: Token verification failed",
         )
 
     except auth.ExpiredIdTokenError:
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token expired: Please login again",
         )
 
     except Exception as e:
+        print(f"Token verification failed: {str(e)}")
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Token verification failed: {str(e)}",
         )

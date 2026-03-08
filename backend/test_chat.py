@@ -1,6 +1,14 @@
 import requests
 import sys
 
+url = "http://127.0.0.1:8000/api/persona/chat"
+headers = {"Content-Type": "application/json"}
+data = {
+    "session_id": "test_session_123",
+    "message": "Hello, how are you feeling today?",
+    "persona_type": "patient_anxious",
+    "history": [],
+}
 if __name__ == "__main__":
     url = "http://127.0.0.1:8000/api/persona/chat"
     headers = {"Content-Type": "application/json"}
