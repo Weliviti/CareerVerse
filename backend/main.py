@@ -13,6 +13,7 @@ from routes.sessions import router as sessions_router
 from routes.scores import router as scores_router
 from routes.simulations import router as simulations_router
 from routes.admin import router as admin_router
+from routes.feedback import router as feedback_router
 from services.firebase_admin_service import get_db_client
 from middleware.auth import verify_token
 
@@ -83,6 +84,7 @@ app.include_router(sessions_router, prefix="/api/sessions", tags=["Sessions"])
 app.include_router(scores_router, prefix="/api/scores", tags=["Scores"])
 app.include_router(simulations_router, prefix="/api/simulations", tags=["Simulations"])
 app.include_router(admin_router, prefix="/api/admin", tags=["Admin"])
+app.include_router(feedback_router, prefix="/api", tags=["Feedback"])
 
 # Evaluation routers
 app.include_router(evaluator_router, prefix="/api/evaluate", tags=["Legacy Evaluation"])

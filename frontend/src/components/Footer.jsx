@@ -1,12 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { submitFeedback } from '../services/feedbackService';
+import toast from 'react-hot-toast';
 
 /**
  * Footer Component
  * Premium dark footer with animated gradient top border, brand section,
  * quick links, simulations, social icons with glow, and trust ribbon.
+ * Shows feedback form for logged-in users.
  */
 const Footer = () => {
+    const { currentUser } = useAuth();
+    const [feedbackForm, setFeedbackForm] = useState({ name: '', message: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleFeedbackChange = (e) => {
+        const { name, value } = e.target;
+        setFeedbackForm(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleFeedbackSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!feedbackForm.name.trim() || feedbackForm.name.trim().length < 2) {
+            toast.error('Please enter your name (at least 2 characters)');
+            return;
+        }
+        
+        if (!feedbackForm.message.trim() || feedbackForm.message.trim().length < 10) {
+            toast.error('Please enter a message (at least 10 characters)');
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            await submitFeedback({
+                name: feedbackForm.name.trim(),
+                message: feedbackForm.message.trim()
+            });
+            toast.success('Thank you for your feedback!');
+            setFeedbackForm({ name: '', message: '' });
+        } catch (error) {
+            console.error('Feedback submission error:', error);
+            toast.error('Failed to send feedback. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <footer className="relative bg-gray-950 text-white overflow-hidden">
             {/* ── Animated gradient top border ───────────────── */}
@@ -37,19 +79,42 @@ const Footer = () => {
                             Discover your true strengths before you choose your path.
                         </p>
 
-                        {/* Newsletter mini-form */}
-                        <div className="flex gap-2">
-                            <input
-                                type="email"
-                                placeholder="Your email address"
-                                className="footer-email-input"
-                            />
-                            <button className="footer-subscribe-btn" aria-label="Subscribe">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </button>
-                        </div>
+                        {/* Feedback form - Only for logged-in users */}
+                        {currentUser ? (
+                            <form onSubmit={handleFeedbackSubmit} className="space-y-3">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Your name"
+                                    value={feedbackForm.name}
+                                    onChange={handleFeedbackChange}
+                                    disabled={isSubmitting}
+                                    className="w-full px-3 py-2 text-sm rounded-lg bg-gray-900/60 border border-gray-700/40 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500/50 transition-colors disabled:opacity-50"
+                                    maxLength={100}
+                                />
+                                <textarea
+                                    name="message"
+                                    placeholder="Share your feedback..."
+                                    value={feedbackForm.message}
+                                    onChange={handleFeedbackChange}
+                                    disabled={isSubmitting}
+                                    rows={3}
+                                    className="w-full px-3 py-2 text-sm rounded-lg bg-gray-900/60 border border-gray-700/40 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500/50 transition-colors resize-none disabled:opacity-50"
+                                    maxLength={1000}
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isSubmitting ? 'Sending...' : 'Send Feedback'}
+                                </button>
+                            </form>
+                        ) : (
+                            <p className="text-xs text-gray-500 italic">
+                                Sign in to send us your feedback
+                            </p>
+                        )}
                     </div>
 
                     {/* ── Quick Links ──────────────────── */}
