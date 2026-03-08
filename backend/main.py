@@ -66,7 +66,6 @@ async def unity_session_end(request: dict, user: dict = Depends(verify_token)):
     return success_response(message="Session successfully closed")
 
 
-
 # --- REGISTER ROUTERS ---
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(persona_router, prefix="/api/persona", tags=["Persona Chat"])
