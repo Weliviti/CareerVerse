@@ -43,7 +43,7 @@ class PromptManager:
         # But allow safe subdirectories (e.g. 'personas/patient_anxious')
         if ".." in template_name or template_name.startswith("/"):
             raise ValueError(f"Invalid template name: {template_name}")
-            
+
         # Normalize path to use OS-specific separators
         safe_name = os.path.normpath(template_name)
         file_path = os.path.join(self.prompts_dir, f"{safe_name}.txt")

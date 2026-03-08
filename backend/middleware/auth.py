@@ -8,6 +8,7 @@ for protected endpoints, with a bypass for Unity Editor local testing.
 from fastapi import Header, HTTPException, status
 from firebase_admin import auth
 
+
 async def verify_token(authorization: str = Header(...)):
     """
     Verify Firebase ID token from Authorization header.
@@ -33,7 +34,7 @@ async def verify_token(authorization: str = Header(...)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authorization header format. Expected: Bearer <token>",
         )
-    
+
     token = parts[1]
 
     # 3. --- UNITY EDITOR BYPASS ---
@@ -41,9 +42,9 @@ async def verify_token(authorization: str = Header(...)):
     # When running the real WebGL build on your site, this will be ignored.
     if token == "test_editor_token":
         return {
-            "uid": "test_user_editor", 
+            "uid": "test_user_editor",
             "email": "test@editor.com",
-            "name": "Editor Tester"
+            "name": "Editor Tester",
         }
 
     # 4. Real Firebase Verification

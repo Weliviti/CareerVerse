@@ -26,6 +26,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Setup global exception handlers
 setup_exception_handlers(app)
 
+
 # Initialize Firebase Admin SDK on startup
 @app.on_event("startup")
 async def startup_event():
@@ -37,13 +38,14 @@ async def startup_event():
         print(f"❌ Failed to initialize Firebase Admin SDK: {e}")
         print("The app will continue running, but Firebase features may not work.")
 
+
 # --- CORS SETTINGS ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",    # Vite default port (Local testing)
-        "https://careerverse.lk",    # Production domain
-        "https://www.careerverse.lk",# Production domain (www)
+        "http://localhost:5173",  # Vite default port (Local testing)
+        "https://careerverse.lk",  # Production domain
+        "https://www.careerverse.lk",  # Production domain (www)
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -54,12 +56,14 @@ app.add_middleware(
 # These ensure that even if your external routers have different internal paths,
 # the specific URLs defined in Unity's ApiConfig.cs are always handled.
 
+
 @app.post("/api/sessions/end", tags=["Unity Compatibility"])
 async def unity_session_end(request: dict, user: dict = Depends(verify_token)):
     """Explicitly handles the SessionEndUrl from Unity."""
     session_id = request.get("session_id")
     print(f"Unity Session End Signal: {session_id} for user {user.get('uid')}")
     return success_response(message="Session successfully closed")
+
 
 @app.post("/api/evaluate/session", tags=["Unity Compatibility"])
 async def unity_evaluate_session(request: dict, user: dict = Depends(verify_token)):
@@ -68,8 +72,9 @@ async def unity_evaluate_session(request: dict, user: dict = Depends(verify_toke
     # You can also import and call evaluation_service.evaluate_session here
     return success_response(
         data={"status": "processing", "session_id": request.get("session_id")},
-        message="Evaluation triggered from Unity"
+        message="Evaluation triggered from Unity",
     )
+
 
 # --- REGISTER ROUTERS ---
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
@@ -83,12 +88,13 @@ app.include_router(admin_router, prefix="/api/admin", tags=["Admin"])
 app.include_router(evaluator_router, prefix="/api/evaluate", tags=["Legacy Evaluation"])
 app.include_router(evaluation_router, prefix="/api", tags=["New Evaluation"])
 
+
 @app.get("/")
 def read_root():
     return success_response(
-        data={"message": "CareerVerse API is live"},
-        message="Welcome to CareerVerse"
+        data={"message": "CareerVerse API is live"}, message="Welcome to CareerVerse"
     )
+
 
 @app.get("/health")
 def health_check():

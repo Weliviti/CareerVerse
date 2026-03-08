@@ -7,7 +7,7 @@ data = {
     "session_id": "test_session_123",
     "message": "Hello, how are you feeling today?",
     "persona_type": "patient_anxious",
-    "history": []
+    "history": [],
 }
 
 # Add dummy token to bypass auth temporarily or test if the backend fails with what code
