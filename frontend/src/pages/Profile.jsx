@@ -464,10 +464,10 @@ const Profile = () => {
 
                             {/* Email Field */}
                             <div className="flex items-center space-x-3">
-                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-primary-600"
+                                        className="h-5 w-5 text-emerald-400"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -490,10 +490,10 @@ const Profile = () => {
 
                             {/* Joined Date Field */}
                             <div className="flex items-center space-x-3">
-                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-primary-600"
+                                        className="h-5 w-5 text-emerald-400"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -515,6 +515,82 @@ const Profile = () => {
                                     </p>
                                 </div>
                             </div>
+
+                            {/* Date of Birth */}
+                            {userData?.dateOfBirth && (
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500">Date of Birth</p>
+                                        <p className="text-base font-medium text-white">
+                                            {new Date(userData.dateOfBirth).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Education Level */}
+                            {userData?.educationLevel && (
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500">Education Level</p>
+                                        <p className="text-base font-medium text-white">
+                                            {{ high_school: 'High School', undergraduate: 'Undergraduate', graduate: 'Graduate', postgraduate: 'Postgraduate' }[userData.educationLevel] || userData.educationLevel}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Language Preference */}
+                            {userData?.language && (
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500">Language Preference</p>
+                                        <p className="text-base font-medium text-white">
+                                            {{ en: 'English', si: 'Sinhala', ta: 'Tamil' }[userData.language] || userData.language}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Career Interests */}
+                            {userData?.careerInterests && userData.careerInterests.length > 0 && (
+                                <div className="flex items-start space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mt-0.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500 mb-2">Career Interests</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {userData.careerInterests.map(interest => (
+                                                <span
+                                                    key={interest}
+                                                    className="px-3 py-1 text-xs font-medium rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
+                                                >
+                                                    {interest}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                         </div>
                     </div>
@@ -674,7 +750,11 @@ const Profile = () => {
                                 name: userData?.name || currentUser?.displayName || '',
                                 email: userData?.email || currentUser?.email || '',
                                 career_path: userData?.career_path || 'Doctor',
-                                profile_picture_url: userData?.profile_picture_url || avatarUrl || ''
+                                profile_picture_url: userData?.profile_picture_url || avatarUrl || '',
+                                dateOfBirth: userData?.dateOfBirth || '',
+                                educationLevel: userData?.educationLevel || '',
+                                language: userData?.language || '',
+                                careerInterests: userData?.careerInterests || [],
                             }}
                             onSave={handleProfileSave}
                             onCancel={() => setEditModal(false)}
