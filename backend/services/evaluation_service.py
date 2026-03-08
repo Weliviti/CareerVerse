@@ -8,7 +8,7 @@ from config import settings
 class EvaluationService:
     def __init__(self):
         self._db = None
-        self.gemini = GeminiService(purpose="evaluator")
+        self._gemini = None
         # Global appId for Firestore paths (Rule 1)
         self.app_id = "default-app-id"
 
@@ -17,6 +17,13 @@ class EvaluationService:
         if self._db is None:
             self._db = get_db_client()
         return self._db
+
+    @property
+    def gemini(self):
+        if self._gemini is None:
+            self._gemini = GeminiService(purpose="evaluator")
+        return self._gemini
+
 
     async def evaluate_session(self, session_id: str):
         """
