@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SimulationResults = () => {
-    const [evalData, setEvalData] = useState(null);
-    const navigate = useNavigate();
-
-    useEffect(() => {
+    const [evalData] = useState(() => {
         const saved = localStorage.getItem("latestSimulationScore");
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
                 // Structure: { success: true, data: { scores: {...}, feedback: "..." } }
-                setEvalData(parsed.data);
+                return parsed.data;
             } catch (e) {
                 console.error("Failed to parse stored results", e);
             }
         }
-    }, []);
+        return null;
+    });
+    const navigate = useNavigate();
 
     if (!evalData) {
         return (
@@ -27,7 +26,7 @@ const SimulationResults = () => {
         );
     }
 
-    const { scores, feedback, summary } = evalData;
+    const { scores, feedback } = evalData;
 
     return (
         <div className="min-h-screen bg-slate-50 py-12 px-4 flex items-center justify-center">
@@ -65,13 +64,13 @@ const SimulationResults = () => {
 
                     {/* Action Buttons */}
                     <div className="flex gap-4">
-                        <button 
+                        <button
                             onClick={() => navigate('/dashboard')}
                             className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all shadow-lg"
                         >
                             View Dashboard
                         </button>
-                        <button 
+                        <button
                             onClick={() => navigate('/simulation-hub')}
                             className="px-8 bg-white border-2 border-slate-200 text-slate-600 py-4 rounded-xl font-bold hover:bg-slate-50 transition-all"
                         >
@@ -91,8 +90,8 @@ const SkillBar = ({ label, score, color }) => (
             <span className="text-sm font-black text-slate-800">{score}%</span>
         </div>
         <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-            <div 
-                className={`${color} h-full transition-all duration-1000 ease-out`} 
+            <div
+                className={`${color} h-full transition-all duration-1000 ease-out`}
                 style={{ width: `${score}%` }}
             ></div>
         </div>

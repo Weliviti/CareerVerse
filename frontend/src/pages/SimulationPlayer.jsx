@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import React, { useState, useEffect, useRef, createContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 /**
@@ -7,19 +7,16 @@ import { useParams, useNavigate } from 'react-router-dom';
  * and remove this internal provider.
  */
 const AuthContext = createContext({
-  user: { uid: 'test-user-id', getIdToken: async () => 'test-firebase-token' },
-  loading: false
+    user: { uid: 'test-user-id', getIdToken: async () => 'test-firebase-token' },
+    loading: false
 });
 
 const SimulationPlayer = () => {
     const { type } = useParams(); // 'doctor', 'teacher', or 'diagnostician'
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [iframeUrl, setIframeUrl] = useState(""); 
+    const [iframeUrl, setIframeUrl] = useState("");
     const iframeRef = useRef(null);
-    
-    // Using a mock user for this example; replace with your real Auth hook if needed
-    const user = { uid: 'player_1', getIdToken: async () => 'test_token' };
 
     useEffect(() => {
         // --- THE BRIDGE: Listening for Unity's evaluation result ---
@@ -42,23 +39,25 @@ const SimulationPlayer = () => {
 
     useEffect(() => {
         const initGame = async () => {
+            // Using a mock user for this example; replace with your real Auth hook if needed
+            const user = { uid: 'player_1', getIdToken: async () => 'test_token' };
             if (user) {
                 const token = await user.getIdToken();
-                
+
                 // --- FIX: IMPROVED MAPPING ---
                 // We check for 'doctor' OR 'diagnostician' to point to the doctor-sim folder
                 const isDoctor = type?.toLowerCase() === 'doctor' || type?.toLowerCase() === 'diagnostician';
                 const gameFolder = isDoctor ? 'doctor-sim' : 'teacher-sim';
-                
+
                 const sessionId = `sess_${type}_${Date.now()}`;
-                
+
                 // Construct the URL to your Unity index.html
                 // Double check that your folder in /public/games/ is named exactly 'doctor-sim'
                 const url = `/games/${gameFolder}/index.html?token=${token}&session=${sessionId}`;
-                
+
                 console.log(`Loading Simulation: ${type} from folder: ${gameFolder}`);
                 setIframeUrl(url);
-                
+
                 // Give Unity 5 seconds to show its own splash screen before hiding our loader
                 setTimeout(() => setLoading(false), 5000);
             }
@@ -73,13 +72,13 @@ const SimulationPlayer = () => {
                 // 'unityInstance' must be exposed in your Unity index.html
                 if (iframeWin.unityInstance) {
                     iframeWin.unityInstance.SendMessage('SessionManager', 'ForceEndFromReact');
-                    setLoading(true); 
+                    setLoading(true);
                 } else {
                     if (window.confirm("Simulation still loading. Exit to Dashboard?")) {
                         navigate('/dashboard');
                     }
                 }
-            } catch (e) {
+            } catch {
                 navigate('/dashboard');
             }
         }
@@ -105,14 +104,14 @@ const SimulationPlayer = () => {
                     </div>
                 </div>
 
-                <button 
+                <button
                     onClick={handleSmartExit}
                     className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-red-900/40 border border-red-500/50"
                 >
                     Finish & Evaluate
                 </button>
             </div>
-            
+
             {/* Main Game Viewport */}
             <div className="flex-1 relative bg-black overflow-hidden">
                 {loading && (
@@ -126,12 +125,12 @@ const SimulationPlayer = () => {
                         </p>
                     </div>
                 )}
-                
+
                 {iframeUrl && (
-                    <iframe 
+                    <iframe
                         ref={iframeRef}
-                        src={iframeUrl} 
-                        className="w-full h-full border-none bg-black" 
+                        src={iframeUrl}
+                        className="w-full h-full border-none bg-black"
                         title="CareerVerse Simulation Viewport"
                         allow="autoplay; fullscreen; microphone"
                     />
