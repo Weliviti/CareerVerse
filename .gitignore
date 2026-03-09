@@ -47,8 +47,8 @@ frontend/dist-ssr
 
 
 
-backend/firebase-adminsdk-key.json
-service-account.json
+firebase/firebase-adminsdk-key.json
+firebase/service-account.json
 *.json
 !package.json
 !public/manifest.json
