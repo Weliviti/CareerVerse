@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Dict, Optional, List
+from google.cloud.firestore_v1.base_query import FieldFilter
 from services.firebase_admin_service import get_db_client
 from models.session import Session
 import uuid
@@ -159,6 +160,76 @@ class SessionService:
 
         except Exception as e:
             raise Exception(f"Failed to retrieve session: {str(e)}")
+
+    async def get_user_sessions(
+        self, user_id: str, limit: int = 10, cursor: Optional[str] = None
+    ) -> Dict:
+        """
+        Retrieve all sessions for a specific user with pagination.
+
+        Args:
+            user_id: The ID of the user
+            limit: Maximum number of sessions to return
+            cursor: Session ID for cursor-based pagination
+
+        Returns:
+            Dict containing sessions list and next_cursor
+
+        Raises:
+            Exception: If retrieval fails
+        """
+        try:
+            query_with_order = (
+                self.sessions_ref.where(filter=FieldFilter("user_id", "==", user_id))
+                .order_by("start_time", direction="DESCENDING")
+                .limit(limit)
+            )
+
+            # Apply cursor if provided
+            if cursor:
+                cursor_doc = self.sessions_ref.document(cursor).get()
+                if cursor_doc.exists:
+                    query_with_order = query_with_order.start_after(cursor_doc)
+
+            # Execute query with fallback for missing index
+            try:
+                docs = query_with_order.stream()
+                docs_list = list(docs)
+            except Exception:
+                print(
+                    f"Warning: Missing index for user {user_id} sessions. Falling back to unordered query."
+                )
+                query_unordered = self.sessions_ref.where(
+                    filter=FieldFilter("user_id", "==", user_id)
+                ).limit(limit)
+
+                if cursor:
+                    cursor_doc = self.sessions_ref.document(cursor).get()
+                    if cursor_doc.exists:
+                        query_unordered = query_unordered.start_after(cursor_doc)
+
+                docs_list = list(query_unordered.stream())
+
+            sessions = []
+            last_doc = None
+
+            for doc in docs_list:
+                session_data = doc.to_dict()
+                session_data["id"] = doc.id
+                # Convert datetime objects for JSON serialization
+                for key in ["start_time", "end_time"]:
+                    if key in session_data and hasattr(session_data[key], "isoformat"):
+                        session_data[key] = session_data[key].isoformat()
+                sessions.append(session_data)
+                last_doc = doc
+
+            # Determine next cursor
+            next_cursor = last_doc.id if last_doc and len(sessions) == limit else None
+
+            return {"sessions": sessions, "next_cursor": next_cursor}
+
+        except Exception as e:
+            raise Exception(f"Failed to retrieve user sessions: {str(e)}")
 
 
 # Create global instance

@@ -14,7 +14,8 @@ class ErrorBoundary extends React.Component {
         };
     }
 
-    static getDerivedStateFromError(error) {
+    // eslint-disable-next-line no-unused-vars
+    static getDerivedStateFromError(_) {
         // Update state so the next render will show the fallback UI
         return { hasError: true };
     }
@@ -76,7 +77,7 @@ class ErrorBoundary extends React.Component {
                         </p>
 
                         {/* Error Details (Development Only) */}
-                        {process.env.NODE_ENV === 'development' && this.state.error && (
+                        {import.meta.env.DEV && this.state.error && (
                             <div className="mb-6 p-4 bg-red-50 rounded-md border border-red-200">
                                 <p className="text-sm font-semibold text-red-800 mb-2">
                                     Error Details:

@@ -1,72 +1,29 @@
-"""
-Authentication middleware for CareerVerse backend.
-
-This module provides authentication middleware to verify Firebase ID tokens
-for protected endpoints.
-"""
-
-from fastapi import Header, HTTPException
+from fastapi import Header, HTTPException, status
 from firebase_admin import auth
 
 
-def verify_token(authorization: str = Header(...)):
+async def verify_token(authorization: str = Header(...)):
     """
-    Verify Firebase ID token from Authorization header.
-
-    This middleware function extracts and verifies the Firebase ID token
-    from the Authorization header. It should be used as a dependency
-    for protected endpoints.
-
-    Args:
-        authorization (str): Authorization header value in format "Bearer <token>"
-
-    Returns:
-        dict: Decoded token payload containing user information (uid, email, etc.)
-
-    Raises:
-        HTTPException: 401 if token is missing, invalid, or expired
-
-    Example:
-        ```python
-        @app.get("/protected")
-        async def protected_route(user=Depends(verify_token)):
-            return {"user_id": user["uid"]}
-        ```
+    Verifies the Firebase ID Token with a bypass for Unity Editor and Mock React users.
     """
-    # Check if authorization header is present and properly formatted
-    if not authorization:
-        raise HTTPException(status_code=401, detail="Authorization header missing")
-
-    # Extract token from "Bearer <token>" format
-    parts = authorization.split()
-
-    if len(parts) != 2 or parts[0].lower() != "bearer":
+    if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authorization header format. Expected: Bearer <token>",
         )
 
-    token = parts[1]
+    token = authorization.split(" ")[1]
+
+    # --- BYPASS FOR TESTING ---
+    # Allowing 'test_editor_token' (Unity) and 'test_token' (React Mock)
+    if token == "test_editor_token" or token == "test_token":
+        return {"uid": "test_user_editor", "email": "test@editor.com"}
 
     try:
-        # Verify the Firebase ID token
         decoded_token = auth.verify_id_token(token)
         return decoded_token
-
-    except auth.InvalidIdTokenError:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid token: Token verification failed",
-        )
-
-    except auth.ExpiredIdTokenError:
-        raise HTTPException(
-            status_code=401,
-            detail="Token expired: Please login again",
-        )
-
     except Exception as e:
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Token verification failed: {str(e)}",
         )

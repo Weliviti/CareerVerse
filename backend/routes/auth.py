@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Request, Header, HTTPException
 from pydantic import BaseModel
+from typing import Optional
 from firebase_admin import auth
 from slowapi import Limiter
 from slowapi.util import get_remote_address
-from services.user_service import get_user_by_uid, create_user_profile
+from services.user_service import get_user_by_uid, create_user_profile, update_user
 from services.firebase_admin_service import get_db_client
 from utils.responses import success_response, error_response
 
@@ -25,6 +26,12 @@ class LoginRequest(BaseModel):
 
 class VerifyTokenRequest(BaseModel):
     token: str
+
+
+class UpdateProfileRequest(BaseModel):
+    name: Optional[str] = None
+    career_path: Optional[str] = None
+    profile_picture_url: Optional[str] = None
 
 
 @router.post("/register")
@@ -151,6 +158,76 @@ async def verify_token(request: VerifyTokenRequest):
             message="Token verification failed",
             code=401,
             error_details=f"An error occurred: {str(e)}",
+        )
+
+
+@router.put("/user/profile")
+async def update_profile(
+    profile_data: UpdateProfileRequest, authorization: str = Header(None)
+):
+    """
+    Update the current user's profile in Firestore.
+    Accepts name, career_path, and profile_picture_url.
+    """
+    print("=== UPDATE PROFILE REQUEST ===")
+    print(f"Authorization header present: {authorization is not None}")
+
+    if not authorization or not authorization.startswith("Bearer "):
+        print("❌ Missing or invalid Authorization header")
+        return error_response(
+            message="Missing or invalid Authorization header", code=401
+        )
+
+    token = authorization.split("Bearer ")[1]
+    print(f"Token extracted (first 20 chars): {token[:20]}...")
+
+    try:
+        # Verify token and get UID
+        print("Verifying Firebase token...")
+        decoded_token = auth.verify_id_token(token)
+        uid = decoded_token["uid"]
+        print(f"✅ Token verified. UID: {uid}")
+
+        # Build updates dictionary (only include non-None fields)
+        updates = {}
+        if profile_data.name is not None:
+            updates["name"] = profile_data.name
+        if profile_data.career_path is not None:
+            updates["career_path"] = profile_data.career_path
+        if profile_data.profile_picture_url is not None:
+            updates["profile_picture_url"] = profile_data.profile_picture_url
+
+        print(f"Updates to apply: {updates}")
+
+        # Check if there are any updates to make
+        if not updates:
+            print("❌ No fields to update")
+            return error_response(message="No fields to update", code=400)
+
+        # Update user profile
+        print(f"Calling update_user service...")
+        updated_user = update_user(uid, updates)
+        print(f"✅ User updated successfully: {updated_user}")
+
+        return success_response(
+            data=updated_user,
+            message="Profile updated successfully",
+        )
+
+    except auth.InvalidIdTokenError as e:
+        print(f"❌ Invalid token error: {str(e)}")
+        return error_response(message="Invalid token", code=401)
+    except auth.ExpiredIdTokenError as e:
+        print(f"❌ Expired token error: {str(e)}")
+        return error_response(message="Token expired", code=401)
+    except Exception as e:
+        print(f"❌ Unexpected error: {str(e)}")
+        print(f"Error type: {type(e).__name__}")
+        import traceback
+
+        print(f"Traceback: {traceback.format_exc()}")
+        return error_response(
+            message="Failed to update profile", code=500, error_details=str(e)
         )
 
 

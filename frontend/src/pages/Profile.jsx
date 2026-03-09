@@ -1,9 +1,11 @@
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
-import { storage, auth } from '../services/firebase';
+import ProfileEditForm from '../components/ProfileEditForm';
+import { storage, auth, db } from '../services/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { doc, getDoc } from 'firebase/firestore';
 import { reauthenticateWithCredential, updatePassword, EmailAuthProvider, signOut } from 'firebase/auth';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -36,6 +38,11 @@ const Profile = () => {
     const [avatarUrl, setAvatarUrl] = useState(null);
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
     const [uploadError, setUploadError] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [_loadingUserData, setLoadingUserData] = useState(true);
+
+    // Edit Profile state
+    const [editModal, setEditModal] = useState(false);
 
     // Change Password state
     const [passwordModal, setPasswordModal] = useState(false);
@@ -47,12 +54,64 @@ const Profile = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [deletingAccount, setDeletingAccount] = useState(false);
 
+    // Load user data from Firestore
+    useEffect(() => {
+        const loadUserData = async () => {
+            if (!currentUser) return;
+
+            try {
+                setLoadingUserData(true);
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    setUserData(data);
+                    // Set avatar if exists
+                    if (data.profile_picture_url) {
+                        setAvatarUrl(data.profile_picture_url);
+                    }
+                } else {
+                    console.warn('User document does not exist in Firestore');
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                toast.error('Failed to load user profile');
+            } finally {
+                setLoadingUserData(false);
+            }
+        };
+
+        loadUserData();
+    }, [currentUser]);
+
+    // Function to reload user data from Firestore
+    const reloadUserData = async () => {
+        if (!currentUser) return;
+
+        try {
+            const userDocRef = doc(db, 'users', currentUser.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                setUserData(data);
+                if (data.profile_picture_url) {
+                    setAvatarUrl(data.profile_picture_url);
+                }
+                console.log('User data reloaded:', data);
+            }
+        } catch (error) {
+            console.error('Error reloading user data:', error);
+        }
+    };
+
     const confirmDeleteAccount = async () => {
         try {
             setDeletingAccount(true);
-            const response = await api.delete('/api/auth/account');
+            await api.delete('/api/auth/account');
             // Sign out locally (may fail if auth already invalidated, that's ok)
-            try { await signOut(auth); } catch (e) { /* expected */ }
+            try { await signOut(auth); } catch { /* expected */ }
             toast.success('Your account has been deleted');
             navigate('/');
         } catch (error) {
@@ -121,12 +180,14 @@ const Profile = () => {
         // Validate file type
         if (!file.type.startsWith('image/')) {
             setUploadError('Please select an image file');
+            toast.error('Please select an image file');
             return;
         }
 
         // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             setUploadError('File size must be less than 5MB');
+            toast.error('File size must be less than 5MB');
             return;
         }
 
@@ -134,34 +195,128 @@ const Profile = () => {
             setUploadingAvatar(true);
             setUploadError(null);
 
+            console.log('=== AVATAR UPLOAD START ===');
+            console.log('User UID:', currentUser?.uid);
+            console.log('File:', file.name, 'Size:', (file.size / 1024).toFixed(2), 'KB');
+
             // Create reference to Firebase Storage
-            const storageRef = ref(storage, `avatars/${currentUser.uid}/${file.name}`);
+            const storageRef = ref(storage, `avatars/${currentUser.uid}/profile.jpg`);
 
             // Upload file
+            console.log('Uploading to storage...');
             await uploadBytes(storageRef, file);
+            console.log('✅ File uploaded to storage');
 
             // Get download URL
             const url = await getDownloadURL(storageRef);
-            setAvatarUrl(url);
+            console.log('✅ Got download URL:', url);
 
-            // TODO: Update user profile in Firestore with avatar URL
-            // This can be done in a future task
+            // Update user profile in backend
+            console.log('Calling backend API...');
+            console.log('API URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000');
+            console.log('Request data:', { profile_picture_url: url });
+
+            const response = await api.put('/api/auth/user/profile', {
+                profile_picture_url: url
+            });
+
+            console.log('✅ Backend response:', response);
+            console.log('Response status:', response.status);
+            console.log('Response data:', response.data);
+
+            // If we got here without an exception and status is 2xx, it's a success
+            if (response.status >= 200 && response.status < 300) {
+                console.log('✅ Backend confirmed success (status 2xx)');
+
+                // Update local state with new avatar URL
+                setAvatarUrl(url);
+
+                // Update userData state so it persists
+                setUserData(prev => ({
+                    ...prev,
+                    profile_picture_url: url
+                }));
+
+                // Optionally reload from backend to ensure sync
+                setTimeout(() => reloadUserData(), 500);
+
+                toast.success('Profile picture updated successfully!');
+            } else {
+                throw new Error(response.data?.message || 'Backend returned failure');
+            }
 
         } catch (error) {
-            console.error('Avatar upload error:', error);
-            setUploadError('Failed to upload avatar. Please try again.');
+            console.error('❌ AVATAR UPLOAD ERROR');
+            console.error('Error object:', error);
+            console.error('Error message:', error.message);
+            console.error('Error response:', error.response);
+            console.error('Error response data:', error.response?.data);
+            console.error('Error response status:', error.response?.status);
+
+            let errorMsg = 'Failed to upload avatar';
+
+            if (error.response?.data?.message) {
+                errorMsg = error.response.data.message;
+            } else if (error.response?.data?.error) {
+                errorMsg = error.response.data.error;
+            } else if (error.message) {
+                errorMsg = error.message;
+            }
+
+            if (error.response?.data?.error_details) {
+                errorMsg += ': ' + error.response.data.error_details;
+            }
+
+            setUploadError(errorMsg);
+            toast.error('Failed to upload: ' + errorMsg);
         } finally {
             setUploadingAvatar(false);
+            console.log('=== AVATAR UPLOAD END ===');
         }
     };
 
+    const handleProfileSave = (updatedUser) => {
+        console.log('Profile saved, updating local state:', updatedUser);
+
+        // Update local state with all user data
+        setUserData(prevData => ({
+            ...prevData,
+            ...updatedUser
+        }));
+
+        // Update avatar if changed
+        if (updatedUser.profile_picture_url) {
+            setAvatarUrl(updatedUser.profile_picture_url);
+        }
+
+        setEditModal(false);
+        toast.success('Profile updated successfully!');
+    };
+
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="home-dark min-h-screen">
+            {/* ── Parallax glow orbs ── */}
+            <div className="home-parallax-orbs">
+                <div className="parallax-orb parallax-orb-1"></div>
+                <div className="parallax-orb parallax-orb-2"></div>
+                <div className="parallax-orb parallax-orb-3"></div>
+            </div>
+
+            {/* ── Floating particles ── */}
+            <div className="home-particles">
+                <div className="particle particle-1"></div>
+                <div className="particle particle-2"></div>
+                <div className="particle particle-3"></div>
+                <div className="particle particle-4"></div>
+                <div className="particle particle-5"></div>
+                <div className="particle particle-6"></div>
+            </div>
+
             <Navbar />
             {/* Main Container */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Profile Header Card */}
-                <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div className="home-dark-card p-6 mb-6">
                     <div className="flex items-center justify-between">
                         {/* Left Side: Avatar and User Info */}
                         <div className="flex items-center space-x-4">
@@ -178,7 +333,7 @@ const Profile = () => {
                                     htmlFor="avatar-upload"
                                     className="cursor-pointer block relative"
                                 >
-                                    <div className="w-20 h-20 rounded-full bg-primary-500 flex items-center justify-center text-white overflow-hidden hover:opacity-90 transition-opacity">
+                                    <div className="w-20 h-20 rounded-full bg-emerald-600 flex items-center justify-center text-white overflow-hidden hover:opacity-90 transition-opacity ring-2 ring-emerald-500/30">
                                         {uploadingAvatar ? (
                                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
                                         ) : avatarUrl ? (
@@ -192,10 +347,10 @@ const Profile = () => {
                                         )}
                                     </div>
                                     {!uploadingAvatar && (
-                                        <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-lg">
+                                        <div className="absolute bottom-0 right-0 bg-[rgba(13,30,22,0.85)] border border-white/10 rounded-full p-1 shadow-lg">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="h-4 w-4 text-primary-600"
+                                                className="h-4 w-4 text-emerald-400"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -221,14 +376,14 @@ const Profile = () => {
                             {/* User Name and Email */}
                             <div className="flex-1">
                                 {uploadError && (
-                                    <div className="mb-2 text-sm text-red-600">
+                                    <div className="mb-2 text-sm text-red-400">
                                         {uploadError}
                                     </div>
                                 )}
-                                <h2 className="text-xl font-semibold text-gray-900">
-                                    {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
+                                <h2 className="text-xl font-semibold text-white">
+                                    {userData?.name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                 </h2>
-                                <div className="flex items-center mt-1 text-gray-600">
+                                <div className="flex items-center mt-1 text-slate-400">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         className="h-4 w-4 mr-1"
@@ -243,14 +398,17 @@ const Profile = () => {
                                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                                         />
                                     </svg>
-                                    <span className="text-sm">{currentUser?.email || 'email@example.com'}</span>
+                                    <span className="text-sm">{userData?.email || currentUser?.email || 'email@example.com'}</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Right Side: Edit Profile Button */}
                         <div>
-                            <button className="flex items-center px-4 py-2 border-2 border-primary-500 text-primary-600 rounded-md hover:bg-primary-50 transition-colors">
+                            <button
+                                onClick={() => setEditModal(true)}
+                                className="flex items-center px-4 py-2 border border-emerald-500/30 text-emerald-400 rounded-lg hover:bg-emerald-500/10 transition-colors bg-white/[0.04]"
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4 mr-2"
@@ -274,16 +432,16 @@ const Profile = () => {
                 {/* Grid Layout for Personal Info and Account Settings */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Personal Information Section */}
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+                    <div className="home-dark-card p-6">
+                        <h3 className="text-lg font-semibold text-white mb-4">Personal Information</h3>
 
                         <div className="space-y-4">
                             {/* Name Field */}
                             <div className="flex items-center space-x-3">
-                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-primary-600"
+                                        className="h-5 w-5 text-emerald-400"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -297,19 +455,19 @@ const Profile = () => {
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-500">Name</p>
-                                    <p className="text-base font-medium text-gray-900">
-                                        {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
+                                    <p className="text-sm text-slate-500">Name</p>
+                                    <p className="text-base font-medium text-white">
+                                        {userData?.name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Email Field */}
                             <div className="flex items-center space-x-3">
-                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-primary-600"
+                                        className="h-5 w-5 text-emerald-400"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -323,19 +481,19 @@ const Profile = () => {
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-500">Email</p>
-                                    <p className="text-base font-medium text-gray-900">
-                                        {currentUser?.email || 'sarah.johnson@email.com'}
+                                    <p className="text-sm text-slate-500">Email</p>
+                                    <p className="text-base font-medium text-white">
+                                        {userData?.email || currentUser?.email || 'sarah.johnson@email.com'}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Joined Date Field */}
                             <div className="flex items-center space-x-3">
-                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-primary-600"
+                                        className="h-5 w-5 text-emerald-400"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -349,8 +507,8 @@ const Profile = () => {
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-500">Joined Date</p>
-                                    <p className="text-base font-medium text-gray-900">
+                                    <p className="text-sm text-slate-500">Joined Date</p>
+                                    <p className="text-base font-medium text-white">
                                         {currentUser?.metadata?.creationTime
                                             ? new Date(currentUser.metadata.creationTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                                             : 'N/A'}
@@ -358,21 +516,97 @@ const Profile = () => {
                                 </div>
                             </div>
 
+                            {/* Date of Birth */}
+                            {userData?.dateOfBirth && (
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500">Date of Birth</p>
+                                        <p className="text-base font-medium text-white">
+                                            {new Date(userData.dateOfBirth).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Education Level */}
+                            {userData?.educationLevel && (
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500">Education Level</p>
+                                        <p className="text-base font-medium text-white">
+                                            {{ high_school: 'High School', undergraduate: 'Undergraduate', graduate: 'Graduate', postgraduate: 'Postgraduate' }[userData.educationLevel] || userData.educationLevel}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Language Preference */}
+                            {userData?.language && (
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500">Language Preference</p>
+                                        <p className="text-base font-medium text-white">
+                                            {{ en: 'English', si: 'Sinhala', ta: 'Tamil' }[userData.language] || userData.language}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Career Interests */}
+                            {userData?.careerInterests && userData.careerInterests.length > 0 && (
+                                <div className="flex items-start space-x-3">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mt-0.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500 mb-2">Career Interests</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {userData.careerInterests.map(interest => (
+                                                <span
+                                                    key={interest}
+                                                    className="px-3 py-1 text-xs font-medium rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
+                                                >
+                                                    {interest}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
                     </div>
 
                     {/* Account Settings Section */}
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Settings</h3>
+                    <div className="home-dark-card p-6">
+                        <h3 className="text-lg font-semibold text-white mb-4">Account Settings</h3>
 
                         <div className="space-y-4">
                             {/* Change Password */}
-                            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div className="flex items-center justify-between py-3 border-b border-white/5">
                                 <div className="flex items-center space-x-3">
-                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="h-5 w-5 text-primary-600"
+                                            className="h-5 w-5 text-emerald-400"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
@@ -386,25 +620,25 @@ const Profile = () => {
                                         </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-900">Change Password</p>
-                                        <p className="text-xs text-gray-500">Update your password regularly</p>
+                                        <p className="text-sm font-medium text-white">Change Password</p>
+                                        <p className="text-xs text-slate-500">Update your password regularly</p>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => setPasswordModal(true)}
-                                    className="px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-md transition-colors"
+                                    className="px-4 py-2 text-sm font-medium text-emerald-400 hover:bg-emerald-500/10 rounded-md transition-colors"
                                 >
                                     Change
                                 </button>
                             </div>
 
                             {/* Two-Step Login */}
-                            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div className="flex items-center justify-between py-3 border-b border-white/5">
                                 <div className="flex items-center space-x-3">
-                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="h-5 w-5 text-primary-600"
+                                            className="h-5 w-5 text-emerald-400"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
@@ -418,23 +652,23 @@ const Profile = () => {
                                         </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-900">Enable Two-Step Login</p>
-                                        <p className="text-xs text-gray-500">Make your account more secure</p>
+                                        <p className="text-sm font-medium text-white">Enable Two-Step Login</p>
+                                        <p className="text-xs text-slate-500">Make your account more secure</p>
                                     </div>
                                 </div>
                                 <label className="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" className="sr-only peer" />
-                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-100 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
+                                    <div className="w-11 h-6 bg-white/[0.04] border border-white/10 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
                                 </label>
                             </div>
 
                             {/* Delete Account */}
                             <div className="flex items-center justify-between py-3">
                                 <div className="flex items-center space-x-3">
-                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="h-5 w-5 text-red-600"
+                                            className="h-5 w-5 text-red-500"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
@@ -448,13 +682,13 @@ const Profile = () => {
                                         </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-900">Delete Account</p>
-                                        <p className="text-xs text-red-500">This action cannot be undone</p>
+                                        <p className="text-sm font-medium text-white">Delete Account</p>
+                                        <p className="text-xs text-red-400">This action cannot be undone</p>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => setDeleteModal(true)}
-                                    className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                                    className="px-4 py-2 text-sm font-medium text-red-400 bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 rounded-md transition-colors"
                                 >
                                     Delete
                                 </button>
@@ -466,15 +700,15 @@ const Profile = () => {
 
             {/* Delete Account Modal */}
             {deleteModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => !deletingAccount && setDeleteModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
-                        <div className="mx-auto w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => !deletingAccount && setDeleteModal(false)}>
+                    <div className="home-dark-card max-w-md w-full p-6 border border-white/10" onClick={(e) => e.stopPropagation()}>
+                        <div className="mx-auto w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 text-center">Delete Account</h3>
-                        <p className="text-gray-500 text-center text-sm mt-2">
+                        <h3 className="text-lg font-bold text-white text-center">Delete Account</h3>
+                        <p className="text-slate-400 text-center text-sm mt-2">
                             Are you sure you want to delete your account? This will permanently remove your data from both Authentication and Database.
                         </p>
                         <p className="text-red-500 text-center text-xs mt-2 font-medium">
@@ -484,14 +718,14 @@ const Profile = () => {
                             <button
                                 onClick={() => setDeleteModal(false)}
                                 disabled={deletingAccount}
-                                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium text-sm disabled:opacity-50"
+                                className="flex-1 px-4 py-2.5 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-colors font-medium text-sm disabled:opacity-50"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={confirmDeleteAccount}
                                 disabled={deletingAccount}
-                                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                                className="flex-1 px-4 py-2.5 bg-red-600/80 hover:bg-red-600 text-white border border-red-500/50 rounded-xl transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
                             >
                                 {deletingAccount ? (
                                     <>
@@ -507,19 +741,41 @@ const Profile = () => {
                 </div>
             )}
 
+            {/* Edit Profile Modal */}
+            {editModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => setEditModal(false)}>
+                    <div className="home-dark-card border border-white/10 max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                        <ProfileEditForm
+                            user={{
+                                name: userData?.name || currentUser?.displayName || '',
+                                email: userData?.email || currentUser?.email || '',
+                                career_path: userData?.career_path || 'Doctor',
+                                profile_picture_url: userData?.profile_picture_url || avatarUrl || '',
+                                dateOfBirth: userData?.dateOfBirth || '',
+                                educationLevel: userData?.educationLevel || '',
+                                language: userData?.language || '',
+                                careerInterests: userData?.careerInterests || [],
+                            }}
+                            onSave={handleProfileSave}
+                            onCancel={() => setEditModal(false)}
+                        />
+                    </div>
+                </div>
+            )}
+
             {/* Change Password Modal */}
             {passwordModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => !changingPassword && setPasswordModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => !changingPassword && setPasswordModal(false)}>
+                    <div className="home-dark-card border border-white/10 max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
                         {/* Lock Icon */}
-                        <div className="mx-auto w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        <div className="mx-auto w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
 
-                        <h3 className="text-lg font-bold text-gray-900 text-center">Change Password</h3>
-                        <p className="text-gray-500 text-center text-sm mt-1 mb-6">Enter your current password and choose a new one</p>
+                        <h3 className="text-lg font-bold text-white text-center">Change Password</h3>
+                        <p className="text-slate-400 text-center text-sm mt-1 mb-6">Enter your current password and choose a new one</p>
 
                         {passwordError && (
                             <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">
@@ -529,39 +785,39 @@ const Profile = () => {
 
                         <form onSubmit={handleChangePassword} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">Current Password</label>
                                 <input
                                     type="password"
                                     name="current"
                                     value={passwords.current}
                                     onChange={handlePasswordChange}
                                     placeholder="Enter current password"
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm text-gray-900"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">New Password</label>
                                 <input
                                     type="password"
                                     name="new"
                                     value={passwords.new}
                                     onChange={handlePasswordChange}
                                     placeholder="Enter new password (min 6 characters)"
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm text-gray-900"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
                                     required
                                     minLength={6}
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">Confirm New Password</label>
                                 <input
                                     type="password"
                                     name="confirm"
                                     value={passwords.confirm}
                                     onChange={handlePasswordChange}
                                     placeholder="Confirm new password"
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm text-gray-900"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
                                     required
                                 />
                             </div>
@@ -571,14 +827,14 @@ const Profile = () => {
                                     type="button"
                                     onClick={() => { setPasswordModal(false); setPasswords({ current: '', new: '', confirm: '' }); setPasswordError(''); }}
                                     disabled={changingPassword}
-                                    className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium text-sm disabled:opacity-50"
+                                    className="flex-1 px-4 py-2.5 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-colors font-medium text-sm disabled:opacity-50"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={changingPassword}
-                                    className="flex-1 px-4 py-2.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="flex-1 px-4 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 rounded-xl transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
                                     {changingPassword ? (
                                         <>

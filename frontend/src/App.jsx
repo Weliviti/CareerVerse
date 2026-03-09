@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
-import About from './pages/About';
-import OurTeam from './pages/OurTeam';
+import Community from './pages/Community';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
@@ -17,8 +16,11 @@ import AIEvaluationLogs from './pages/admin/AIEvaluationLogs';
 import SimulationLogs from './pages/admin/SimulationLogs';
 import Settings from './pages/admin/Settings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
+import TeacherSimulation from './pages/TeacherSimulation';
+import SimulationResults from './pages/SimulationResults';
 
 function App() {
   return (
@@ -27,11 +29,11 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/our-team" element={<OurTeam />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
 
           <Route
             path="/simulation-hub"
@@ -48,6 +50,22 @@ function App() {
               <ProtectedRoute>
                 <SimulationPlayer />
               </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/simulation/results"
+            element={
+              <ProtectedRoute>
+                <SimulationResults />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/teacher-simulation"
+            element={
+              <TeacherSimulation />
             }
           />
 

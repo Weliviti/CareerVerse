@@ -32,4 +32,8 @@ async def get_user_scores(
             data=result, message="User scores retrieved successfully"
         )
     except Exception as e:
+        import traceback
+
+        traceback.print_exc()
+
         return error_response(message=f"Failed to retrieve scores: {str(e)}", code=500)
