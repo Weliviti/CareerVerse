@@ -22,7 +22,7 @@ def get_db_client():
     if not firebase_admin._apps:
         # Import config to use the centralized path
         from config import settings
-        
+
         # Path to service account JSON file
         service_account_path = settings.FIREBASE_CREDENTIALS_PATH
 
