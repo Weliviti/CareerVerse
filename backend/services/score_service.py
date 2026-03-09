@@ -102,17 +102,19 @@ class ScoreService:
             # Force generator execution to catch missing index error immediately
             docs_list = list(docs)
         except Exception:
-            print(f"Warning: Missing index for user {uid} scores. Falling back to unordered query.")
+            print(
+                f"Warning: Missing index for user {uid} scores. Falling back to unordered query."
+            )
             # Fallback if composite index is not available
             query_unordered = self.scores_ref.where(
                 filter=FieldFilter("user_id", "==", uid)
             ).limit(limit)
-            
+
             if cursor:
                 cursor_doc = self.scores_ref.document(cursor).get()
                 if cursor_doc.exists:
                     query_unordered = query_unordered.start_after(cursor_doc)
-                    
+
             docs_list = list(query_unordered.stream())
 
         scores: List[Dict] = []

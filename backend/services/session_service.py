@@ -180,9 +180,7 @@ class SessionService:
         """
         try:
             query_with_order = (
-                self.sessions_ref.where(
-                    filter=FieldFilter("user_id", "==", user_id)
-                )
+                self.sessions_ref.where(filter=FieldFilter("user_id", "==", user_id))
                 .order_by("start_time", direction="DESCENDING")
                 .limit(limit)
             )
@@ -198,16 +196,18 @@ class SessionService:
                 docs = query_with_order.stream()
                 docs_list = list(docs)
             except Exception:
-                print(f"Warning: Missing index for user {user_id} sessions. Falling back to unordered query.")
+                print(
+                    f"Warning: Missing index for user {user_id} sessions. Falling back to unordered query."
+                )
                 query_unordered = self.sessions_ref.where(
                     filter=FieldFilter("user_id", "==", user_id)
                 ).limit(limit)
-                
+
                 if cursor:
                     cursor_doc = self.sessions_ref.document(cursor).get()
                     if cursor_doc.exists:
                         query_unordered = query_unordered.start_after(cursor_doc)
-                        
+
                 docs_list = list(query_unordered.stream())
 
             sessions = []
