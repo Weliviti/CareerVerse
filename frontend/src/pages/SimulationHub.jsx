@@ -257,6 +257,42 @@ const SimulationHub = () => {
                 </div>
             </section>
 
+            {/* CTA Banner Section — Bold teal gradient */}
+            <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #064e3b 0%, #0d9488 50%, #065f46 100%)' }}>
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-0 transform -translate-x-1/3 translate-y-1/3 w-96 h-96 bg-emerald-900 opacity-20 rounded-full blur-3xl"></div>
+                </div>
+
+                <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                        Complete Both <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-teal-100 italic">Simulations</span>
+                    </h2>
+                    <p className="text-lg text-emerald-100/70 mb-10 max-w-2xl mx-auto">
+                        Get comprehensive career recommendations by completing all simulation paths
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button
+                            onClick={() => { window.scrollTo(0, 0); navigate('/dashboard'); }}
+                            className="hero-btn-primary"
+                            style={{ background: 'linear-gradient(135deg, #00e5a0, #00c98d)', boxShadow: '0 4px 20px rgba(0,229,160,0.3)' }}
+                        >
+                            View Dashboard
+                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                            className="hero-btn-outline"
+                            style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', borderColor: 'rgba(255,255,255,0.25)' }}
+                        >
+                            Try Another Simulation
+                        </button>
+                    </div>
+                </div>
+            </section>
+
             <BackToTop />
             <Footer />
         </div>
