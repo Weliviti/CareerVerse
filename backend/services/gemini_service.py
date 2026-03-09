@@ -16,7 +16,7 @@ class GeminiService:
         genai.configure(api_key=api_key)
         
         # Use 2.5-flash for production stability and higher free-tier quotas
-        self.model_name = "gemini-1.5-flash" 
+        self.model_name = "gemini-2.5-flash" 
 
     async def generate_response(self, prompt: str) -> str:
         """
