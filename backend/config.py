@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
 
     # ─── Firebase ───
-    FIREBASE_CREDENTIALS_PATH: str = "service-account.json"
+    FIREBASE_CREDENTIALS_PATH: str = "../firebase/service-account.json"
 
     # ─── App Settings ───
     PORT: int = 5000
