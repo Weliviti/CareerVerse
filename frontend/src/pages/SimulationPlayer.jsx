@@ -1,11 +1,19 @@
 import React, { useState, useEffect, useRef, createContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../context/AuthContext';
+/**
+ * NOTE: This version is self-contained. 
+ * If you have a separate AuthContext file, you can import it 
+ * and remove this internal provider.
+ */
+const AuthContext = createContext({
+    user: { uid: 'test-user-id', getIdToken: async () => 'test-firebase-token' },
+    loading: false
+});
+
 const SimulationPlayer = () => {
     const { type } = useParams(); // 'doctor', 'teacher', or 'diagnostician'
     const navigate = useNavigate();
-    const { currentUser } = useAuth();
     const [loading, setLoading] = useState(true);
     const [iframeUrl, setIframeUrl] = useState("");
     const iframeRef = useRef(null);
@@ -31,33 +39,31 @@ const SimulationPlayer = () => {
 
     useEffect(() => {
         const initGame = async () => {
-            if (currentUser) {
-                try {
-                    const token = await currentUser.getIdToken();
+            // Using a mock user for this example; replace with your real Auth hook if needed
+            const user = { uid: 'player_1', getIdToken: async () => 'test_token' };
+            if (user) {
+                const token = await user.getIdToken();
 
-                    // --- FIX: IMPROVED MAPPING ---
-                    // We check for 'doctor' OR 'diagnostician' to point to the doctor-sim folder
-                    const isDoctor = type?.toLowerCase() === 'doctor' || type?.toLowerCase() === 'diagnostician';
-                    const gameFolder = isDoctor ? 'doctor-sim' : 'teacher-sim';
+                // --- FIX: IMPROVED MAPPING ---
+                // We check for 'doctor' OR 'diagnostician' to point to the doctor-sim folder
+                const isDoctor = type?.toLowerCase() === 'doctor' || type?.toLowerCase() === 'diagnostician';
+                const gameFolder = isDoctor ? 'doctor-sim' : 'teacher-sim';
 
-                    const sessionId = `sess_${type}_${Date.now()}`;
+                const sessionId = `sess_${type}_${Date.now()}`;
 
-                    // Construct the URL to your Unity index.html
-                    // Double check that your folder in /public/games/ is named exactly 'doctor-sim'
-                    const url = `/games/${gameFolder}/index.html?token=${token}&session=${sessionId}`;
+                // Construct the URL to your Unity index.html
+                // Double check that your folder in /public/games/ is named exactly 'doctor-sim'
+                const url = `/games/${gameFolder}/index.html?token=${token}&session=${sessionId}`;
 
-                    console.log(`Loading Simulation: ${type} from folder: ${gameFolder}`);
-                    setIframeUrl(url);
+                console.log(`Loading Simulation: ${type} from folder: ${gameFolder}`);
+                setIframeUrl(url);
 
-                    // Give Unity 5 seconds to show its own splash screen before hiding our loader
-                    setTimeout(() => setLoading(false), 5000);
-                } catch (error) {
-                    console.error("Error getting user token:", error);
-                }
+                // Give Unity 5 seconds to show its own splash screen before hiding our loader
+                setTimeout(() => setLoading(false), 5000);
             }
         };
         initGame();
-    }, [type, currentUser]);
+    }, [type]);
 
     const handleSmartExit = () => {
         if (iframeRef.current && iframeRef.current.contentWindow) {
