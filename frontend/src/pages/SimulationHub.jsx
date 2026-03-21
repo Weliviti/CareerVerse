@@ -109,13 +109,13 @@ const SimulationHub = () => {
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Completed Card */}
-                        <div className="home-dark-card group">
-                            <div className="p-6 flex items-center justify-between">
+                        <div className="home-dark-stat-card group">
+                            <div className="stat-card-inner p-6 flex items-center justify-between">
                                 <div>
                                     <p className="text-slate-400 text-sm font-medium mb-1">Completed</p>
                                     <h3 className="text-3xl font-bold text-white">3</h3>
                                 </div>
-                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center transition-transform duration-300">
                                     <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                                     </svg>
@@ -124,13 +124,13 @@ const SimulationHub = () => {
                         </div>
 
                         {/* Avg Score Card */}
-                        <div className="home-dark-card group">
-                            <div className="p-6 flex items-center justify-between">
+                        <div className="home-dark-stat-card group">
+                            <div className="stat-card-inner p-6 flex items-center justify-between">
                                 <div>
                                     <p className="text-slate-400 text-sm font-medium mb-1">Avg Score</p>
                                     <h3 className="text-3xl font-bold text-white">86%</h3>
                                 </div>
-                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center transition-transform duration-300">
                                     <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -140,13 +140,13 @@ const SimulationHub = () => {
                         </div>
 
                         {/* Total Time Card */}
-                        <div className="home-dark-card group">
-                            <div className="p-6 flex items-center justify-between">
+                        <div className="home-dark-stat-card group">
+                            <div className="stat-card-inner p-6 flex items-center justify-between">
                                 <div>
                                     <p className="text-slate-400 text-sm font-medium mb-1">Total Time</p>
                                     <h3 className="text-3xl font-bold text-white">57m</h3>
                                 </div>
-                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center transition-transform duration-300">
                                     <svg className="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
