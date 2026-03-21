@@ -101,12 +101,14 @@ const ProfileEditForm = ({ user, onSave, onCancel }) => {
             console.log('Response status:', response.status);
             console.log('Response data:', response.data);
 
-            // Check response structure
-            if (response.data && response.data.success && response.data.data) {
+            // Check response — accept success even if data payload is sparse
+            if (response.data?.success) {
                 console.log('✅ Profile updated successfully');
-                onSave(response.data.data);
+                // Use response data if available, fall back to what we sent
+                const updatedUser = response.data.data || { ...updateData };
+                onSave(updatedUser);
             } else {
-                throw new Error('Invalid response structure from backend');
+                throw new Error(response.data?.message || 'Failed to update profile');
             }
         } catch (err) {
             console.error('❌ PROFILE UPDATE ERROR');
