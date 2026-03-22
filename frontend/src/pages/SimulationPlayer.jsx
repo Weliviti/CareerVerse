@@ -26,6 +26,12 @@ const SimulationPlayer = () => {
         return `session_${randomHex}`;
     });
 
+    const getGamePath = (simType) => {
+        if (simType === 'diagnostician') return '/games/doctor-sim/index.html';
+        // Add other simulation mappings here in the future
+        return '/games/teacher-sim/index.html';
+    };
+
     const handleFinishAndEvaluate = async () => {
         const confirmEnd = window.confirm(
             "End the session? The AI will now grade your performance based on your conversation."
@@ -120,8 +126,8 @@ const SimulationPlayer = () => {
                 ) : (
                     <>
                         <iframe
-                            title="Unity Simulation"
-                            src={`/games/teacher-sim/index.html?session=${sessionId}&token=${firebaseToken}`}
+                            title={`${type} Simulation`}
+                            src={`${getGamePath(type)}?session=${sessionId}&token=${firebaseToken}`}
                             className="w-full h-full border-none"
                             allow="autoplay; fullscreen"
                         />
