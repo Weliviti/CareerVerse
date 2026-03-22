@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import BackToTop from '../components/ui/BackToTop';
 import Button from '../components/ui/Button';
@@ -6,6 +7,7 @@ import Footer from '../components/Footer';
 
 function Home() {
     const navigate = useNavigate();
+    const { currentUser } = useAuth();
 
     return (
         <div className="home-dark min-h-screen">
@@ -62,7 +64,7 @@ function Home() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="hero-btn-primary">
+                            <button onClick={() => { window.scrollTo(0, 0); navigate(currentUser ? '/simulation-hub' : '/login'); }} className="hero-btn-primary">
                                 Launch Experience
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -638,7 +640,7 @@ function Home() {
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <button
-                            onClick={() => { window.scrollTo(0, 0); navigate('/signup'); }}
+                            onClick={() => { window.scrollTo(0, 0); navigate(currentUser ? '/simulation-hub' : '/signup'); }}
                             className="hero-btn-primary"
                             style={{ background: 'linear-gradient(135deg, #00e5a0, #00c98d)', boxShadow: '0 4px 20px rgba(0,229,160,0.3)' }}
                         >
