@@ -253,6 +253,45 @@ const SimulationHub = () => {
                                 </button>
                             </div>
                         </div>
+                        
+                        {/* The Judge */}
+                        <div className="home-dark-card group flex flex-col">
+                            <div className="p-8 flex-1 flex flex-col">
+                                <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-6">
+                                    <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">The Judge</h3>
+                                <p className="text-emerald-400 font-medium text-sm mb-3">Solve a serious mystry case</p>
+                                <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-1">
+                                    Interview a suspect, analyze evidence, and make a ruling. Balance justice with mercy and legal expertise.
+                                </p>
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Logical Reasoning</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Empathy</span>
+                                    <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Communication</span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs text-slate-500 mb-6">
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        20 minutes
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold">Hard</span>
+                                </div>
+                                <button
+                                    onClick={() => handleLaunch('judge')}
+                                    disabled={launching}
+                                    className={`home-dark-sim-btn ${launching ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                >
+                                    <svg className="w-5 h-5 fill-current mr-2" viewBox="0 0 20 20">
+                                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                    </svg>
+                                    {launching ? 'Launching...' : 'Launch Simulation'}
+                                </button>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </section>
@@ -266,7 +305,7 @@ const SimulationHub = () => {
 
                 <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                        Complete Both <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-teal-100 italic">Simulations</span>
+                        Complete All <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-teal-100 italic">Simulations</span>
                     </h2>
                     <p className="text-lg text-emerald-100/70 mb-10 max-w-2xl mx-auto">
                         Get comprehensive career recommendations by completing all simulation paths
