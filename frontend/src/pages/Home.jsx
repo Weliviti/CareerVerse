@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import BackToTop from '../components/ui/BackToTop';
 import Button from '../components/ui/Button';
@@ -6,6 +7,12 @@ import Footer from '../components/Footer';
 
 function Home() {
     const navigate = useNavigate();
+    const { currentUser } = useAuth();
+
+    const handleLaunch = () => {
+        window.scrollTo(0, 0);
+        navigate(currentUser ? '/simulation-hub' : '/login');
+    };
 
     return (
         <div className="home-dark min-h-screen">
@@ -62,7 +69,7 @@ function Home() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="hero-btn-primary">
+                            <button onClick={handleLaunch} className="hero-btn-primary">
                                 Launch Experience
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -368,7 +375,7 @@ function Home() {
                                     </span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold">Medium</span>
                                 </div>
-                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                <button onClick={handleLaunch} className="home-dark-sim-btn">
                                     Try Simulation
                                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                                 </button>
@@ -399,7 +406,7 @@ function Home() {
                                     </span>
                                     <span className="px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-400 font-semibold">Hard</span>
                                 </div>
-                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                <button onClick={handleLaunch} className="home-dark-sim-btn">
                                     Try Simulation
                                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                                 </button>
@@ -430,7 +437,7 @@ function Home() {
                                     </span>
                                     <span className="px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold">Expert</span>
                                 </div>
-                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                <button onClick={handleLaunch} className="home-dark-sim-btn">
                                     Try Simulation
                                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                                 </button>
