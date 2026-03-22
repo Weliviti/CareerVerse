@@ -22,6 +22,7 @@ import './App.css';
 import { Toaster } from 'react-hot-toast';
 import TeacherSimulation from './pages/TeacherSimulation';
 import SimulationResults from './pages/SimulationResults';
+import VerifyOTP from './pages/VerifyOTP';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
 
           <Route
             path="/simulation-hub"

@@ -54,6 +54,15 @@ const Profile = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [deletingAccount, setDeletingAccount] = useState(false);
 
+    // Two-Step Login (2FA) state
+    const [twoFAReauthModal, setTwoFAReauthModal] = useState(false);
+    const [twoFAOtpModal, setTwoFAOtpModal] = useState(false);
+    const [twoFAPassword, setTwoFAPassword] = useState('');
+    const [twoFAOtp, setTwoFAOtp] = useState('');
+    const [twoFAError, setTwoFAError] = useState('');
+    const [twoFALoading, setTwoFALoading] = useState(false);
+    const [twoFAPendingAction, setTwoFAPendingAction] = useState(null); // 'enable' or 'disable'
+
     // Load user data from Firestore
     useEffect(() => {
         const loadUserData = async () => {
@@ -652,12 +661,24 @@ const Profile = () => {
                                         </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-white">Enable Two-Step Login</p>
+                                        <p className="text-sm font-medium text-white">{userData?.two_fa_enabled ? 'Two-Step Login Enabled' : 'Enable Two-Step Login'}</p>
                                         <p className="text-xs text-slate-500">Make your account more secure</p>
                                     </div>
                                 </div>
                                 <label className="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" className="sr-only peer" />
+                                    <input
+                                        type="checkbox"
+                                        className="sr-only peer"
+                                        checked={userData?.two_fa_enabled || false}
+                                        onChange={() => {
+                                            const action = userData?.two_fa_enabled ? 'disable' : 'enable';
+                                            setTwoFAPendingAction(action);
+                                            setTwoFAPassword('');
+                                            setTwoFAError('');
+                                            setTwoFAReauthModal(true);
+                                        }}
+                                        disabled={twoFALoading}
+                                    />
                                     <div className="w-11 h-6 bg-white/[0.04] border border-white/10 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
                                 </label>
                             </div>
@@ -844,6 +865,187 @@ const Profile = () => {
                                     ) : (
                                         'Change Password'
                                     )}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* 2FA Re-authentication Modal */}
+            {twoFAReauthModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => !twoFALoading && setTwoFAReauthModal(false)}>
+                    <div className="home-dark-card border border-white/10 max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+                        <div className="mx-auto w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-lg font-bold text-white text-center">
+                            {twoFAPendingAction === 'enable' ? 'Enable Two-Step Login' : 'Disable Two-Step Login'}
+                        </h3>
+                        <p className="text-slate-400 text-center text-sm mt-1 mb-6">
+                            Enter your current password to confirm
+                        </p>
+
+                        {twoFAError && (
+                            <div className="mb-4 p-3 bg-red-500/10 text-red-400 text-sm rounded-lg border border-red-500/20">
+                                {twoFAError}
+                            </div>
+                        )}
+
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            setTwoFAError('');
+                            if (!twoFAPassword) { setTwoFAError('Password is required'); return; }
+                            setTwoFALoading(true);
+                            try {
+                                const credential = EmailAuthProvider.credential(currentUser.email, twoFAPassword);
+                                await reauthenticateWithCredential(currentUser, credential);
+
+                                if (twoFAPendingAction === 'enable') {
+                                    // Send setup OTP
+                                    await api.post('/api/auth/2fa/send-otp?purpose=setup');
+                                    setTwoFAReauthModal(false);
+                                    setTwoFAOtp('');
+                                    setTwoFAError('');
+                                    setTwoFAOtpModal(true);
+                                    toast.success('Verification code sent to your email');
+                                } else {
+                                    // Disable 2FA directly
+                                    await api.post('/api/auth/2fa/disable');
+                                    setUserData(prev => ({ ...prev, two_fa_enabled: false, two_fa_enabled_at: null }));
+                                    setTwoFAReauthModal(false);
+                                    toast.success('Two-Step Login has been disabled');
+                                }
+                            } catch (error) {
+                                if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                                    setTwoFAError('Incorrect password');
+                                } else {
+                                    setTwoFAError(error.response?.data?.message || 'Something went wrong. Please try again.');
+                                }
+                            } finally {
+                                setTwoFALoading(false);
+                            }
+                        }} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">Current Password</label>
+                                <input
+                                    type="password"
+                                    value={twoFAPassword}
+                                    onChange={(e) => { setTwoFAPassword(e.target.value); setTwoFAError(''); }}
+                                    placeholder="Enter your password"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors"
+                                    required
+                                    autoFocus
+                                />
+                            </div>
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setTwoFAReauthModal(false)}
+                                    disabled={twoFALoading}
+                                    className="flex-1 px-4 py-2.5 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-colors font-medium text-sm disabled:opacity-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={twoFALoading}
+                                    className="flex-1 px-4 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 rounded-xl transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                                >
+                                    {twoFALoading ? (
+                                        <>
+                                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                            Verifying...
+                                        </>
+                                    ) : 'Continue'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* 2FA OTP Verification Modal (for setup) */}
+            {twoFAOtpModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={() => !twoFALoading && setTwoFAOtpModal(false)}>
+                    <div className="home-dark-card border border-white/10 max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+                        <div className="mx-auto w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-lg font-bold text-white text-center">Verify Your Email</h3>
+                        <p className="text-slate-400 text-center text-sm mt-1 mb-6">
+                            Enter the 6-digit code sent to your email to enable Two-Step Login
+                        </p>
+
+                        {twoFAError && (
+                            <div className="mb-4 p-3 bg-red-500/10 text-red-400 text-sm rounded-lg border border-red-500/20">
+                                {twoFAError}
+                            </div>
+                        )}
+
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            setTwoFAError('');
+                            const code = twoFAOtp.trim();
+                            if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
+                                setTwoFAError('Please enter a valid 6-digit code');
+                                return;
+                            }
+                            setTwoFALoading(true);
+                            try {
+                                const verifyRes = await api.post('/api/auth/2fa/verify-otp', { code, purpose: 'setup' });
+                                if (verifyRes.data?.data?.verified) {
+                                    await api.post('/api/auth/2fa/enable');
+                                    setUserData(prev => ({ ...prev, two_fa_enabled: true }));
+                                    setTwoFAOtpModal(false);
+                                    toast.success('Two-Step Login has been enabled!');
+                                } else {
+                                    setTwoFAError(verifyRes.data?.message || 'Invalid code');
+                                }
+                            } catch (error) {
+                                setTwoFAError(error.response?.data?.message || 'Verification failed. Please try again.');
+                            } finally {
+                                setTwoFALoading(false);
+                            }
+                        }} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">Verification Code</label>
+                                <input
+                                    type="text"
+                                    inputMode="numeric"
+                                    maxLength={6}
+                                    value={twoFAOtp}
+                                    onChange={(e) => { setTwoFAOtp(e.target.value.replace(/\D/g, '')); setTwoFAError(''); }}
+                                    placeholder="Enter 6-digit code"
+                                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-white placeholder-slate-500 transition-colors text-center text-lg tracking-[0.3em] font-mono"
+                                    required
+                                    autoFocus
+                                />
+                            </div>
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setTwoFAOtpModal(false)}
+                                    disabled={twoFALoading}
+                                    className="flex-1 px-4 py-2.5 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-colors font-medium text-sm disabled:opacity-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={twoFALoading || twoFAOtp.length !== 6}
+                                    className="flex-1 px-4 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 rounded-xl transition-colors font-medium text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                                >
+                                    {twoFALoading ? (
+                                        <>
+                                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                            Verifying...
+                                        </>
+                                    ) : 'Enable 2FA'}
                                 </button>
                             </div>
                         </form>
