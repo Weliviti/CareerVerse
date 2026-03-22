@@ -49,6 +49,8 @@ frontend/dist-ssr
 
 firebase/firebase-adminsdk-key.json
 firebase/service-account.json
+backend/service-account.json
+__pycache__/
 *.json
 !package.json
 !public/manifest.json
