@@ -4,12 +4,16 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # ─── Gemini API Keys ───
-    # 3 separate keys for different AI purposes (cost tracking & isolation)
-    GEMINI_KEY_PERSONAS: str = ""  # AI agent conversations
-    GEMINI_KEY_SCORING: str = ""  # Scoring & evaluation
-    GEMINI_KEY_CAREERS: str = ""  # Career recommendations
+    # 4 rotating keys to handle rate limits / quotas (429 errors)
+    GEMINI_KEY_1: str = ""
+    GEMINI_KEY_2: str = ""
+    GEMINI_KEY_3: str = ""
+    GEMINI_KEY_4: str = ""
 
-    # Legacy single key — used as fallback if specific keys are not set
+    # Legacy fallback fields
+    GEMINI_KEY_PERSONAS: str = ""
+    GEMINI_KEY_SCORING: str = ""
+    GEMINI_KEY_CAREERS: str = ""
     GEMINI_API_KEY: str = ""
 
     # ─── Firebase ───
@@ -23,37 +27,31 @@ class Settings(BaseSettings):
     SMTP_EMAIL: str = ""
     SMTP_APP_PASSWORD: str = ""
 
-    def get_gemini_key(self, purpose: str = "personas") -> str:
+    def get_all_gemini_keys(self) -> list[str]:
         """
-        Get the appropriate Gemini API key based on purpose.
-
-        Args:
-            purpose: One of 'personas', 'scoring', or 'careers'
-
-        Returns:
-            The API key string
-
-        Raises:
-            ValueError: If no API key is available for the given purpose
+        Returns a list of all configured Gemini API keys,
+        filtering out any empty strings.
         """
-        key_map = {
-            "personas": self.GEMINI_KEY_PERSONAS,
-            "scoring": self.GEMINI_KEY_SCORING,
-            "careers": self.GEMINI_KEY_CAREERS,
-        }
+        keys = [
+            self.GEMINI_KEY_1,
+            self.GEMINI_KEY_2,
+            self.GEMINI_KEY_3,
+            self.GEMINI_KEY_4,
+            self.GEMINI_KEY_PERSONAS,
+            self.GEMINI_KEY_SCORING,
+            self.GEMINI_KEY_CAREERS,
+            self.GEMINI_API_KEY,
+        ]
+        # Return only unique, non-empty keys
+        valid_keys = []
+        for k in keys:
+            if k and k.strip() and k not in valid_keys:
+                valid_keys.append(k)
 
-        # Try specific key first, then fall back to legacy key
-        specific_key = key_map.get(purpose)
-        if specific_key:
-            return specific_key
+        if not valid_keys:
+            raise ValueError("No valid Gemini API keys found in environment variables.")
 
-        if self.GEMINI_API_KEY:
-            return self.GEMINI_API_KEY
-
-        raise ValueError(
-            f"No Gemini API key found for purpose '{purpose}'. "
-            f"Set GEMINI_KEY_{purpose.upper()} or GEMINI_API_KEY in .env"
-        )
+        return valid_keys
 
     class Config:
         env_file = ".env"
