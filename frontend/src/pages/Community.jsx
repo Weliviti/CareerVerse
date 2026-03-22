@@ -322,7 +322,7 @@ function Community() {
                                         </div>
                                         <div>
                                             <h3 className="text-lg font-bold text-white">Project Launch</h3>
-                                            <p className="text-sm text-emerald-400/80">February 2026</p>
+                                            <p className="text-sm text-emerald-400/80">March 2026</p>
                                         </div>
                                     </div>
                                     <p className="text-slate-400 leading-relaxed">
@@ -353,7 +353,7 @@ function Community() {
                                         </div>
                                         <div>
                                             <h3 className="text-lg font-bold text-white">Unity 3D Integration</h3>
-                                            <p className="text-sm text-violet-400/80">January 2026</p>
+                                            <p className="text-sm text-violet-400/80">February 2026</p>
                                         </div>
                                     </div>
                                     <p className="text-slate-400 leading-relaxed">
@@ -375,7 +375,7 @@ function Community() {
                                         </div>
                                         <div>
                                             <h3 className="text-lg font-bold text-white">AI Evaluation System</h3>
-                                            <p className="text-sm text-amber-400/80">December 2025</p>
+                                            <p className="text-sm text-amber-400/80">January 2026</p>
                                         </div>
                                     </div>
                                     <p className="text-slate-400 leading-relaxed">
@@ -405,11 +405,11 @@ function Community() {
                                         </div>
                                         <div>
                                             <h3 className="text-lg font-bold text-white">Beta Testing Phase</h3>
-                                            <p className="text-sm text-blue-400/80">November 2025</p>
+                                            <p className="text-sm text-blue-400/80">February 2026</p>
                                         </div>
                                     </div>
                                     <p className="text-slate-400 leading-relaxed">
-                                        Conducted extensive beta testing with 100+ students, gathering valuable feedback to refine the simulation experience and AI accuracy.
+                                        Conducted extensive beta testing with 20+ students, gathering valuable feedback to refine the simulation experience and AI accuracy.
                                     </p>
                                 </div>
                             </div>
