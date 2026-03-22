@@ -17,6 +17,7 @@ import SimulationLogs from './pages/admin/SimulationLogs';
 import Settings from './pages/admin/Settings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 import TeacherSimulation from './pages/TeacherSimulation';
@@ -27,6 +28,7 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       <Toaster />
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/community" element={<Community />} />
