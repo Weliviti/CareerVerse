@@ -28,7 +28,7 @@ const SimulationHub = () => {
                 }
             }
         };
-        
+
         fetchUserData();
     }, [currentUser]);
 
@@ -50,13 +50,8 @@ const SimulationHub = () => {
             if (response.data.success) {
                 toast.success('Simulation ready!', { id: toastId });
 
-                // Educator simulation opens in a new tab via SimulationPlayer (handles auth token)
-                if (simulationType === 'educator') {
-                    window.open('/simulation/play/educator', '_blank');
-                    setLaunching(false);
-                } else {
-                    navigate(`/simulation/play/${simulationType}`);
-                }
+                // Navigate in same tab so localStorage and auth context are shared
+                navigate(`/simulation/play/${simulationType}`);
             } else {
                 throw new Error(response.data.message || 'Failed to launch simulation');
             }
@@ -272,7 +267,7 @@ const SimulationHub = () => {
                                 </button>
                             </div>
                         </div>
-                        
+
                         {/* The Judge */}
                         <div className="home-dark-card group flex flex-col">
                             <div className="p-8 flex-1 flex flex-col">
@@ -310,7 +305,7 @@ const SimulationHub = () => {
                                 </button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </section>

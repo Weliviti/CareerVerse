@@ -1,139 +1,138 @@
-import React, { useState, useEffect, useRef, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
-/**
- * NOTE: This version is self-contained. 
- * If you have a separate AuthContext file, you can import it 
- * and remove this internal provider.
- */
-const AuthContext = createContext({
-    user: { uid: 'test-user-id', getIdToken: async () => 'test-firebase-token' },
-    loading: false
-});
+import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 
 const SimulationPlayer = () => {
-    const { type } = useParams(); // 'doctor', 'teacher', or 'diagnostician'
+    const { type } = useParams();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true);
-    const [iframeUrl, setIframeUrl] = useState("");
-    const iframeRef = useRef(null);
+    const { currentUser } = useAuth();
+    const [isEvaluating, setIsEvaluating] = useState(false);
+    const [evalStatus, setEvalStatus] = useState("");
+    const [firebaseToken, setFirebaseToken] = useState("");
 
+    // Fetch a real Firebase token on mount so we can pass it to Unity
     useEffect(() => {
-        // --- THE BRIDGE: Listening for Unity's evaluation result ---
-        const handleMessage = (event) => {
-            if (event.data.type === 'SIM_RESULTS') {
-                console.log("React: Results received from Unity!");
-                try {
-                    const rawJson = event.data.isBase64 ? atob(event.data.data) : event.data.data;
-                    localStorage.setItem("latestSimulationScore", rawJson);
-                    navigate("/simulation/results");
-                } catch (err) {
-                    console.error("Error decoding Unity results:", err);
-                }
-            }
-        };
+        if (currentUser) {
+            currentUser.getIdToken().then(token => setFirebaseToken(token));
+        }
+    }, [currentUser]);
 
-        window.addEventListener("message", handleMessage);
-        return () => window.removeEventListener("message", handleMessage);
-    }, [navigate]);
+    // --- SESSION ID SYNC ---
+    // We generate a unique ID once and keep it stable for the whole simulation.
+    // This ensures the ID in your Firestore screenshot matches the one we evaluate.
+    const [sessionId] = useState(() => {
+        const randomHex = Math.random().toString(16).substring(2, 10);
+        return `session_${randomHex}`;
+    });
 
-    useEffect(() => {
-        const initGame = async () => {
-            // Using a mock user for this example; replace with your real Auth hook if needed
-            const user = { uid: 'player_1', getIdToken: async () => 'test_token' };
-            if (user) {
-                const token = await user.getIdToken();
+    const handleFinishAndEvaluate = async () => {
+        const confirmEnd = window.confirm(
+            "End the session? The AI will now grade your performance based on your conversation."
+        );
 
-                // --- FIX: IMPROVED MAPPING ---
-                // We check for 'doctor' OR 'diagnostician' to point to the doctor-sim folder
-                const isDoctor = type?.toLowerCase() === 'doctor' || type?.toLowerCase() === 'diagnostician';
-                const gameFolder = isDoctor ? 'doctor-sim' : 'teacher-sim';
+        if (confirmEnd) {
+            setIsEvaluating(true);
+            setEvalStatus("Finding your session...");
 
-                const sessionId = `sess_${type}_${Date.now()}`;
-
-                // Construct the URL to your Unity index.html
-                // Double check that your folder in /public/games/ is named exactly 'doctor-sim'
-                const url = `/games/${gameFolder}/index.html?token=${token}&session=${sessionId}`;
-
-                console.log(`Loading Simulation: ${type} from folder: ${gameFolder}`);
-                setIframeUrl(url);
-
-                // Give Unity 5 seconds to show its own splash screen before hiding our loader
-                setTimeout(() => setLoading(false), 5000);
-            }
-        };
-        initGame();
-    }, [type]);
-
-    const handleSmartExit = () => {
-        if (iframeRef.current && iframeRef.current.contentWindow) {
             try {
-                const iframeWin = iframeRef.current.contentWindow;
-                // 'unityInstance' must be exposed in your Unity index.html
-                if (iframeWin.unityInstance) {
-                    iframeWin.unityInstance.SendMessage('SessionManager', 'ForceEndFromReact');
-                    setLoading(true);
-                } else {
-                    if (window.confirm("Simulation still loading. Exit to Dashboard?")) {
-                        navigate('/dashboard');
+                // Step 1: Ask the backend for the user's real active session ID.
+                // The backend uses Firebase Admin SDK (bypasses Firestore security rules).
+                let actualSessionId = sessionId; // fallback
+
+                try {
+                    const sessionRes = await api.get("/api/sessions/current");
+                    if (sessionRes.data?.success && sessionRes.data?.data?.session_id) {
+                        actualSessionId = sessionRes.data.data.session_id;
+                        console.log("Using real session ID from backend:", actualSessionId);
                     }
+                } catch (sessionErr) {
+                    console.warn("Could not fetch current session, using fallback:", sessionErr.message);
                 }
-            } catch {
-                navigate('/dashboard');
+
+                setEvalStatus("Analyzing performance with AI...");
+
+                // Step 2: Evaluate with the real session ID
+                const response = await api.post("/api/evaluate", { session_id: actualSessionId });
+                const result = response.data;
+
+                if (result.success) {
+                    setEvalStatus("Success! Redirecting to your results...");
+                    localStorage.setItem("latestSimulationScore", JSON.stringify(result));
+                    setTimeout(() => { navigate("/simulation/results"); }, 1500);
+                } else {
+                    throw new Error(result.message || "Evaluation service returned an error.");
+                }
+            } catch (error) {
+                console.error("Evaluation Error:", error);
+                setEvalStatus("");
+                alert(`Error: ${error.message}`);
+            } finally {
+                setIsEvaluating(false);
             }
         }
     };
 
     return (
-        <div className="fixed inset-0 bg-slate-950 flex flex-col z-50 font-sans text-white">
-            {/* Header Navigation */}
-            <div className="bg-slate-900 p-4 flex justify-between items-center h-16 border-b border-slate-800 shadow-2xl">
+        <div className="fixed inset-0 bg-slate-950 flex flex-col z-50 font-sans">
+            {/* Header */}
+            <div className="bg-slate-900 p-4 flex justify-between items-center h-16 border-b border-slate-800 shadow-xl">
                 <div className="flex items-center gap-4">
-                    <button onClick={() => navigate('/simulation-hub')} className="p-2 hover:bg-slate-800 rounded-full transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 text-teal-400">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
-                    </button>
-                    <div>
-                        <h1 className="font-black text-xs uppercase tracking-[0.2em] text-teal-400 leading-none">
-                            CareerVerse Simulation
-                        </h1>
-                        <p className="text-[9px] text-slate-500 font-bold uppercase mt-1">
-                            Environment: {type?.toUpperCase()} ACTIVE
-                        </p>
-                    </div>
+                    <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center font-black text-slate-900 text-xs">CV</div>
+                    <h1 className="text-teal-400 font-black tracking-tighter text-lg uppercase">CareerVerse Simulation</h1>
                 </div>
 
-                <button
-                    onClick={handleSmartExit}
-                    className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-red-900/40 border border-red-500/50"
-                >
-                    Finish & Evaluate
-                </button>
+                <div className="flex items-center gap-4">
+                    {evalStatus && (
+                        <span className="text-[10px] text-teal-500 font-bold uppercase animate-pulse">
+                            {evalStatus}
+                        </span>
+                    )}
+
+                    <button
+                        onClick={handleFinishAndEvaluate}
+                        disabled={isEvaluating}
+                        className={`
+                            px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all
+                            ${isEvaluating
+                                ? "bg-slate-700 text-slate-400 cursor-not-allowed"
+                                : "bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-900/20 active:scale-95"}
+                        `}
+                    >
+                        {isEvaluating ? "Analyzing..." : "Finish & Evaluate"}
+                    </button>
+                </div>
             </div>
 
-            {/* Main Game Viewport */}
-            <div className="flex-1 relative bg-black overflow-hidden">
-                {loading && (
-                    <div className="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center z-50">
-                        <div className="relative">
-                            <div className="w-16 h-16 border-2 border-teal-500/20 rounded-full"></div>
-                            <div className="absolute top-0 w-16 h-16 border-t-2 border-teal-500 rounded-full animate-spin"></div>
+            {/* Unity Simulation Container */}
+            <div className="flex-1 bg-black relative">
+                {!firebaseToken ? (
+                    /* Wait for the real token before loading Unity */
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="relative mb-6">
+                            <div className="w-14 h-14 border-2 border-teal-500/20 rounded-full"></div>
+                            <div className="absolute top-0 w-14 h-14 border-t-2 border-teal-500 rounded-full animate-spin"></div>
                         </div>
-                        <p className="mt-8 text-teal-500 font-black text-[10px] tracking-[0.4em] uppercase animate-pulse">
-                            Syncing Neural Interface...
+                        <p className="text-teal-400 font-black text-[10px] tracking-[0.4em] uppercase animate-pulse">
+                            Authenticating...
                         </p>
                     </div>
-                )}
-
-                {iframeUrl && (
-                    <iframe
-                        ref={iframeRef}
-                        src={iframeUrl}
-                        className="w-full h-full border-none bg-black"
-                        title="CareerVerse Simulation Viewport"
-                        allow="autoplay; fullscreen; microphone"
-                    />
+                ) : (
+                    <>
+                        <iframe
+                            title="Unity Simulation"
+                            src={`/games/teacher-sim/index.html?session=${sessionId}&token=${firebaseToken}`}
+                            className="w-full h-full border-none"
+                            allow="autoplay; fullscreen"
+                        />
+                        {!isEvaluating && (
+                            <div className="absolute bottom-4 left-4 pointer-events-none">
+                                <div className="bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded text-[9px] text-slate-400 font-mono border border-white/5">
+                                    ID: {sessionId}
+                                </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
