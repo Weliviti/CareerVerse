@@ -96,7 +96,7 @@ def update_user(uid: str, updates: dict):
 
     # Convert Firestore timestamp fields to ISO strings for JSON serialization
     for key, value in updated_data.items():
-        if hasattr(value, 'isoformat'):
+        if hasattr(value, "isoformat"):
             updated_data[key] = value.isoformat()
 
     print(f"Updated user data: {updated_data}")

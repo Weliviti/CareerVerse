@@ -12,7 +12,13 @@ from firebase_admin import auth
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
-from services.otp_service import generate_otp, hash_otp, store_otp, verify_otp, invalidate_otp
+from services.otp_service import (
+    generate_otp,
+    hash_otp,
+    store_otp,
+    verify_otp,
+    invalidate_otp,
+)
 from services.email_service import send_otp_email
 from services.user_service import get_user_by_uid, update_user
 from utils.responses import success_response, error_response
@@ -36,7 +42,11 @@ def _extract_uid_from_token(authorization: str) -> dict:
         dict with 'uid' on success, or 'error' response on failure.
     """
     if not authorization or not authorization.startswith("Bearer "):
-        return {"error": error_response(message="Missing or invalid Authorization header", code=401)}
+        return {
+            "error": error_response(
+                message="Missing or invalid Authorization header", code=401
+            )
+        }
 
     token = authorization.split("Bearer ")[1]
 
@@ -48,7 +58,11 @@ def _extract_uid_from_token(authorization: str) -> dict:
     except auth.ExpiredIdTokenError:
         return {"error": error_response(message="Token expired", code=401)}
     except Exception as e:
-        return {"error": error_response(message="Authentication failed", code=401, error_details=str(e))}
+        return {
+            "error": error_response(
+                message="Authentication failed", code=401, error_details=str(e)
+            )
+        }
 
 
 @router.post("/send-otp")
@@ -73,7 +87,9 @@ async def send_otp(request: Request, authorization: str = Header(None)):
 
         user_email = user_data.get("email")
         if not user_email:
-            return error_response(message="No email address found for this account", code=400)
+            return error_response(
+                message="No email address found for this account", code=400
+            )
 
         # Generate, hash, and store OTP
         raw_otp = generate_otp()
@@ -180,10 +196,13 @@ async def enable_2fa(authorization: str = Header(None)):
     try:
         from datetime import datetime, timezone
 
-        update_user(uid, {
-            "two_fa_enabled": True,
-            "two_fa_enabled_at": datetime.now(timezone.utc).isoformat(),
-        })
+        update_user(
+            uid,
+            {
+                "two_fa_enabled": True,
+                "two_fa_enabled_at": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
         # Clean up any leftover OTP
         invalidate_otp(uid)
@@ -214,10 +233,13 @@ async def disable_2fa(authorization: str = Header(None)):
     uid = result["uid"]
 
     try:
-        update_user(uid, {
-            "two_fa_enabled": False,
-            "two_fa_enabled_at": None,
-        })
+        update_user(
+            uid,
+            {
+                "two_fa_enabled": False,
+                "two_fa_enabled_at": None,
+            },
+        )
 
         # Clean up any leftover OTP
         invalidate_otp(uid)

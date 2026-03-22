@@ -10,7 +10,6 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from services.firebase_admin_service import get_db_client
 
-
 # ─── Constants ───
 OTP_LENGTH = 6
 OTP_EXPIRY_MINUTES = 10
@@ -64,7 +63,9 @@ def store_otp(uid: str, otp_hash: str, purpose: str = "login") -> None:
 
     # Use uid as doc ID so each user has only one active OTP
     db.collection("otp_codes").document(uid).set(otp_data)
-    print(f"✅ OTP stored for user {uid} (purpose: {purpose}, expires: {expires_at.isoformat()})")
+    print(
+        f"✅ OTP stored for user {uid} (purpose: {purpose}, expires: {expires_at.isoformat()})"
+    )
 
 
 def verify_otp(uid: str, submitted_code: str, expected_purpose: str = "login") -> dict:
@@ -88,31 +89,46 @@ def verify_otp(uid: str, submitted_code: str, expected_purpose: str = "login") -
 
     # Check if OTP exists
     if not otp_doc.exists:
-        return {"verified": False, "error": "No verification code found. Please request a new code."}
+        return {
+            "verified": False,
+            "error": "No verification code found. Please request a new code.",
+        }
 
     otp_data = otp_doc.to_dict()
 
     # Check if already used
     if otp_data.get("used", False):
-        return {"verified": False, "error": "This code has already been used. Please request a new code."}
+        return {
+            "verified": False,
+            "error": "This code has already been used. Please request a new code.",
+        }
 
     # Check purpose
     if otp_data.get("purpose") != expected_purpose:
-        return {"verified": False, "error": "Invalid verification code for this action."}
+        return {
+            "verified": False,
+            "error": "Invalid verification code for this action.",
+        }
 
     # Check expiry
     expires_at = datetime.fromisoformat(otp_data["expires_at"])
     if datetime.now(timezone.utc) > expires_at:
         # Clean up expired OTP
         otp_ref.delete()
-        return {"verified": False, "error": "This code has expired. Please request a new code."}
+        return {
+            "verified": False,
+            "error": "This code has expired. Please request a new code.",
+        }
 
     # Check max attempts
     attempts = otp_data.get("attempts", 0)
     if attempts >= MAX_VERIFY_ATTEMPTS:
         # Invalidate the OTP
         otp_ref.delete()
-        return {"verified": False, "error": "Too many failed attempts. Please request a new code."}
+        return {
+            "verified": False,
+            "error": "Too many failed attempts. Please request a new code.",
+        }
 
     # Increment attempt count
     otp_ref.update({"attempts": attempts + 1})
@@ -121,7 +137,10 @@ def verify_otp(uid: str, submitted_code: str, expected_purpose: str = "login") -
     submitted_hash = hash_otp(submitted_code)
     if submitted_hash != otp_data["otp_hash"]:
         remaining = MAX_VERIFY_ATTEMPTS - (attempts + 1)
-        return {"verified": False, "error": f"Invalid code. {remaining} attempt(s) remaining."}
+        return {
+            "verified": False,
+            "error": f"Invalid code. {remaining} attempt(s) remaining.",
+        }
 
     # Success — mark as used
     otp_ref.update({"used": True})
