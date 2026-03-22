@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { submitFeedback } from '../services/feedbackService';
 import toast from 'react-hot-toast';
 
 /**
@@ -35,15 +34,17 @@ const Footer = () => {
 
         setIsSubmitting(true);
         try {
-            await submitFeedback({
-                name: feedbackForm.name.trim(),
-                message: feedbackForm.message.trim()
-            });
-            toast.success('Thank you for your feedback!');
+            const bodyText = `Name: ${feedbackForm.name.trim()}\n\nFeedback:\n${feedbackForm.message.trim()}`;
+            const encodedBody = encodeURIComponent(bodyText);
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=careerverselk@gmail.com&su=CareerVerse Feedback&body=${encodedBody}`;
+            
+            window.open(gmailUrl, '_blank');
+            
+            toast.success('Opening Gmail to send your feedback!');
             setFeedbackForm({ name: '', message: '' });
         } catch (error) {
             console.error('Feedback submission error:', error);
-            toast.error('Failed to send feedback. Please try again.');
+            toast.error('Failed to open email client. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -121,10 +122,10 @@ const Footer = () => {
                     <div className="md:col-span-2 md:col-start-6">
                         <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">Quick Links</h4>
                         <ul className="space-y-3">
-                            <li><Link to="/" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Home</Link></li>
-                            <li><Link to="/community" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Community</Link></li>
-                            <li><Link to="/privacy" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Privacy</Link></li>
-                            <li><Link to="/terms" className="footer-link" onClick={() => window.scrollTo(0, 0)}>Terms</Link></li>
+                            <li><Link to="/" className="footer-link">Home</Link></li>
+                            <li><Link to="/community" className="footer-link">Community</Link></li>
+                            <li><Link to="/privacy" className="footer-link">Privacy</Link></li>
+                            <li><Link to="/terms" className="footer-link">Terms</Link></li>
                         </ul>
                     </div>
 
@@ -185,7 +186,7 @@ const Footer = () => {
                                 </svg>
                             </a>
                             {/* Email */}
-                            <a href="mailto:contact@careerverse.com" className="footer-social-icon" aria-label="Email">
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=careerverselk@gmail.com" className="footer-social-icon" aria-label="Email">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
