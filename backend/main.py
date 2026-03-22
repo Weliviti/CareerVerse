@@ -6,6 +6,7 @@ from slowapi.errors import RateLimitExceeded
 
 from utils.responses import success_response, error_response, setup_exception_handlers
 from routes.auth import router as auth_router
+from routes.two_fa import router as two_fa_router
 from routes.evaluator import router as evaluator_router
 from routes.persona import router as persona_router
 from routes.evaluation import router as evaluation_router
@@ -68,6 +69,7 @@ async def unity_session_end(request: dict, user: dict = Depends(verify_token)):
 
 # --- REGISTER ROUTERS ---
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(two_fa_router, prefix="/api/auth/2fa", tags=["Two-Factor Auth"])
 app.include_router(persona_router, prefix="/api/persona", tags=["Persona Chat"])
 app.include_router(sessions_router, prefix="/api/sessions", tags=["Sessions"])
 app.include_router(scores_router, prefix="/api/scores", tags=["Scores"])

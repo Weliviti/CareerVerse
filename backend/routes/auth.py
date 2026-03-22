@@ -86,13 +86,14 @@ async def login(request: Request, login_request: LoginRequest):
                 error_details="No user found with this UID in database",
             )
 
-        # Step 5: Return user data
+        # Step 5: Return user data (includes 2FA status)
         return success_response(
             data={
                 "uid": user_data.get("uid"),
                 "email": user_data.get("email"),
                 "name": user_data.get("name"),
                 "role": user_data.get("role"),
+                "two_fa_enabled": user_data.get("two_fa_enabled", False),
             },
             message="Login successful",
         )

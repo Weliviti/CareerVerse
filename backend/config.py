@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     PORT: int = 5000
     ENVIRONMENT: str = "development"
 
+    # ─── SMTP (for 2FA email OTP) ───
+    SMTP_EMAIL: str = ""
+    SMTP_APP_PASSWORD: str = ""
+
     def get_gemini_key(self, purpose: str = "personas") -> str:
         """
         Get the appropriate Gemini API key based on purpose.
