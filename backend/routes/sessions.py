@@ -77,7 +77,9 @@ async def get_current_session(user=Depends(verify_token)):
         )
 
         if not results:
-            return error_response(message="No active session found for this user", code=404)
+            return error_response(
+                message="No active session found for this user", code=404
+            )
 
         # Sort by updated_at in Python (most recent first)
         def get_updated_at(doc):
@@ -91,12 +93,17 @@ async def get_current_session(user=Depends(verify_token)):
 
         print(f"[SESSION/CURRENT] Found session {doc.id} for user {uid}")
         return success_response(
-            data={"session_id": doc.id, "simulation_type": session_data.get("simulation_type")},
-            message="Current session found"
+            data={
+                "session_id": doc.id,
+                "simulation_type": session_data.get("simulation_type"),
+            },
+            message="Current session found",
         )
     except Exception as e:
         print(f"[SESSION/CURRENT] Error: {e}")
-        return error_response(message=f"Failed to get current session: {str(e)}", code=500)
+        return error_response(
+            message=f"Failed to get current session: {str(e)}", code=500
+        )
 
 
 @router.get("/user/{uid}")

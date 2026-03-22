@@ -26,7 +26,9 @@ class ChatRequest(BaseModel):
 
 @router.post("/chat")
 async def persona_chat(request: ChatRequest, user=Depends(verify_token)):
-    print(f"\n[CHAT] session_id={request.session_id}, persona={request.persona_type}, user={user.get('uid')}")
+    print(
+        f"\n[CHAT] session_id={request.session_id}, persona={request.persona_type}, user={user.get('uid')}"
+    )
     try:
         # 1. Initialize AI Services
         gemini_service = GeminiService(purpose="personas")
@@ -120,6 +122,7 @@ async def persona_chat(request: ChatRequest, user=Depends(verify_token)):
 
     except Exception as e:
         import traceback
+
         print(f"[CHAT] CRITICAL ERROR: {str(e)}")
         print(traceback.format_exc())
         return error_response(message="AI Chat failed", code=500, error_details=str(e))
