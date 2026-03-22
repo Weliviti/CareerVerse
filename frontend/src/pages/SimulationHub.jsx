@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { db } from '../services/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import Navbar from '../components/Navbar';
 import BackToTop from '../components/ui/BackToTop';
 import Footer from '../components/Footer';
@@ -11,7 +13,24 @@ const SimulationHub = () => {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
     const [launching, setLaunching] = useState(false);
-    const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User';
+    const [userName, setUserName] = useState(currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User');
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (currentUser?.uid) {
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+                    if (userDoc.exists() && userDoc.data().name) {
+                        setUserName(userDoc.data().name);
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            }
+        };
+        
+        fetchUserData();
+    }, [currentUser]);
 
     const handleLaunch = async (simulationType) => {
         if (launching) return;
@@ -176,7 +195,7 @@ const SimulationHub = () => {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* The Educator */}
                         <div className="home-dark-card group flex flex-col">
                             <div className="p-8 flex-1 flex flex-col">
