@@ -4,9 +4,10 @@ import asyncio
 import json
 from config import settings
 
+
 class GeminiService:
     """
-    Gemini AI service with mandatory exponential backoff and 
+    Gemini AI service with mandatory exponential backoff and
     stable model selection to avoid 429 quota errors.
     """
 
@@ -14,9 +15,9 @@ class GeminiService:
         self.purpose = purpose
         api_key = settings.get_gemini_key(purpose)
         genai.configure(api_key=api_key)
-        
+
         # Use 2.5-flash for production stability and higher free-tier quotas
-        self.model_name = "gemini-2.5-flash" 
+        self.model_name = "gemini-2.5-flash"
 
     async def generate_response(self, prompt: str) -> str:
         """
@@ -30,10 +31,10 @@ class GeminiService:
                 model = genai.GenerativeModel(self.model_name)
                 # Use the non-streaming generate_content
                 response = await model.generate_content_async(prompt)
-                
+
                 if not response.text:
                     raise Exception("Empty response from Gemini")
-                    
+
                 return response.text
 
             except Exception as e:
@@ -44,7 +45,7 @@ class GeminiService:
                         # Wait and retry (Exponential Backoff)
                         await asyncio.sleep(delays[i])
                         continue
-                
+
                 # If we're out of retries or it's a different error, raise it
                 raise Exception(f"Gemini API error after {i+1} attempts: {error_msg}")
 
@@ -53,10 +54,12 @@ class GeminiService:
         Evaluates a session transcript with automatic JSON cleaning.
         """
         try:
-            formatted_transcript = "\n".join([
-                f"{msg.get('role', 'unknown')}: {msg.get('content', '')}"
-                for msg in transcript
-            ])
+            formatted_transcript = "\n".join(
+                [
+                    f"{msg.get('role', 'unknown')}: {msg.get('content', '')}"
+                    for msg in transcript
+                ]
+            )
 
             prompt = f"""
             You are an expert evaluator. Evaluate this transcript based on the rubric.
@@ -76,7 +79,7 @@ class GeminiService:
             """
 
             response_text = await self.generate_response(prompt)
-            
+
             # Mandatory JSON cleaning to prevent parsing errors
             clean_text = response_text.replace("```json", "").replace("```", "").strip()
             return json.loads(clean_text)
