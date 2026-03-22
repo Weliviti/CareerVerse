@@ -18,12 +18,12 @@ class GeminiService:
 
     def __init__(self, purpose: str = "personas"):
         self.purpose = purpose
-        
+
         # Initialize keys list once
         if not GeminiService._is_initialized:
             GeminiService._keys = settings.get_all_gemini_keys()
             GeminiService._is_initialized = True
-            
+
         self._configure_current_key()
 
         # gemini-1.5-flash: fast, reliable, high free-tier quota
@@ -33,17 +33,19 @@ class GeminiService:
         """Configures the Gemini SDK with the current active key."""
         current_key = self._keys[self._current_key_index]
         genai.configure(api_key=current_key)
-        
+
     def _rotate_key(self):
         """Moves to the next key in the rotation."""
         num_keys = len(self._keys)
         if num_keys <= 1:
             print("[GEMINI] Only 1 key available. Cannot rotate.")
             return False
-            
+
         old_index = self._current_key_index
         self._current_key_index = (self._current_key_index + 1) % num_keys
-        print(f"[GEMINI] Key quota exceeded. Rotating from key slot {old_index + 1} to {self._current_key_index + 1}.")
+        print(
+            f"[GEMINI] Key quota exceeded. Rotating from key slot {old_index + 1} to {self._current_key_index + 1}."
+        )
         self._configure_current_key()
         return True
 
@@ -52,7 +54,7 @@ class GeminiService:
         Generate a response with automatic key rotation and exponential backoff.
         """
         retries = len(self._keys) * 2  # Allow enough retries to try all keys twice
-        delays = [1, 2, 2, 4, 4] # Keep delays short since rotation solves 429s
+        delays = [1, 2, 2, 4, 4]  # Keep delays short since rotation solves 429s
 
         for i in range(retries):
             try:
@@ -68,18 +70,24 @@ class GeminiService:
             except Exception as e:
                 error_msg = str(e)
                 # Check if it's a rate limit / quota error (429)
-                is_quota_error = "429" in error_msg or "quota" in error_msg.lower() or "ResourceExhausted" in error_msg
-                
+                is_quota_error = (
+                    "429" in error_msg
+                    or "quota" in error_msg.lower()
+                    or "ResourceExhausted" in error_msg
+                )
+
                 if is_quota_error:
                     # Immediately rotate keys, no need to wait long
                     rotated = self._rotate_key()
                     if rotated and i < retries - 1:
-                        continue # Retry immediately with new key
-                
+                        continue  # Retry immediately with new key
+
                 if i < retries - 1:
                     # For other transient errors, or if rotation failed, wait and retry
                     delay = delays[i] if i < len(delays) else 8
-                    print(f"[GEMINI] API error (attempt {i+1}). Retrying in {delay}s...")
+                    print(
+                        f"[GEMINI] API error (attempt {i+1}). Retrying in {delay}s..."
+                    )
                     await asyncio.sleep(delay)
                     continue
 

@@ -47,10 +47,10 @@ class Settings(BaseSettings):
         for k in keys:
             if k and k.strip() and k not in valid_keys:
                 valid_keys.append(k)
-        
+
         if not valid_keys:
             raise ValueError("No valid Gemini API keys found in environment variables.")
-            
+
         return valid_keys
 
     class Config:
