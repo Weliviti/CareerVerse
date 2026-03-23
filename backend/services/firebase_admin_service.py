@@ -1,11 +1,17 @@
 """
 Firebase Admin SDK Service
 Handles Firestore database connection for the CareerVerse backend.
+
+Supports two credential sources (checked in order):
+  1. FIREBASE_CREDENTIALS_JSON env var (JSON string) — for Render / cloud
+  2. FIREBASE_CREDENTIALS_PATH file path              — for local dev
 """
 
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 import os
+import json
+import tempfile
 
 
 def get_db_client():
@@ -16,37 +22,47 @@ def get_db_client():
         firestore.Client: Firestore database client
 
     Raises:
-        FileNotFoundError: If service-account.json is missing
+        FileNotFoundError: If no credentials source is available
     """
     # Check if Firebase app is already initialized
     if not firebase_admin._apps:
-        # Import config to use the centralized path
         from config import settings
 
-        # Path to service account JSON file
-        service_account_path = settings.FIREBASE_CREDENTIALS_PATH
+        cred = None
 
-        # Check if the service account file exists
-        if not os.path.exists(service_account_path):
-            print(f"⚠️  WARNING: {service_account_path} not found!")
-            print(
-                "Please add your Firebase service account JSON file to the project's 'firebase/' directory."
-            )
-            print(
-                "You can download it from: Firebase Console > Project Settings > Service Accounts"
-            )
-            raise FileNotFoundError(
-                f"{service_account_path} is missing. Please add your Firebase service account credentials."
-            )
+        # ── Option 1: JSON string from environment variable (Render / cloud) ──
+        firebase_json = os.environ.get("FIREBASE_CREDENTIALS_JSON", "")
+        if firebase_json:
+            try:
+                service_info = json.loads(firebase_json)
+                cred = credentials.Certificate(service_info)
+                print("✅ Firebase Admin SDK initialized from FIREBASE_CREDENTIALS_JSON env var")
+            except Exception as e:
+                print(f"⚠️  Failed to parse FIREBASE_CREDENTIALS_JSON: {e}")
+                cred = None
 
-        try:
-            # Initialize Firebase Admin SDK
-            cred = credentials.Certificate(service_account_path)
-            firebase_admin.initialize_app(cred)
-            print("✅ Firebase Admin SDK initialized successfully!")
-        except Exception as e:
-            print(f"❌ Error initializing Firebase Admin SDK: {e}")
-            raise
+        # ── Option 2: Local file path (local development) ──
+        if cred is None:
+            service_account_path = settings.FIREBASE_CREDENTIALS_PATH
+            if os.path.exists(service_account_path):
+                try:
+                    cred = credentials.Certificate(service_account_path)
+                    print("✅ Firebase Admin SDK initialized from local file")
+                except Exception as e:
+                    print(f"❌ Error loading service account file: {e}")
+                    raise
+            else:
+                print(f"⚠️  WARNING: {service_account_path} not found!")
+                print(
+                    "Set FIREBASE_CREDENTIALS_JSON env var or add your service account JSON file."
+                )
+                raise FileNotFoundError(
+                    "No Firebase credentials found. "
+                    "Set FIREBASE_CREDENTIALS_JSON env var (for cloud) "
+                    "or provide service-account.json file (for local dev)."
+                )
+
+        firebase_admin.initialize_app(cred)
 
     # Return Firestore client
     return firestore.client()
