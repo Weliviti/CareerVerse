@@ -28,7 +28,7 @@ const SimulationPlayer = () => {
 
     const getGamePath = (simType) => {
         if (simType === 'diagnostician') return '/games/doctor-sim/index.html';
-        // Add other simulation mappings here in the future
+        if (simType === 'judge') return '/games/judge-sim/index.html';
         return '/games/teacher-sim/index.html';
     };
 

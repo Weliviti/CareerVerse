@@ -30,5 +30,21 @@
         "difficulty": "Hard",
         "webGLUrl": "/simulation/diagnostician/index.html",
         "color": "emerald"
+    },
+    {
+        "id": "judge",
+        "type": "lawyer",
+        "title": "The Judge",
+        "subtitle": "Solve a Serious Mystery Case",
+        "description": "Interview a suspect, analyze evidence, and make a ruling. Balance justice with mercy and legal expertise.",
+        "skills": [
+            "Logical Reasoning",
+            "Empathy",
+            "Communication"
+        ],
+        "duration": "20 minutes",
+        "difficulty": "Hard",
+        "webGLUrl": "/simulation/judge/index.html",
+        "color": "amber"
     }
 ]

@@ -71,6 +71,14 @@ class EvaluationService:
                 - Problem Solving: Did they ask the right diagnostic questions?
                 - Accuracy: Did they reach the correct diagnosis or next steps?
                 """
+            elif sim_type == "lawyer":
+                rubric = """
+                Evaluate the judge/lawyer's courtroom performance:
+                - Communication: Clarity, persuasion, and professionalism in the courtroom.
+                - Empathy: Did they consider the perspectives of all parties involved?
+                - Problem Solving: Did they apply logical legal reasoning to the case?
+                - Courtroom Management: Did they maintain order and fairness throughout?
+                """
             else:
                 rubric = """
                 Evaluate the teacher's classroom performance:
