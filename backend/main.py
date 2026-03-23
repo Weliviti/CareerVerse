@@ -17,6 +17,7 @@ from routes.admin import router as admin_router
 from routes.feedback import router as feedback_router
 from services.firebase_admin_service import get_db_client
 from middleware.auth import verify_token
+from config import settings
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -42,13 +43,13 @@ async def startup_event():
 
 
 # --- CORS SETTINGS ---
+# Origins are loaded from config (hardcoded defaults + CORS_ORIGINS env var)
+cors_origins = settings.get_cors_origins()
+print(f"🌐 CORS allowed origins: {cors_origins}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",  # Vite default port (Local testing)
-        "https://careerverse.lk",  # Production domain
-        "https://www.careerverse.lk",  # Production domain (www)
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
