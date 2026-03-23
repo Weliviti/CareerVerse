@@ -17,16 +17,19 @@ import SimulationLogs from './pages/admin/SimulationLogs';
 import Settings from './pages/admin/Settings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 import TeacherSimulation from './pages/TeacherSimulation';
 import SimulationResults from './pages/SimulationResults';
+import VerifyOTP from './pages/VerifyOTP';
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Toaster />
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/community" element={<Community />} />
@@ -34,6 +37,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
 
           <Route
             path="/simulation-hub"

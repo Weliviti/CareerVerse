@@ -819,6 +819,35 @@ button {
     0 0 30px rgba(0, 229, 160, 0.06);
 }
 
+/* ── Stats card (compact, stable dimensions) ── */
+.home-dark-stat-card {
+  position: relative;
+  background: rgba(13, 30, 22, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  transition: border-color 0.3s ease,
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-dark-stat-card:hover {
+  border-color: rgba(0, 229, 160, 0.25);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.18),
+    0 0 12px rgba(0, 229, 160, 0.08);
+}
+
+/* Inner content lift on stat card hover */
+.home-dark-stat-card:hover > .stat-card-inner {
+  transform: translateY(-1px);
+}
+
+.stat-card-inner {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* ── Simulation "Try" button ── */
 .home-dark-sim-btn {
   display: flex;

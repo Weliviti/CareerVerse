@@ -93,5 +93,11 @@ def update_user(uid: str, updates: dict):
     # Fetch and return the updated user data
     updated_doc = user_ref.get()
     updated_data = updated_doc.to_dict()
+
+    # Convert Firestore timestamp fields to ISO strings for JSON serialization
+    for key, value in updated_data.items():
+        if hasattr(value, "isoformat"):
+            updated_data[key] = value.isoformat()
+
     print(f"Updated user data: {updated_data}")
     return updated_data

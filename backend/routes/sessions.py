@@ -4,6 +4,7 @@ from services.session_service import session_service
 from middleware.auth import verify_token
 from utils.responses import success_response, error_response
 from typing import Optional
+from services.firebase_admin_service import get_db_client
 
 router = APIRouter()
 
@@ -54,6 +55,54 @@ async def end_session(session_id: str, user=Depends(verify_token)):
     except Exception as e:
         return error_response(
             message="Failed to end session", code=500, error_details=str(e)
+        )
+
+
+@router.get("/current")
+async def get_current_session(user=Depends(verify_token)):
+    """
+    Returns the most recent active session for the authenticated user.
+    No composite index required — we sort in Python after fetching.
+    """
+    try:
+        uid = user.get("uid")
+        db = get_db_client()
+
+        # Fetch all active sessions for this user (no order_by = no index needed)
+        results = list(
+            db.collection("sessions")
+            .where(filter=("user_id", "==", uid))
+            .where(filter=("status", "==", "active"))
+            .stream()
+        )
+
+        if not results:
+            return error_response(
+                message="No active session found for this user", code=404
+            )
+
+        # Sort by updated_at in Python (most recent first)
+        def get_updated_at(doc):
+            data = doc.to_dict()
+            updated = data.get("updated_at")
+            return updated if updated else ""
+
+        results.sort(key=get_updated_at, reverse=True)
+        doc = results[0]
+        session_data = doc.to_dict()
+
+        print(f"[SESSION/CURRENT] Found session {doc.id} for user {uid}")
+        return success_response(
+            data={
+                "session_id": doc.id,
+                "simulation_type": session_data.get("simulation_type"),
+            },
+            message="Current session found",
+        )
+    except Exception as e:
+        print(f"[SESSION/CURRENT] Error: {e}")
+        return error_response(
+            message=f"Failed to get current session: {str(e)}", code=500
         )
 
 

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
 import { auth } from '../services/firebase';
+import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 
@@ -16,6 +18,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { set2FAPending } = useAuth();
 
   const validateForm = () => {
     const newErrors = {};
@@ -44,7 +47,33 @@ const Login = () => {
     setLoading(true);
     try {
       await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+      // Check 2FA status from backend
+      try {
+        const token = await userCredential.user.getIdToken();
+        const loginResponse = await api.post('/api/auth/login', { token });
+        const loginData = loginResponse.data?.data;
+
+        if (loginData?.two_fa_enabled) {
+          // User has 2FA enabled — send OTP and redirect to verification
+          try {
+            const otpResponse = await api.post('/api/auth/2fa/send-otp?purpose=login');
+            const masked = otpResponse.data?.data?.masked_email || 'your email';
+            set2FAPending(userCredential.user, masked);
+            toast.success('Verification code sent to your email');
+            navigate('/verify-otp');
+          } catch (otpError) {
+            console.error('Failed to send OTP:', otpError);
+            toast.error('Failed to send verification code. Please try again.');
+          }
+          return;
+        }
+      } catch (loginCheckError) {
+        // If backend check fails, proceed without 2FA (graceful degradation)
+        console.error('2FA check failed, proceeding:', loginCheckError);
+      }
+
       toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (error) {

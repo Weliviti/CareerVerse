@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import BackToTop from '../components/ui/BackToTop';
 import Button from '../components/ui/Button';
@@ -6,6 +7,12 @@ import Footer from '../components/Footer';
 
 function Home() {
     const navigate = useNavigate();
+    const { currentUser } = useAuth();
+
+    const handleLaunch = () => {
+        window.scrollTo(0, 0);
+        navigate(currentUser ? '/simulation-hub' : '/login');
+    };
 
     return (
         <div className="home-dark min-h-screen">
@@ -62,7 +69,7 @@ function Home() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="hero-btn-primary">
+                            <button onClick={handleLaunch} className="hero-btn-primary">
                                 Launch Experience
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -368,14 +375,14 @@ function Home() {
                                     </span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold">Medium</span>
                                 </div>
-                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                <button onClick={handleLaunch} className="home-dark-sim-btn">
                                     Try Simulation
                                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                                 </button>
                             </div>
                         </div>
 
-                        {/* The Tech Innovator */}
+                        {/* The Judge */}
                         <div className="home-dark-card group flex flex-col">
                             <div className="p-7 flex-1 flex flex-col">
                                 <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
@@ -383,9 +390,9 @@ function Home() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                     </svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-2">The Tech Innovator</h3>
+                                <h3 className="text-xl font-bold text-white mb-2">The Judge</h3>
                                 <p className="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
-                                    Build the future in a high-tech lab. Code, debug, and create innovative solutions.
+                                    Uphold justice with fairness and integrity. Make critical decisions that impact lives.
                                 </p>
                                 <div className="flex flex-wrap gap-2 mb-5">
                                     <span className="px-2.5 py-1 text-xs font-medium bg-white/5 border border-white/10 text-slate-300 rounded-full">Problem-Solving</span>
@@ -399,7 +406,7 @@ function Home() {
                                     </span>
                                     <span className="px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-400 font-semibold">Hard</span>
                                 </div>
-                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                <button onClick={handleLaunch} className="home-dark-sim-btn">
                                     Try Simulation
                                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                                 </button>
@@ -430,7 +437,7 @@ function Home() {
                                     </span>
                                     <span className="px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold">Expert</span>
                                 </div>
-                                <button onClick={() => { window.scrollTo(0, 0); navigate('/login'); }} className="home-dark-sim-btn">
+                                <button onClick={handleLaunch} className="home-dark-sim-btn">
                                     Try Simulation
                                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                                 </button>
@@ -541,7 +548,7 @@ function Home() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                 </svg>
                             </div>
-                            <div className="text-2xl sm:text-3xl font-bold text-emerald-400 mb-1">50K+</div>
+                            <div className="text-2xl sm:text-3xl font-bold text-emerald-400 mb-1">100+</div>
                             <div className="text-xs sm:text-sm text-slate-500">Students Guided</div>
                         </div>
                         {/* Stat 2 */}
@@ -551,7 +558,7 @@ function Home() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <div className="text-2xl sm:text-3xl font-bold text-emerald-400 mb-1">200+</div>
+                            <div className="text-2xl sm:text-3xl font-bold text-emerald-400 mb-1">3+</div>
                             <div className="text-xs sm:text-sm text-slate-500">Career Paths</div>
                         </div>
                         {/* Stat 3 */}
