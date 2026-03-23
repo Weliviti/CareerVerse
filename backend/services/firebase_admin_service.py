@@ -36,7 +36,9 @@ def get_db_client():
             try:
                 service_info = json.loads(firebase_json)
                 cred = credentials.Certificate(service_info)
-                print("✅ Firebase Admin SDK initialized from FIREBASE_CREDENTIALS_JSON env var")
+                print(
+                    "✅ Firebase Admin SDK initialized from FIREBASE_CREDENTIALS_JSON env var"
+                )
             except Exception as e:
                 print(f"⚠️  Failed to parse FIREBASE_CREDENTIALS_JSON: {e}")
                 cred = None
