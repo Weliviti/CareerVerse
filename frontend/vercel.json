@@ -1,7 +1,48 @@
 {
+    "headers": [
+        {
+            "source": "/games/(.*)/Build/(.*)\\.js\\.br",
+            "headers": [
+                {
+                    "key": "Content-Encoding",
+                    "value": "br"
+                },
+                {
+                    "key": "Content-Type",
+                    "value": "application/javascript"
+                }
+            ]
+        },
+        {
+            "source": "/games/(.*)/Build/(.*)\\.wasm\\.br",
+            "headers": [
+                {
+                    "key": "Content-Encoding",
+                    "value": "br"
+                },
+                {
+                    "key": "Content-Type",
+                    "value": "application/wasm"
+                }
+            ]
+        },
+        {
+            "source": "/games/(.*)/Build/(.*)\\.data\\.br",
+            "headers": [
+                {
+                    "key": "Content-Encoding",
+                    "value": "br"
+                },
+                {
+                    "key": "Content-Type",
+                    "value": "application/octet-stream"
+                }
+            ]
+        }
+    ],
     "rewrites": [
         {
-            "source": "/(.*)",
+            "source": "/([^.]+$)",
             "destination": "/index.html"
         }
     ]
