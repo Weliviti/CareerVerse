@@ -18,6 +18,11 @@ class Settings(BaseSettings):
 
     # ─── Firebase ───
     FIREBASE_CREDENTIALS_PATH: str = "../firebase/service-account.json"
+    FIREBASE_CREDENTIALS_JSON: str = ""  # JSON string for Render / cloud
+
+    # ─── CORS ───
+    # Comma-separated list of extra allowed origins (set in Render env vars)
+    CORS_ORIGINS: str = ""
 
     # ─── App Settings ───
     PORT: int = 5000
@@ -26,6 +31,29 @@ class Settings(BaseSettings):
     # ─── SMTP (for 2FA email OTP) ───
     SMTP_EMAIL: str = ""
     SMTP_APP_PASSWORD: str = ""
+
+    def get_cors_origins(self) -> list[str]:
+        """
+        Returns the list of allowed CORS origins.
+        Combines hardcoded defaults with any set via CORS_ORIGINS env var.
+        """
+        defaults = [
+            "http://localhost:5173",
+            "https://careeverse.vercel.app",
+            "https://careerverse.lk",
+            "https://www.careerverse.lk",
+        ]
+        if self.CORS_ORIGINS:
+            extras = [o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()]
+            defaults.extend(extras)
+        # Deduplicate while preserving order
+        seen = set()
+        result = []
+        for o in defaults:
+            if o not in seen:
+                seen.add(o)
+                result.append(o)
+        return result
 
     def get_all_gemini_keys(self) -> list[str]:
         """
