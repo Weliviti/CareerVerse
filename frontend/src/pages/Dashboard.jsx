@@ -5,8 +5,8 @@ import Footer from '../components/Footer'; // Assuming Footer component exists b
 import { useAuth } from '../context/AuthContext';
 import { useScore } from '../hooks/useScore';
 import { useSession } from '../hooks/useSession';
-import { useMemo } from 'react';
-import SkillRadarChart from '../components/RadarChart';
+import { useState, useEffect, useMemo } from 'react';
+import api from '../services/api';
 import CareerCard from '../components/CareerCard';
 import SessionHistoryItem from '../components/SessionHistoryItem';
 
@@ -16,67 +16,31 @@ function Dashboard() {
     const { sessions, loading: sessionsLoading } = useSession(currentUser?.uid);
     const navigate = useNavigate();
 
-    // Derive stats from real Firebase data (useMemo avoids setState-in-effect)
-    const stats = useMemo(() => {
-        if (!sessions || !scores) return { totalSimulations: 0, averageScore: 0, timeInvested: '0m', completion: 0 };
 
-        const completedSessions = sessions.filter(s => s.status === 'completed');
-        const totalSimulations = completedSessions.length;
+    const [aiRecommendations, setAiRecommendations] = useState([]);
+    const [recommendationsLoading, setRecommendationsLoading] = useState(false);
 
-        let averageScore = 0;
-        if (scores.length > 0) {
-            const totalScore = scores.reduce((acc, curr) => acc + (curr.totalScore || 0), 0);
-            averageScore = Math.round(totalScore / scores.length);
-        }
+    useEffect(() => {
+        const fetchRecommendations = async () => {
+            if (!currentUser?.uid) return;
 
-        let totalMinutes = 0;
-        completedSessions.forEach(session => {
-            if (session.start_time && session.end_time) {
-                const startTime = session.start_time.toDate ? session.start_time.toDate() : new Date(session.start_time);
-                const endTime = session.end_time.toDate ? session.end_time.toDate() : new Date(session.end_time);
-                totalMinutes += (endTime - startTime) / (1000 * 60);
+            setRecommendationsLoading(true);
+            try {
+                const response = await api.get(`/api/recommendations/user/${currentUser.uid}`);
+                if (response.data && response.data.data) {
+                    setAiRecommendations(response.data.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch AI career recommendations:", error);
+            } finally {
+                setRecommendationsLoading(false);
             }
-        });
+        };
 
-        let timeInvested = '0m';
-        if (totalMinutes >= 60) {
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = Math.round(totalMinutes % 60);
-            timeInvested = minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
-        } else if (totalMinutes > 0) {
-            timeInvested = `${Math.round(totalMinutes)}m`;
+        if (currentUser?.uid && !scoresLoading && !sessionsLoading) {
+            fetchRecommendations();
         }
-
-        const availableSimulations = 2;
-        const uniqueSimulations = new Set(completedSessions.map(s => s.simulation_type)).size;
-        const completion = Math.round((uniqueSimulations / availableSimulations) * 100);
-
-        return { totalSimulations, averageScore, timeInvested, completion };
-    }, [sessions, scores]);
-
-    // Derive radar chart data from scores
-    const radarData = useMemo(() => {
-        if (!scores || scores.length === 0) return [];
-
-        const skillsMap = {};
-        scores.forEach(score => {
-            if (score.skills) {
-                Object.entries(score.skills).forEach(([skill, value]) => {
-                    if (!skillsMap[skill]) {
-                        skillsMap[skill] = { total: 0, count: 0 };
-                    }
-                    skillsMap[skill].total += value;
-                    skillsMap[skill].count += 1;
-                });
-            }
-        });
-
-        return Object.entries(skillsMap).map(([skill, data]) => ({
-            subject: skill,
-            A: Math.round(data.total / data.count),
-            fullMark: 100
-        }));
-    }, [scores]);
+    }, [currentUser?.uid, scoresLoading, sessionsLoading]);
 
     // Derive session history from sessions + scores
     const sessionHistory = useMemo(() => {
@@ -131,33 +95,7 @@ function Dashboard() {
             .sort((a, b) => new Date(b.date) - new Date(a.date));
     }, [sessions, scores]);
 
-    // Mock data for Career Recommendations
-    const recommendations = [
-        {
-            rank: 1,
-            title: 'Lawyer',
-            matchPercentage: 92,
-            description: 'Your strong persuasion and logical reasoning skills make you an excellent fit for legal advocacy.',
-            skills: ['Persuasion', 'Logic', 'Clarity'],
-            colorClass: 'bg-teal-500'
-        },
-        {
-            rank: 2,
-            title: 'Doctor',
-            matchPercentage: 88,
-            description: 'Your empathy combined with analytical problem-solving abilities align well with medical practice.',
-            skills: ['Empathy', 'Problem Solving', 'Stress Handling'],
-            colorClass: 'bg-blue-500'
-        },
-        {
-            rank: 3,
-            title: 'Teacher',
-            matchPercentage: 84,
-            description: 'Your clarity in communication and natural empathy make you well-suited for education.',
-            skills: ['Clarity', 'Empathy', 'Communication'],
-            colorClass: 'bg-purple-500'
-        }
-    ];
+
 
 
     return (
@@ -207,93 +145,36 @@ function Dashboard() {
                             </p>
                         </div>
 
-                        {/* Stats Cards Section */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                            {/* Total Simulations Card */}
-                            <div className="home-dark-card p-6 flex items-center justify-between">
-                                <div>
-                                    <p className="text-slate-400 font-medium text-sm mb-1">Total Simulations</p>
-                                    <h3 className="text-3xl font-bold text-white">{stats.totalSimulations}</h3>
-                                </div>
-                                <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-emerald-400">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
-                                    </svg>
-                                </div>
-                            </div>
 
-                            {/* Average Score Card */}
-                            <div className="home-dark-card p-6 flex items-center justify-between">
-                                <div>
-                                    <p className="text-slate-400 font-medium text-sm mb-1">Average Score</p>
-                                    <h3 className="text-3xl font-bold text-white">{stats.averageScore}%</h3>
-                                </div>
-                                <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-blue-400">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                            {/* Time Invested Card */}
-                            <div className="home-dark-card p-6 flex items-center justify-between">
-                                <div>
-                                    <p className="text-slate-400 font-medium text-sm mb-1">Time Invested</p>
-                                    <h3 className="text-3xl font-bold text-white">{stats.timeInvested}</h3>
-                                </div>
-                                <div className="w-12 h-12 rounded-2xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-violet-400">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                            {/* Completion Card */}
-                            <div className="home-dark-card p-6 flex items-center justify-between">
-                                <div>
-                                    <p className="text-slate-400 font-medium text-sm mb-1">Completion</p>
-                                    <h3 className="text-3xl font-bold text-white">{stats.completion}%</h3>
-                                </div>
-                                <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-amber-400">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Dashboard Grid Content - Left (Radar) & Right (Recommendations) */}
-                        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-12">
-                            {/* Left Column: Skill Analysis Radar Chart (Span 2) */}
-                            {/* Left Column: Skill Analysis Radar Chart (Span 2) */}
-                            <div className="lg:col-span-2 home-dark-card p-6 h-full flex flex-col">
-                                <h3 className="text-lg font-bold text-white mb-1">Skill Analysis</h3>
-                                <p className="text-slate-400 text-sm mb-6">Your performance across different skill dimensions</p>
-
-                                {/* Radar Chart Component */}
-                                <div className="flex-1 min-h-[300px] flex items-center justify-center">
-                                    <SkillRadarChart data={radarData} />
-                                </div>
-                            </div>
-
-                            {/* Right Column: Career Recommendations (Span 3) */}
-                            <div className="lg:col-span-3 home-dark-card p-6 h-full">
-                                <h3 className="text-lg font-bold text-white mb-1">Career Recommendations</h3>
-                                <p className="text-slate-400 text-sm mb-6">Based on your simulation performance</p>
+                        {/* Career Recommendations Section */}
+                        <div className="mb-12">
+                            <div className="home-dark-card p-6 h-full">
+                                <h3 className="text-lg font-bold text-white mb-1">AI Career Recommendations</h3>
+                                <p className="text-slate-400 text-sm mb-6">Personalized paths based on your simulation history</p>
 
                                 {/* Career Recommendations List */}
                                 <div className="space-y-4">
-                                    {recommendations.map((rec) => (
-                                        <CareerCard
-                                            key={rec.rank}
-                                            rank={rec.rank}
-                                            title={rec.title}
-                                            matchPercentage={rec.matchPercentage}
-                                            description={rec.description}
-                                            skills={rec.skills}
-                                            colorClass={rec.colorClass}
-                                        />
-                                    ))}
+                                    {recommendationsLoading ? (
+                                        <div className="flex justify-center items-center py-10">
+                                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
+                                        </div>
+                                    ) : aiRecommendations && aiRecommendations.length > 0 ? (
+                                        aiRecommendations.map((rec, index) => (
+                                            <CareerCard
+                                                key={rec.rank || index}
+                                                rank={rec.rank || index + 1}
+                                                title={rec.title}
+                                                matchPercentage={rec.matchPercentage}
+                                                description={rec.description}
+                                                skills={rec.skills}
+                                                colorClass={rec.colorClass}
+                                            />
+                                        ))
+                                    ) : (
+                                        <div className="text-center py-10">
+                                            <p className="text-slate-400">Complete simulations to get personalized career recommendations from AI.</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

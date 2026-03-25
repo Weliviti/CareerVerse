@@ -5,6 +5,7 @@ from middleware.auth import verify_token
 from utils.responses import success_response, error_response
 from typing import Optional
 from services.firebase_admin_service import get_db_client
+from google.cloud.firestore_v1.base_query import FieldFilter
 
 router = APIRouter()
 
@@ -71,8 +72,8 @@ async def get_current_session(user=Depends(verify_token)):
         # Fetch all active sessions for this user (no order_by = no index needed)
         results = list(
             db.collection("sessions")
-            .where(filter=("user_id", "==", uid))
-            .where(filter=("status", "==", "active"))
+            .where(filter=FieldFilter("user_id", "==", uid))
+            .where(filter=FieldFilter("status", "==", "active"))
             .stream()
         )
 
