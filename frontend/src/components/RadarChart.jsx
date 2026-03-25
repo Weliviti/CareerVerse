@@ -37,7 +37,7 @@ const SkillRadarChart = ({ data }) => {
 
     return (
         <div className="w-full h-[300px] flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
                     <PolarGrid gridType="polygon" stroke="rgba(255,255,255,0.1)" />
                     <PolarAngleAxis

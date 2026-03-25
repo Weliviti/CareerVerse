@@ -40,8 +40,8 @@ const SimulationHub = () => {
 
         try {
             // Mapping frontend types to backend expected types
-            // Backend expects: 'doctor', 'teacher', or 'lawyer'
-            const backendType = simulationType === 'educator' ? 'teacher' : 'doctor';
+            const typeMap = { educator: 'teacher', diagnostician: 'doctor', judge: 'lawyer' };
+            const backendType = typeMap[simulationType] || simulationType;
 
             const response = await api.post('/api/simulations/launch', {
                 simulation_type: backendType
