@@ -95,7 +95,69 @@ function Dashboard() {
             .sort((a, b) => new Date(b.date) - new Date(a.date));
     }, [sessions, scores]);
 
+    const handleExportReport = () => {
+        if (!sessions || sessions.length === 0) return;
 
+        const completedSessions = sessions.filter(s => s.status === 'completed');
+        if (completedSessions.length === 0) return;
+
+        let reportContent = "=================================================\n";
+        reportContent += "              CAREERVERSE SESSION TRANSCRIPTS\n";
+        reportContent += "=================================================\n\n";
+
+        // Sort by most recent first
+        const sortedSessions = [...completedSessions].sort((a, b) => {
+            const dateA = a.start_time?.toDate ? a.start_time.toDate() : new Date(a.start_time);
+            const dateB = b.start_time?.toDate ? b.start_time.toDate() : new Date(b.start_time);
+            return dateB - dateA;
+        });
+
+        sortedSessions.forEach((session, index) => {
+            const date = session.start_time?.toDate ? session.start_time.toDate() : new Date(session.start_time);
+            const dateStr = date.toLocaleDateString('en-US', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+
+            reportContent += `--- SESSION ${index + 1} -----------\n`;
+            reportContent += `ROLE: ${session.simulation_type.toUpperCase()}\n`;
+            reportContent += `DATE: ${dateStr}\n`;
+
+            // Add scores if they exist
+            const sessionScore = scores?.find(s => s.sessionId === session.session_id);
+            if (sessionScore) {
+                reportContent += `TOTAL SCORE: ${sessionScore.totalScore}\n`;
+                if (sessionScore.skills) {
+                    reportContent += `SKILLS: ${Object.entries(sessionScore.skills).map(([k, v]) => `${k} (${v})`).join(', ')}\n`;
+                }
+            }
+
+            reportContent += `\n[TRANSCRIPT]\n`;
+
+            if (session.transcript && Array.isArray(session.transcript) && session.transcript.length > 0) {
+                session.transcript.forEach(msg => {
+                    const role = msg.role.toUpperCase();
+                    // Some older messages might use 'content' instead of 'message'
+                    const text = msg.message || msg.content || "";
+                    reportContent += `${role}: ${text}\n`;
+                });
+            } else {
+                reportContent += `(No transcript available for this session)\n`;
+            }
+
+            reportContent += `\n=================================================\n\n`;
+        });
+
+        // Trigger download
+        const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `CareerVerse_Transcripts_${new Date().toISOString().split('T')[0]}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
 
 
     return (
@@ -186,11 +248,14 @@ function Dashboard() {
                                     <h3 className="text-lg font-bold text-white">Session History</h3>
                                     <p className="text-slate-400 text-sm">Your past simulation performances</p>
                                 </div>
-                                <button className="flex items-center gap-2 px-4 py-2 bg-white/[0.04] border border-emerald-500/30 text-emerald-400 rounded-lg hover:bg-emerald-500/10 transition-colors font-medium text-sm">
+                                <button
+                                    onClick={handleExportReport}
+                                    className="flex items-center gap-2 px-4 py-2 bg-white/[0.04] border border-emerald-500/30 text-emerald-400 rounded-lg hover:bg-emerald-500/10 transition-colors font-medium text-sm"
+                                >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                                     </svg>
-                                    Export Report
+                                    Export Transcripts
                                 </button>
                             </div>
 
