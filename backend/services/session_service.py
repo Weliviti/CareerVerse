@@ -4,6 +4,7 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from services.firebase_admin_service import get_db_client
 from models.session import Session
 import uuid
+import traceback
 
 
 class SessionService:
@@ -213,13 +214,20 @@ class SessionService:
             sessions = []
             last_doc = None
 
+            def make_serializable(obj):
+                if hasattr(obj, "isoformat"):
+                    return obj.isoformat()
+                elif isinstance(obj, dict):
+                    return {k: make_serializable(v) for k, v in obj.items()}
+                elif isinstance(obj, list):
+                    return [make_serializable(v) for v in obj]
+                else:
+                    return obj
+
             for doc in docs_list:
                 session_data = doc.to_dict()
                 session_data["id"] = doc.id
-                # Convert datetime objects for JSON serialization
-                for key in ["start_time", "end_time"]:
-                    if key in session_data and hasattr(session_data[key], "isoformat"):
-                        session_data[key] = session_data[key].isoformat()
+                session_data = make_serializable(session_data)
                 sessions.append(session_data)
                 last_doc = doc
 

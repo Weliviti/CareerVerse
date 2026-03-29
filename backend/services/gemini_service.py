@@ -131,3 +131,61 @@ class GeminiService:
 
         except Exception as e:
             raise Exception(f"Evaluation failed: {str(e)}")
+
+    async def generate_career_recommendations(self, scores_history: list) -> list:
+        """
+        Analyzes a history of user simulation scores to generate personalized career recommendations.
+        """
+        try:
+            # Format the score history for the prompt
+            history_text = ""
+            if not scores_history:
+                history_text = "No simulation history available yet. Provide general career recommendations based on foundational skills."
+            else:
+                for idx, score in enumerate(scores_history):
+                    history_text += f"\n--- Simulation {idx + 1} ({score.get('simulation_type', 'Unknown')} Role) ---\n"
+                    history_text += f"Total Score: {score.get('total_score', 'N/A')}\n"
+                    history_text += f"Skills: {json.dumps(score.get('skills', {}))}\n"
+
+            prompt = f"""
+            You are an expert, empathetic career counselor AI.
+            Analyze the following history of a user's performance across various virtual simulations.
+            Based on their demonstrated strengths in different skills (e.g., communication, empathy, problem-solving, logic, classroom management, etc.) across ALL their simulations, 
+            recommend 3 highly suitable career paths.
+
+            USER SIMULATION HISTORY:
+            {history_text}
+
+            You must return EXACTLY 3 career recommendations. 
+            For the 'colorClass', choose one of these TailWind CSS background colors to fit the career vibe:
+            'bg-teal-500', 'bg-blue-500', 'bg-purple-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500', 'bg-indigo-500'
+
+            RETURN ONLY VALID JSON EXACTLY MATCHING THIS ARRAY STRUCTURE, WITH NO MARKDOWN BLOCK OR OTHER TEXT:
+            [
+              {{
+                "rank": 1,
+                "title": "Job Title",
+                "matchPercentage": 95,
+                "description": "Short, personalized explanation of why this fits based on their specific skills shown across the simulations.",
+                "skills": ["Their Top Skill 1", "Their Top Skill 2", "Relevant Skill 3"],
+                "colorClass": "bg-teal-500"
+              }}, 
+              ... (total 3 items)
+            ]
+            """
+
+            response_text = await self.generate_response(prompt)
+
+            # Mandatory JSON cleaning
+            clean_text = response_text.replace("```json", "").replace("```", "").strip()
+            recommendations = json.loads(clean_text)
+            
+            # Ensure it's a list even if model returns dict {"recommendations": [...]}
+            if isinstance(recommendations, dict) and "recommendations" in recommendations:
+                recommendations = recommendations["recommendations"]
+                
+            return recommendations
+
+        except Exception as e:
+            print(f"Career recommendation generation failed: {e}")
+            raise Exception(f"Recommendation generation failed: {str(e)}")
